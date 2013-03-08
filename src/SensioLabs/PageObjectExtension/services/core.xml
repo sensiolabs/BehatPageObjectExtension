@@ -18,6 +18,7 @@
 
         <service id="sensio.page_object_extension.context.initializer" class="%sensio.page_object_extension.context.initializer.class%">
             <argument type="service" id="sensio.page_object_extension.page_factory" />
+            <tag name="behat.context.initializer" />
         </service>
     </services>
 </container>
