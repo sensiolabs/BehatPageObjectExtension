@@ -1,0 +1,35 @@
+{
+    "name": "sensiolabs/page-object-extension",
+    "description": "Page object extension for Behat",
+    "type": "library",
+    "keywords": ["behat","bdd","page"],
+    "homepage": "https://github.com/sensio/PageObjectExtension",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0",
+        "behat/behat": ">=2.4",
+        "behat/mink-extension": "*"
+    },
+    "require-dev": {
+        "phpspec/php-diff": "*@dev",
+        "phpspec/phpspec2": "dev-develop"
+    },
+    "autoload": {
+        "psr-0": {
+            "SensioLabs\\PageObjectExtension\\": "src/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "authors": [
+        {
+            "name": "Marcello Duarte",
+            "email": "mduarte@inviqa.com"
+        },
+        {
+            "name": "Jakub Zalas",
+            "email": "jzalas@sensiolabs.co.uk"
+        }
+    ]
+}
