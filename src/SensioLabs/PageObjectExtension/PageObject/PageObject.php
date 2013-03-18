@@ -39,12 +39,31 @@ class PageObject extends DocumentElement
 
     /**
      * @param string $name
+     * @param array  $arguments
+     */
+    public function __call($name, $arguments)
+    {
+        $message = sprintf('"%s" method is not available on the %s', $name, $this->getPageName());
+
+        throw new \BadMethodCallException($message);
+    }
+
+    /**
+     * @param string $name
      *
      * @return mixed
      */
     protected function getParameter($name)
     {
         return isset($this->parameters[$name]) ? $this->parameters[$name] : null;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPageName()
+    {
+        return preg_replace('/^.*\\\(.*?)$/', '$1', get_called_class());
     }
 
     /**

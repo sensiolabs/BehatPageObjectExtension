@@ -18,6 +18,11 @@ class PageFactory implements PageFactoryInterface
     private $parameters = array();
 
     /**
+     * @var string $namespace
+     */
+    private $namespace = '\\';
+
+    /**
      * @var Session $session
      * @var array   $parameters
      */
@@ -25,6 +30,14 @@ class PageFactory implements PageFactoryInterface
     {
         $this->session = $session;
         $this->parameters = $parameters;
+    }
+
+    /**
+     * @param string $namespace
+     */
+    public function setNamespace($namespace)
+    {
+        $this->namespace = rtrim($namespace, '\\').'\\';
     }
 
     /**
@@ -46,6 +59,6 @@ class PageFactory implements PageFactoryInterface
      */
     protected function getPageObjectClass($page)
     {
-        return '\\'.str_replace(' ', '', ucwords($page));
+        return $this->namespace.str_replace(' ', '', ucwords($page));
     }
 }

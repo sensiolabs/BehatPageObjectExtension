@@ -5,6 +5,7 @@ namespace spec\SensioLabs\PageObjectExtension\Context;
 use PHPSpec2\ObjectBehavior;
 
 require_once __DIR__.'/Fixtures/ArticleList.php';
+require_once __DIR__.'/Fixtures/NamespacedArticleList.php';
 
 class PageFactory extends ObjectBehavior
 {
@@ -19,5 +20,22 @@ class PageFactory extends ObjectBehavior
     function it_should_create_a_page()
     {
         $this->create('Article list')->shouldBeAnInstanceOf('ArticleList');
+    }
+
+    function it_should_overwrite_the_default_namespace()
+    {
+        foreach ($this->getNamespaces() as $namespace => $class) {
+            $this->setNamespace($namespace);
+            $this->create('Namespaced Article list')->shouldBeAnInstanceOf($class);
+        }
+    }
+
+    private function getNamespaces()
+    {
+        return array(
+            'spec\SensioLabs\PageObjectExtension\Context\Fixtures' => '\spec\SensioLabs\PageObjectExtension\Context\Fixtures\NamespacedArticleList',
+            '\spec\SensioLabs\PageObjectExtension\Context\Fixtures' => '\spec\SensioLabs\PageObjectExtension\Context\Fixtures\NamespacedArticleList',
+            'spec\SensioLabs\PageObjectExtension\Context\Fixtures\\' => '\spec\SensioLabs\PageObjectExtension\Context\Fixtures\NamespacedArticleList'
+        );
     }
 }

@@ -18,6 +18,10 @@ class Extension implements ExtensionInterface
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/services'));
         $loader->load('core.xml');
+
+        if (isset($config['pages_namespace'])) {
+            $container->setParameter('sensio.page_object_extension.pages_namespace', $config['pages_namespace']);
+        }
     }
 
     /**
@@ -25,6 +29,12 @@ class Extension implements ExtensionInterface
      */
     public function getConfig(ArrayNodeDefinition $builder)
     {
+        $builder->
+            children()->
+                scalarNode('pages_namespace')->
+                   defaultValue('\\')->
+                end()->
+            end();
     }
 
     /**

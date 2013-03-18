@@ -51,4 +51,10 @@ class PageObject extends ObjectBehavior
         $this->open('/employees')->shouldReturn($this);
     }
 
+    function it_gives_clear_feedback_if_method_is_invalid($session)
+    {
+        $this->beConstructedWith($session, array('base_url' => 'http://behat.dev/'));
+
+        $this->shouldThrow(new \BadMethodCallException('"search" method is not available on the PageObject'))->during('search');
+    }
 }
