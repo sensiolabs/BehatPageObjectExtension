@@ -2,10 +2,11 @@
 
 namespace SensioLabs\PageObjectExtension\Context;
 
+use Behat\Behat\Context\BehatContext;
 use SensioLabs\PageObjectExtension\Context\PageFactory;
 use SensioLabs\PageObjectExtension\PageObject\PageObject;
 
-class PageObjectContext implements PageObjectAwareInterface
+class PageObjectContext extends BehatContext implements PageObjectAwareInterface
 {
     /**
      * @var PageFactory $pageFactory
