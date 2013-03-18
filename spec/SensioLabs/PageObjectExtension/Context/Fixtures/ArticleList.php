@@ -2,9 +2,9 @@
 
 use Behat\Mink\Session;
 
-class ArticleList
+use SensioLabs\PageObjectExtension\Context\PageFactoryInterface;
+use SensioLabs\PageObjectExtension\PageObject\PageObject;
+
+class ArticleList extends PageObject
 {
-    public function __construct(Session $session, array $parameters)
-    {
-    }
 }

@@ -49,7 +49,7 @@ class PageFactory implements PageFactoryInterface
     {
         $pageObjectClass = $this->getPageObjectClass($page);
 
-        return new $pageObjectClass($this->session, $this->parameters);
+        return new $pageObjectClass($this->session, $this, $this->parameters);
     }
 
     /**

@@ -4,22 +4,30 @@ namespace SensioLabs\PageObjectExtension\PageObject;
 
 use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Session;
+use SensioLabs\PageObjectExtension\Context\PageFactoryInterface;
 
 class PageObject extends DocumentElement
 {
+    /**
+     * @var PageFactoryInterface $pageFactory
+     */
+    private $pageFactory = null;
+
     /**
      * @var array $parameters
      */
     private $parameters = array();
 
     /**
-     * @param Session $session
-     * @param array   $parameters
+     * @param Session              $session
+     * @param PageFactoryInterface $pageFactory
+     * @param array                $parameters
      */
-    public function __construct(Session $session, array $parameters = array())
+    public function __construct(Session $session, PageFactoryInterface $pageFactory, array $parameters = array())
     {
         parent::__construct($session);
 
+        $this->pageFactory = $pageFactory;
         $this->parameters = $parameters;
     }
 
@@ -46,6 +54,16 @@ class PageObject extends DocumentElement
         $message = sprintf('"%s" method is not available on the %s', $name, $this->getPageName());
 
         throw new \BadMethodCallException($message);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return PageObject
+     */
+    protected function getPage($name)
+    {
+        return $this->pageFactory->create($name);
     }
 
     /**

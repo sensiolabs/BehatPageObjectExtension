@@ -7,11 +7,12 @@ use PHPSpec2\ObjectBehavior;
 class PageObject extends ObjectBehavior
 {
     /**
-     * @param \Behat\Mink\Session $session
+     * @param \Behat\Mink\Session                                          $session
+     * @param \SensioLabs\PageObjectExtension\Context\PageFactoryInterface $factory
      */
-    function let($session)
+    function let($session, $factory)
     {
-        $this->beConstructedWith($session);
+        $this->beConstructedWith($session, $factory);
     }
 
     function it_should_be_a_document_element()
@@ -33,27 +34,27 @@ class PageObject extends ObjectBehavior
         $this->open('http://localhost/employees')->shouldReturn($this);
     }
 
-    function it_prepends_base_url($session)
+    function it_prepends_base_url($session, $factory)
     {
-        $this->beConstructedWith($session, array('base_url' => 'http://behat.dev/'));
+        $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
 
         $session->visit('http://behat.dev/employees')->shouldBeCalled();
 
         $this->open('employees')->shouldReturn($this);
     }
 
-    function it_cleans_up_slashes($session)
+    function it_cleans_up_slashes($session, $factory)
     {
-        $this->beConstructedWith($session, array('base_url' => 'http://behat.dev/'));
+        $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
 
         $session->visit('http://behat.dev/employees')->shouldBeCalled();
 
         $this->open('/employees')->shouldReturn($this);
     }
 
-    function it_gives_clear_feedback_if_method_is_invalid($session)
+    function it_gives_clear_feedback_if_method_is_invalid($session, $factory)
     {
-        $this->beConstructedWith($session, array('base_url' => 'http://behat.dev/'));
+        $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
 
         $this->shouldThrow(new \BadMethodCallException('"search" method is not available on the PageObject'))->during('search');
     }

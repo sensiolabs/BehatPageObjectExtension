@@ -3,10 +3,9 @@
 namespace spec\SensioLabs\PageObjectExtension\Context\Fixtures;
 
 use Behat\Mink\Session;
+use SensioLabs\PageObjectExtension\Context\PageFactoryInterface;
+use SensioLabs\PageObjectExtension\PageObject\PageObject;
 
-class NamespacedArticleList
+class NamespacedArticleList extends PageObject
 {
-    public function __construct(Session $session, array $parameters)
-    {
-    }
 }
