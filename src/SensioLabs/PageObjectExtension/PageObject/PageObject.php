@@ -51,7 +51,7 @@ class PageObject extends DocumentElement
      */
     public function __call($name, $arguments)
     {
-        $message = sprintf('"%s" method is not available on the %s', $name, $this->getPageName());
+        $message = sprintf('"%s" method is not available on the %s', $name, $this->getName());
 
         throw new \BadMethodCallException($message);
     }
@@ -79,7 +79,7 @@ class PageObject extends DocumentElement
     /**
      * @return string
      */
-    protected function getPageName()
+    protected function getName()
     {
         return preg_replace('/^.*\\\(.*?)$/', '$1', get_called_class());
     }

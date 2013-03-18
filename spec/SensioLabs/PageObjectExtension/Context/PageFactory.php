@@ -6,6 +6,7 @@ use PHPSpec2\ObjectBehavior;
 
 require_once __DIR__.'/Fixtures/ArticleList.php';
 require_once __DIR__.'/Fixtures/NamespacedArticleList.php';
+require_once __DIR__.'/Fixtures/PageElement/SearchBox.php';
 
 class PageFactory extends ObjectBehavior
 {
@@ -20,6 +21,21 @@ class PageFactory extends ObjectBehavior
     function it_should_create_a_page()
     {
         $this->create('Article list')->shouldBeAnInstanceOf('ArticleList');
+    }
+
+    function it_should_create_a_nested_page()
+    {
+        $this->create('Page Element / Search Box')->shouldBeAnInstanceOf('SearchBox');
+    }
+
+    function it_should_create_a_nested_namespaced_page()
+    {
+        $this->setNamespace('spec\SensioLabs\PageObjectExtension\Context\Fixtures');
+
+        $this->create('Namespaced Article list / SearchBox')
+            ->shouldBeAnInstanceOf(
+                'spec\SensioLabs\PageObjectExtension\Context\Fixtures\NamespacedArticleList\SearchBox'
+            );
     }
 
     function it_should_overwrite_the_default_namespace()

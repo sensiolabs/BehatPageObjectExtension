@@ -63,6 +63,12 @@ class PageFactory implements PageFactoryInterface
      */
     protected function getPageObjectClass($page)
     {
-        return $this->namespace.str_replace(' ', '', ucwords($page));
+        if ($this->namespace === '\\') {
+            $page = preg_replace('/^.*\/\s+(.*?)$/', '$1', $page);
+        }
+
+        $page = str_replace(array(' ', '/'), array('', '\\'), ucwords($page));
+
+        return $this->namespace.$page;
     }
 }
