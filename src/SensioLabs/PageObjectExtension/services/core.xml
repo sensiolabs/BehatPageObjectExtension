@@ -4,24 +4,24 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="sensio.page_object_extension.pages_namespace">\</parameter>
-        <parameter key="sensio.page_object_extension.page_factory.class">SensioLabs\PageObjectExtension\Context\PageFactory</parameter>
-        <parameter key="sensio.page_object_extension.context.initializer.class">SensioLabs\PageObjectExtension\Context\Initializer\PageObjectAwareInitializer</parameter>
+        <parameter key="sensio_labs.page_object_extension.pages_namespace">\</parameter>
+        <parameter key="sensio_labs.page_object_extension.page_factory.class">SensioLabs\PageObjectExtension\Context\PageFactory</parameter>
+        <parameter key="sensio_labs.page_object_extension.context.initializer.class">SensioLabs\PageObjectExtension\Context\Initializer\PageObjectAwareInitializer</parameter>
     </parameters>
 
     <services>
-        <service id="sensio.page_object_extension.session" class="%behat.mink.session.class%" factory-service="behat.mink" factory-method="getSession" public="false" />
+        <service id="sensio_labs.page_object_extension.session" class="%behat.mink.session.class%" factory-service="behat.mink" factory-method="getSession" public="false" />
 
-        <service id="sensio.page_object_extension.page_factory" class="%sensio.page_object_extension.page_factory.class%" public="false">
-            <argument type="service" id="sensio.page_object_extension.session" />
+        <service id="sensio_labs.page_object_extension.page_factory" class="%sensio_labs.page_object_extension.page_factory.class%" public="false">
+            <argument type="service" id="sensio_labs.page_object_extension.session" />
             <argument>%behat.mink.parameters%</argument>
             <call method="setNamespace">
-                <argument>%sensio.page_object_extension.pages_namespace%</argument>
+                <argument>%sensio_labs.page_object_extension.pages_namespace%</argument>
             </call>
         </service>
 
-        <service id="sensio.page_object_extension.context.initializer" class="%sensio.page_object_extension.context.initializer.class%">
-            <argument type="service" id="sensio.page_object_extension.page_factory" />
+        <service id="sensio_labs.page_object_extension.context.initializer" class="%sensio_labs.page_object_extension.context.initializer.class%">
+            <argument type="service" id="sensio_labs.page_object_extension.page_factory" />
             <tag name="behat.context.initializer" />
         </service>
     </services>

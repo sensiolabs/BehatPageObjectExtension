@@ -20,7 +20,7 @@ class Extension implements ExtensionInterface
         $loader->load('core.xml');
 
         if (isset($config['pages_namespace'])) {
-            $container->setParameter('sensio.page_object_extension.pages_namespace', $config['pages_namespace']);
+            $container->setParameter('sensio_labs.page_object_extension.pages_namespace', $config['pages_namespace']);
         }
     }
 

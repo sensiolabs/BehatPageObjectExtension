@@ -17,9 +17,9 @@ class Extension extends ObjectBehavior
     function it_should_load_services($container)
     {
         $this->servicesShouldBeRegistered($container, array(
-            'sensio.page_object_extension.session',
-            'sensio.page_object_extension.page_factory',
-            'sensio.page_object_extension.context.initializer'
+            'sensio_labs.page_object_extension.session',
+            'sensio_labs.page_object_extension.page_factory',
+            'sensio_labs.page_object_extension.context.initializer'
         ));
 
         $this->load(array(), $container)->shouldReturn(null);
