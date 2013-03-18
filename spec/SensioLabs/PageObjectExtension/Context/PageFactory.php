@@ -38,4 +38,9 @@ class PageFactory extends ObjectBehavior
             'spec\SensioLabs\PageObjectExtension\Context\Fixtures\\' => '\spec\SensioLabs\PageObjectExtension\Context\Fixtures\NamespacedArticleList'
         );
     }
+
+    function it_should_complain_if_page_object_does_not_exist()
+    {
+        $this->shouldThrow(new \LogicException('"Home" page not recognised'))->duringCreate('Home');
+    }
 }

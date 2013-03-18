@@ -49,6 +49,10 @@ class PageFactory implements PageFactoryInterface
     {
         $pageObjectClass = $this->getPageObjectClass($page);
 
+        if (!class_exists($pageObjectClass)) {
+            throw new \LogicException(sprintf('"%s" page not recognised', $page));
+        }
+
         return new $pageObjectClass($this->session, $this, $this->parameters);
     }
 
