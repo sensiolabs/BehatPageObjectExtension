@@ -2,9 +2,12 @@
 
 use Behat\Mink\Session;
 
-use SensioLabs\PageObjectExtension\PageObject\PageObject;
+use SensioLabs\PageObjectExtension\PageObject\Element;
 
-// @todo should be a PageElement
-class SearchBox extends PageObject
+class SearchBox extends Element
 {
+    protected function xpath()
+    {
+        return '//div[@id="search"]';
+    }
 }

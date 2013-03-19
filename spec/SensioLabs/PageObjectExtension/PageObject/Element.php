@@ -3,11 +3,11 @@
 namespace spec\SensioLabs\PageObjectExtension\PageObject;
 
 use PHPSpec2\ObjectBehavior;
-use SensioLabs\PageObjectExtension\PageObject\PageElement as BasePageElement;
+use SensioLabs\PageObjectExtension\PageObject\Element as BaseElement;
 
-class MyPageElement extends BasePageElement
+class MyElement extends BaseElement
 {
-    protected static function xpath()
+    protected function xpath()
     {
         return '//div[@id="my-box"]';
     }
@@ -23,7 +23,7 @@ class MyPageElement extends BasePageElement
     }
 }
 
-class PageElement extends ObjectBehavior
+class Element extends ObjectBehavior
 {
     /**
      * @param \Behat\Mink\Session                                          $session
@@ -32,7 +32,7 @@ class PageElement extends ObjectBehavior
     function let($session, $factory)
     {
         // until we have proper abstract class support in PHPSpec2
-        $this->beAnInstanceOf('spec\SensioLabs\PageObjectExtension\PageObject\MyPageElement');
+        $this->beAnInstanceOf('spec\SensioLabs\PageObjectExtension\PageObject\MyElement');
         $this->beConstructedWith($session, $factory);
     }
 
@@ -48,12 +48,12 @@ class PageElement extends ObjectBehavior
 
     function it_gives_clear_feedback_if_method_is_invalid()
     {
-        $this->shouldThrow(new \BadMethodCallException('"search" method is not available on the MyPageElement'))->during('search');
+        $this->shouldThrow(new \BadMethodCallException('"search" method is not available on the MyElement'))->during('search');
     }
 
     function it_creates_a_page($factory, $page)
     {
-        $page->beAnInstanceOf('SensioLabs\PageObjectExtension\PageObject\PageElement');
+        $page->beAnInstanceOf('SensioLabs\PageObjectExtension\PageObject\Element');
 
         $factory->create('Home')->willReturn($page);
 
@@ -62,6 +62,6 @@ class PageElement extends ObjectBehavior
 
     function it_returns_the_page_name()
     {
-        $this->callGetName()->shouldReturn('MyPageElement');
+        $this->callGetName()->shouldReturn('MyElement');
     }
 }

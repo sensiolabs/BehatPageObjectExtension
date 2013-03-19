@@ -2,8 +2,8 @@
 
 use Behat\Mink\Session;
 
-use SensioLabs\PageObjectExtension\PageObject\PageObject;
+use SensioLabs\PageObjectExtension\PageObject\Page;
 
-class ArticleList extends PageObject
+class ArticleList extends Page
 {
 }

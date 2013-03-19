@@ -2,8 +2,12 @@
 
 namespace spec\SensioLabs\PageObjectExtension\Context\Fixtures\NamespacedArticleList;
 
-use SensioLabs\PageObjectExtension\PageObject\PageObject;
+use SensioLabs\PageObjectExtension\PageObject\Element;
 
-class SearchBox extends PageObject
+class SearchBox extends Element
 {
+    protected function xpath()
+    {
+        return '//div[@id="search"]';
+    }
 }

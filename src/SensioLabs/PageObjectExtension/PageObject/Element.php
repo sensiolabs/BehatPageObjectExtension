@@ -6,7 +6,7 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use SensioLabs\PageObjectExtension\Context\PageFactoryInterface;
 
-abstract class PageElement extends NodeElement
+abstract class Element extends NodeElement
 {
     /**
      * @var PageFactoryInterface $pageFactory
@@ -19,7 +19,7 @@ abstract class PageElement extends NodeElement
      */
     public function __construct(Session $session, PageFactoryInterface $pageFactory)
     {
-        parent::__construct(static::xpath(), $session);
+        parent::__construct($this->xpath(), $session);
 
         $this->pageFactory = $pageFactory;
     }
@@ -38,12 +38,12 @@ abstract class PageElement extends NodeElement
     /**
      * @return string
      */
-    abstract static protected function xpath();
+    abstract protected function xpath();
 
     /**
      * @param string $name
      *
-     * @return PageObject|PageElement
+     * @return Page|Element
      */
     protected function getPage($name)
     {

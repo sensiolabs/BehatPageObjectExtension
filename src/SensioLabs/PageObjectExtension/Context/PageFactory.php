@@ -3,7 +3,8 @@
 namespace SensioLabs\PageObjectExtension\Context;
 
 use Behat\Mink\Session;
-use SensioLabs\PageObjectExtension\PageObject\PageObject;
+use SensioLabs\PageObjectExtension\PageObject\Element;
+use SensioLabs\PageObjectExtension\PageObject\Page;
 
 class PageFactory implements PageFactoryInterface
 {
@@ -43,7 +44,7 @@ class PageFactory implements PageFactoryInterface
     /**
      * @param string $page
      *
-     * @return PageObject
+     * @return Page|Element
      */
     public function create($page)
     {
