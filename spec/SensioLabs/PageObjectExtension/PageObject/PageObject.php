@@ -3,6 +3,20 @@
 namespace spec\SensioLabs\PageObjectExtension\PageObject;
 
 use PHPSpec2\ObjectBehavior;
+use SensioLabs\PageObjectExtension\PageObject\PageObject as BasePageObject;
+
+class MyPageObject extends BasePageObject
+{
+    public function callGetPage($name)
+    {
+        return $this->getPage($name);
+    }
+
+    public function callGetName()
+    {
+        return $this->getName();
+    }
+}
 
 class PageObject extends ObjectBehavior
 {
@@ -12,6 +26,8 @@ class PageObject extends ObjectBehavior
      */
     function let($session, $factory)
     {
+        // until we have proper abstract class support in PHPSpec2
+        $this->beAnInstanceOf('spec\SensioLabs\PageObjectExtension\PageObject\MyPageObject');
         $this->beConstructedWith($session, $factory);
     }
 
@@ -56,6 +72,20 @@ class PageObject extends ObjectBehavior
     {
         $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
 
-        $this->shouldThrow(new \BadMethodCallException('"search" method is not available on the PageObject'))->during('search');
+        $this->shouldThrow(new \BadMethodCallException('"search" method is not available on the MyPageObject'))->during('search');
+    }
+
+    function it_creates_a_page($factory, $page)
+    {
+        $page->beAnInstanceOf('SensioLabs\PageObjectExtension\PageObject\PageObject');
+
+        $factory->create('Home')->willReturn($page);
+
+        $this->callGetPage('Home')->shouldReturn($page);
+    }
+
+    function it_returns_the_page_name()
+    {
+        $this->callGetName()->shouldReturn('MyPageObject');
     }
 }

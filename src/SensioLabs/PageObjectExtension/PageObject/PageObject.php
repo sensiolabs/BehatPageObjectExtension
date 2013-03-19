@@ -6,7 +6,7 @@ use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Session;
 use SensioLabs\PageObjectExtension\Context\PageFactoryInterface;
 
-class PageObject extends DocumentElement
+abstract class PageObject extends DocumentElement
 {
     /**
      * @var PageFactoryInterface $pageFactory
@@ -59,7 +59,7 @@ class PageObject extends DocumentElement
     /**
      * @param string $name
      *
-     * @return PageObject
+     * @return PageObject|PageElement
      */
     protected function getPage($name)
     {
