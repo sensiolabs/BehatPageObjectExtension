@@ -22,4 +22,10 @@ class PageObjectContext extends ObjectBehavior
         $this->setPageFactory($pageFactory);
         $this->getPage('Article list')->shouldReturn($page);
     }
+
+    function it_should_complain_if_page_factory_was_not_set()
+    {
+        $this->shouldThrow(new \RuntimeException('To create pages you need to pass a factory with setPageFactory()'))
+            ->duringGetPage('Article list');
+    }
 }

@@ -20,6 +20,10 @@ class PageObjectContext extends BehatContext implements PageObjectAwareInterface
      */
     public function getPage($name)
     {
+        if (null === $this->pageFactory) {
+            throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
+        }
+
         return $this->pageFactory->createPage($name);
     }
 
