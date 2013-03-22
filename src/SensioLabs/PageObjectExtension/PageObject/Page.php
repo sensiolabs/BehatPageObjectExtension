@@ -59,11 +59,21 @@ abstract class Page extends DocumentElement
     /**
      * @param string $name
      *
-     * @return Page|Element
+     * @return Page
      */
     protected function getPage($name)
     {
-        return $this->pageFactory->create($name);
+        return $this->pageFactory->createPage($name);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Element
+     */
+    protected function getElement($name)
+    {
+        return $this->pageFactory->createElement($name);
     }
 
     /**

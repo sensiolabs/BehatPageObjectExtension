@@ -19,9 +19,14 @@ class PageFactory implements PageFactoryInterface
     private $parameters = array();
 
     /**
-     * @var string $namespace
+     * @var string $pageNamespace
      */
-    private $namespace = '\\';
+    private $pageNamespace = '\\';
+
+    /**
+     * @var string $elementNamespace
+     */
+    private $elementNamespace = '\\';
 
     /**
      * @var Session $session
@@ -36,40 +41,58 @@ class PageFactory implements PageFactoryInterface
     /**
      * @param string $namespace
      */
-    public function setNamespace($namespace)
+    public function setPageNamespace($namespace)
     {
-        $this->namespace = rtrim($namespace, '\\').'\\';
+        $this->pageNamespace = rtrim($namespace, '\\').'\\';
     }
 
     /**
-     * @param string $page
-     *
-     * @return Page|Element
+     * @param string $namespace
      */
-    public function create($page)
+    public function setElementNamespace($namespace)
     {
-        $pageObjectClass = $this->getPageObjectClass($page);
+        $this->elementNamespace = rtrim($namespace, '\\').'\\';
+    }
 
-        if (!class_exists($pageObjectClass)) {
-            throw new \LogicException(sprintf('"%s" page not recognised', $page));
+    /**
+     * @param string $name
+     *
+     * @return Page
+     */
+    public function createPage($name)
+    {
+        $pageClass = $this->pageNamespace.$this->classifyName($name);
+
+        if (!class_exists($pageClass)) {
+            throw new \LogicException(sprintf('"%s" page not recognised', $name));
         }
 
-        return new $pageObjectClass($this->session, $this, $this->parameters);
+        return new $pageClass($this->session, $this, $this->parameters);
     }
 
     /**
-     * @param string $page
+     * @param string $name
+     *
+     * @return Element
+     */
+    public function createElement($name)
+    {
+        $elementClass = $this->elementNamespace.$this->classifyName($name);
+
+        if (!class_exists($elementClass)) {
+            throw new \LogicException(sprintf('"%s" element not recognised', $name));
+        }
+
+        return new $elementClass($this->session, $this);
+    }
+
+    /**
+     * @param string $name
      *
      * @return string
      */
-    protected function getPageObjectClass($page)
+    protected function classifyName($name)
     {
-        if ($this->namespace === '\\') {
-            $page = preg_replace('/^.*\/\s+(.*?)$/', '$1', $page);
-        }
-
-        $page = str_replace(array(' ', '/'), array('', '\\'), ucwords($page));
-
-        return $this->namespace.$page;
+        return str_replace(' ', '', ucwords($name));
     }
 }

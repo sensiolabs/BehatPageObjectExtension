@@ -7,9 +7,9 @@ use SensioLabs\PageObjectExtension\PageObject\Element as BaseElement;
 
 class MyElement extends BaseElement
 {
-    protected function xpath()
+    protected function getSelector()
     {
-        return '//div[@id="my-box"]';
+        return array('xpath' => '//div[@id="my-box"]');
     }
 
     public function callGetPage($name)
@@ -28,12 +28,16 @@ class Element extends ObjectBehavior
     /**
      * @param \Behat\Mink\Session                                          $session
      * @param \SensioLabs\PageObjectExtension\Context\PageFactoryInterface $factory
+     * @param \Behat\Mink\Selector\SelectorsHandler                        $selectorsHandler
      */
-    function let($session, $factory)
+    function let($session, $factory, $selectorsHandler)
     {
         // until we have proper abstract class support in PHPSpec2
         $this->beAnInstanceOf('spec\SensioLabs\PageObjectExtension\PageObject\MyElement');
         $this->beConstructedWith($session, $factory);
+
+        $session->getSelectorsHandler()->willReturn($selectorsHandler);
+        $selectorsHandler->selectorToXpath('xpath', '//div[@id="my-box"]')->willReturn('//div[@id="my-box"]');
     }
 
     function it_should_be_a_node_element()
@@ -55,7 +59,7 @@ class Element extends ObjectBehavior
     {
         $page->beAnInstanceOf('SensioLabs\PageObjectExtension\PageObject\Element');
 
-        $factory->create('Home')->willReturn($page);
+        $factory->createPage('Home')->willReturn($page);
 
         $this->callGetPage('Home')->shouldReturn($page);
     }

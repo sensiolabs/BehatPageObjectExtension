@@ -14,13 +14,13 @@ class PageObjectContext extends BehatContext implements PageObjectAwareInterface
     private $pageFactory = null;
 
     /**
-     * @param string $page
+     * @param string $name
      *
-     * @return Page|Element
+     * @return Page
      */
-    public function getPage($page)
+    public function getPage($name)
     {
-        return $this->pageFactory->create($page);
+        return $this->pageFactory->createPage($name);
     }
 
     /**

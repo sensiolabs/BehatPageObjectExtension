@@ -6,8 +6,8 @@ use SensioLabs\PageObjectExtension\PageObject\Element;
 
 class SearchBox extends Element
 {
-    protected function xpath()
+    protected function getSelector()
     {
-        return '//div[@id="search"]';
+        return array('xpath' => '//div[@id="search"]');
     }
 }

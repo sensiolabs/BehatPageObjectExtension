@@ -17,7 +17,7 @@ class PageObjectContext extends ObjectBehavior
      */
     function it_should_create_a_page($pageFactory, $page)
     {
-        $pageFactory->create('Article list')->willReturn($page);
+        $pageFactory->createPage('Article list')->willReturn($page);
 
         $this->setPageFactory($pageFactory);
         $this->getPage('Article list')->shouldReturn($page);

@@ -12,6 +12,11 @@ class MyPage extends BasePage
         return $this->getPage($name);
     }
 
+    public function callGetElement($name)
+    {
+        return $this->getElement($name);
+    }
+
     public function callGetName()
     {
         return $this->getName();
@@ -79,9 +84,18 @@ class Page extends ObjectBehavior
     {
         $page->beAnInstanceOf('SensioLabs\PageObjectExtension\PageObject\Page');
 
-        $factory->create('Home')->willReturn($page);
+        $factory->createPage('Home')->willReturn($page);
 
         $this->callGetPage('Home')->shouldReturn($page);
+    }
+
+    function it_creates_an_element($factory, $element)
+    {
+        $element->beAnInstanceOf('SensioLabs\PageObjectExtension\PageObject\Element');
+
+        $factory->createElement('Navigation')->willReturn($element);
+
+        $this->callGetElement('Navigation')->shouldReturn($element);
     }
 
     function it_returns_the_page_name()

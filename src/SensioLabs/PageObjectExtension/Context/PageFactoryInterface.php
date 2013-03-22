@@ -2,14 +2,32 @@
 
 namespace SensioLabs\PageObjectExtension\Context;
 
+use SensioLabs\PageObjectExtension\PageObject\Element;
 use SensioLabs\PageObjectExtension\PageObject\Page;
 
 interface PageFactoryInterface
 {
     /**
-     * @param string $page
+     * @param string $name
      *
-     * @return Page|Element
+     * @return Page
      */
-    public function create($page);
+    public function createPage($name);
+
+    /**
+     * @param string $name
+     *
+     * @return Element
+     */
+    public function createElement($name);
+
+    /**
+     * @param string $namespace
+     */
+    public function setPageNamespace($namespace);
+
+    /**
+     * @param string $namespace
+     */
+    public function setElementNamespace($namespace);
 }

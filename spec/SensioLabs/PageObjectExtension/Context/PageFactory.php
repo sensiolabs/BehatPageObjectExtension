@@ -4,49 +4,39 @@ namespace spec\SensioLabs\PageObjectExtension\Context;
 
 use PHPSpec2\ObjectBehavior;
 
-require_once __DIR__.'/Fixtures/ArticleList.php';
-require_once __DIR__.'/Fixtures/NamespacedArticleList.php';
-require_once __DIR__.'/Fixtures/PageElement/SearchBox.php';
-
 class PageFactory extends ObjectBehavior
 {
     /**
-     * @param \Behat\Mink\Session $session
+     * @param \Behat\Mink\Session                   $session
+     * @param \Behat\Mink\Selector\SelectorsHandler $selectorsHandler
      */
-    function let($session)
+    function let($session, $selectorsHandler)
     {
         $this->beConstructedWith($session, array('base_url' => 'http://behat.dev'));
+
+        $session->getSelectorsHandler()->willReturn($selectorsHandler);
+        $selectorsHandler->selectorToXpath('xpath', '//div[@id="search"]')->willReturn('//div[@id="search"]');
     }
 
     function it_should_create_a_page()
     {
-        $this->create('Article list')->shouldBeAnInstanceOf('ArticleList');
+        $this->createPage('Article list')->shouldBeAnInstanceOf('ArticleList');
     }
 
-    function it_should_create_a_nested_page()
+    function it_should_create_an_element()
     {
-        $this->create('Page Element / Search Box')->shouldBeAnInstanceOf('SearchBox');
+        $this->createElement('Search box')->shouldBeAnInstanceOf('SearchBox');
     }
 
-    function it_should_create_a_nested_namespaced_page()
+    function it_should_overwrite_the_default_page_namespace()
     {
-        $this->setNamespace('spec\SensioLabs\PageObjectExtension\Context\Fixtures');
-
-        $this->create('Namespaced Article list / SearchBox')
-            ->shouldBeAnInstanceOf(
-                'spec\SensioLabs\PageObjectExtension\Context\Fixtures\NamespacedArticleList\SearchBox'
-            );
-    }
-
-    function it_should_overwrite_the_default_namespace()
-    {
-        foreach ($this->getNamespaces() as $namespace => $class) {
-            $this->setNamespace($namespace);
-            $this->create('Namespaced Article list')->shouldBeAnInstanceOf($class);
+        foreach ($this->getPageNamespaces() as $namespace => $class) {
+            $this->setPageNamespace($namespace);
+            $this->createPage('Namespaced Article list')->shouldBeAnInstanceOf($class);
         }
     }
 
-    private function getNamespaces()
+    private function getPageNamespaces()
     {
         return array(
             'spec\SensioLabs\PageObjectExtension\Context\Fixtures' => '\spec\SensioLabs\PageObjectExtension\Context\Fixtures\NamespacedArticleList',
@@ -55,8 +45,30 @@ class PageFactory extends ObjectBehavior
         );
     }
 
-    function it_should_complain_if_page_object_does_not_exist()
+    function it_should_overwrite_the_default_element_namespace()
     {
-        $this->shouldThrow(new \LogicException('"Home" page not recognised'))->duringCreate('Home');
+        foreach ($this->getElementNamespaces() as $namespace => $class) {
+            $this->setElementNamespace($namespace);
+            $this->createElement('Namespaced search box')->shouldBeAnInstanceOf($class);
+        }
+    }
+
+    private function getElementNamespaces()
+    {
+        return array(
+            'spec\SensioLabs\PageObjectExtension\Context\Fixtures\Element' => '\spec\SensioLabs\PageObjectExtension\Context\Fixtures\Element\NamespacedSearchBox',
+            '\spec\SensioLabs\PageObjectExtension\Context\Fixtures\Element' => '\spec\SensioLabs\PageObjectExtension\Context\Fixtures\Element\NamespacedSearchBox',
+            'spec\SensioLabs\PageObjectExtension\Context\Fixtures\Element\\' => '\spec\SensioLabs\PageObjectExtension\Context\Fixtures\Element\NamespacedSearchBox'
+        );
+    }
+
+    function it_should_complain_if_page_does_not_exist()
+    {
+        $this->shouldThrow(new \LogicException('"Home" page not recognised'))->duringCreatePage('Home');
+    }
+
+    function it_should_complain_if_element_does_not_exist()
+    {
+        $this->shouldThrow(new \LogicException('"Navigation" element not recognised'))->duringCreateElement('Navigation');
     }
 }
