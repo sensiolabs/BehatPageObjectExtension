@@ -8,6 +8,8 @@ use SensioLabs\PageObjectExtension\PageObject\Page as BasePage;
 
 class MyPage extends BasePage
 {
+    public $path = '/employees/{employee}';
+
     public function callGetPage($name)
     {
         return $this->getPage($name);
@@ -21,11 +23,6 @@ class MyPage extends BasePage
     public function callGetName()
     {
         return $this->getName();
-    }
-
-    protected function getPath()
-    {
-        return '/employees/{employee}';
     }
 }
 
@@ -88,7 +85,7 @@ class Page extends ObjectBehavior
         $this->beAnInstanceOf('spec\SensioLabs\PageObjectExtension\PageObject\MyPageWithoutPath');
         $this->beConstructedWith($session, $factory);
 
-        $this->shouldThrow(new PathNotProvidedException('You must add a getPath method to your page object'))
+        $this->shouldThrow(new PathNotProvidedException('You must add a path property to your page object'))
             ->duringOpen();
     }
 

@@ -10,6 +10,11 @@ use SensioLabs\PageObjectExtension\PageObject\Exception\PathNotProvidedException
 abstract class Page extends DocumentElement
 {
     /**
+     * @var string|null
+     */
+    protected $path = null;
+
+    /**
      * @var PageFactoryInterface $pageFactory
      */
     private $pageFactory = null;
@@ -101,7 +106,11 @@ abstract class Page extends DocumentElement
      */
     protected function getPath()
     {
-        throw new PathNotProvidedException('You must add a getPath method to your page object');
+        if (null === $this->path) {
+            throw new PathNotProvidedException('You must add a path property to your page object');
+        }
+
+        return $this->path;
     }
 
     /**

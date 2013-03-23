@@ -19,9 +19,7 @@ class Extension implements ExtensionInterface
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/services'));
         $loader->load('core.xml');
 
-        if (isset($config['pages_namespace'])) {
-            $container->setParameter('sensio_labs.page_object_extension.pages_namespace', $config['pages_namespace']);
-        }
+        $this->updateNamespaceParameters($config, $container);
     }
 
     /**
@@ -29,12 +27,19 @@ class Extension implements ExtensionInterface
      */
     public function getConfig(ArrayNodeDefinition $builder)
     {
-        $builder->
-            children()->
-                scalarNode('pages_namespace')->
-                   defaultValue('\\')->
-                end()->
-            end();
+        $builder
+            ->children()
+                ->arrayNode('namespaces')
+                    ->children()
+                        ->scalarNode('page')
+                           ->defaultValue('\\')
+                        ->end()
+                        ->scalarNode('element')
+                            ->defaultValue('\\')
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 
     /**
@@ -43,5 +48,30 @@ class Extension implements ExtensionInterface
     public function getCompilerPasses()
     {
         return array();
+    }
+
+    /**
+     * @param array $config
+     * @param ContainerBuilder $container
+     */
+    private function updateNamespaceParameters(array $config, ContainerBuilder $container)
+    {
+        if (!isset($config['namespaces'])) {
+            return;
+        }
+
+        if (isset($config['namespaces']['page'])) {
+            $container->setParameter(
+                'sensio_labs.page_object_extension.namespaces.page',
+                $config['namespaces']['page']
+            );
+        }
+
+        if (isset($config['namespaces']['element'])) {
+            $container->setParameter(
+                'sensio_labs.page_object_extension.namespaces.element',
+                $config['namespaces']['element']
+            );
+        }
     }
 }

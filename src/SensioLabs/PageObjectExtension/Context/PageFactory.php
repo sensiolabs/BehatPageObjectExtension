@@ -16,7 +16,7 @@ class PageFactory implements PageFactoryInterface
     /**
      * @var array $parameters
      */
-    private $parameters = array();
+    private $pageParameters = array();
 
     /**
      * @var string $pageNamespace
@@ -30,12 +30,12 @@ class PageFactory implements PageFactoryInterface
 
     /**
      * @var Session $session
-     * @var array   $parameters
+     * @var array   $pageParameters
      */
-    public function __construct(Session $session, array $parameters)
+    public function __construct(Session $session, array $pageParameters)
     {
         $this->session = $session;
-        $this->parameters = $parameters;
+        $this->pageParameters = $pageParameters;
     }
 
     /**
@@ -67,7 +67,7 @@ class PageFactory implements PageFactoryInterface
             throw new \LogicException(sprintf('"%s" page not recognised', $name));
         }
 
-        return new $pageClass($this->session, $this, $this->parameters);
+        return new $pageClass($this->session, $this, $this->pageParameters);
     }
 
     /**
