@@ -5,6 +5,7 @@ namespace SensioLabs\PageObjectExtension\PageObject;
 use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Session;
 use SensioLabs\PageObjectExtension\Context\PageFactoryInterface;
+use SensioLabs\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
 
 abstract class Page extends DocumentElement
 {
@@ -32,12 +33,13 @@ abstract class Page extends DocumentElement
     }
 
     /**
-     * @param string $path
+     * @param array $urlParameters
      *
      * @return Page
      */
-    public function open($path)
+    public function open(array $urlParameters = array())
     {
+        $path = $this->unmaskUrl($urlParameters);
         $path = $this->makeSurePathIsAbsolute($path);
 
         $this->getSession()->visit($path);
@@ -51,9 +53,7 @@ abstract class Page extends DocumentElement
      */
     public function __call($name, $arguments)
     {
-        $message = sprintf('"%s" method is not available on the %s', $name, $this->getName());
-
-        throw new \BadMethodCallException($message);
+        throw new \BadMethodCallException(sprintf('"%s" method is not available on the %s', $name, $this->getName()));
     }
 
     /**
@@ -95,6 +95,16 @@ abstract class Page extends DocumentElement
     }
 
     /**
+     * @throws PathNotProvidedException
+     *
+     * @return string
+     */
+    protected function getPath()
+    {
+        throw new PathNotProvidedException('You must add a getPath method to your page object');
+    }
+
+    /**
      * @param string $path
      *
      * @return string
@@ -104,5 +114,21 @@ abstract class Page extends DocumentElement
         $baseUrl = rtrim($this->getParameter('base_url'), '/').'/';
 
         return 0 !== strpos($path, 'http') ? $baseUrl.ltrim($path, '/') : $path;
+    }
+
+    /**
+     * @param array $urlParameters
+     *
+     * @return string
+     */
+    private function unmaskUrl(array $urlParameters)
+    {
+        $url = $this->getPath();
+
+        foreach ($urlParameters as $parameter => $value) {
+            $url = str_replace(sprintf('{%s}', $parameter), $value, $url);
+        }
+
+        return $url;
     }
 }

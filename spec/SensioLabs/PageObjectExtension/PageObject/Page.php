@@ -3,6 +3,7 @@
 namespace spec\SensioLabs\PageObjectExtension\PageObject;
 
 use PHPSpec2\ObjectBehavior;
+use SensioLabs\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
 use SensioLabs\PageObjectExtension\PageObject\Page as BasePage;
 
 class MyPage extends BasePage
@@ -21,6 +22,15 @@ class MyPage extends BasePage
     {
         return $this->getName();
     }
+
+    protected function getPath()
+    {
+        return '/employees/{employee}';
+    }
+}
+
+class MyPageWithoutPath extends BasePage
+{
 }
 
 class Page extends ObjectBehavior
@@ -43,34 +53,43 @@ class Page extends ObjectBehavior
 
     function it_opens_a_relative_path($session)
     {
-        $session->visit('/employees')->shouldBeCalled();
+        $session->visit('/employees/13')->shouldBeCalled();
 
-        $this->open('/employees')->shouldReturn($this);
-    }
-
-    function it_opens_an_absolute_path($session)
-    {
-        $session->visit('http://localhost/employees')->shouldBeCalled();
-
-        $this->open('http://localhost/employees')->shouldReturn($this);
+        $this->open(array('employee' => 13))->shouldReturn($this);
     }
 
     function it_prepends_base_url($session, $factory)
     {
         $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
 
-        $session->visit('http://behat.dev/employees')->shouldBeCalled();
+        $session->visit('http://behat.dev/employees/13')->shouldBeCalled();
 
-        $this->open('employees')->shouldReturn($this);
+        $this->open(array('employee' => 13))->shouldReturn($this);
     }
 
     function it_cleans_up_slashes($session, $factory)
     {
         $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
 
-        $session->visit('http://behat.dev/employees')->shouldBeCalled();
+        $session->visit('http://behat.dev/employees/13')->shouldBeCalled();
 
-        $this->open('/employees')->shouldReturn($this);
+        $this->open(array('employee' => 13))->shouldReturn($this);
+    }
+
+    function it_leaves_placeholders_if_not_provided($session)
+    {
+        $session->visit('/employees/{employee}')->shouldBeCalled();
+
+        $this->open()->shouldReturn($this);
+    }
+
+    function it_requires_path_to_open_a_page($session, $factory)
+    {
+        $this->beAnInstanceOf('spec\SensioLabs\PageObjectExtension\PageObject\MyPageWithoutPath');
+        $this->beConstructedWith($session, $factory);
+
+        $this->shouldThrow(new PathNotProvidedException('You must add a getPath method to your page object'))
+            ->duringOpen();
     }
 
     function it_gives_clear_feedback_if_method_is_invalid($session, $factory)
