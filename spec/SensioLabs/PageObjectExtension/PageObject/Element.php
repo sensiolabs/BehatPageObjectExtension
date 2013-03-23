@@ -7,10 +7,7 @@ use SensioLabs\PageObjectExtension\PageObject\Element as BaseElement;
 
 class MyElement extends BaseElement
 {
-    protected function getSelector()
-    {
-        return array('xpath' => '//div[@id="my-box"]');
-    }
+    public $selector = array('xpath' => '//div[@id="my-box"]');
 
     public function callGetPage($name)
     {

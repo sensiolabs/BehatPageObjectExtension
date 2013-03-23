@@ -10,6 +10,11 @@ use Behat\Mink\Selector\SelectorsHandler;
 abstract class Element extends NodeElement
 {
     /**
+     * @var array $selector
+     */
+    protected $selector = array('xpath' => '//');
+
+    /**
      * @var PageFactoryInterface $pageFactory
      */
     private $pageFactory = null;
@@ -37,11 +42,6 @@ abstract class Element extends NodeElement
     }
 
     /**
-     * @return array
-     */
-    abstract protected function getSelector();
-
-    /**
      * @param string $name
      *
      * @return Page|Element
@@ -66,11 +66,9 @@ abstract class Element extends NodeElement
      */
     private function getSelectorAsXpath(SelectorsHandler $selectorsHandler)
     {
-        $selectorList = $this->getSelector();
+        $selectorType = key($this->selector);
+        $locator = $this->selector[$selectorType];
 
-        $selector = key($selectorList);
-        $locator = $selectorList[$selector];
-
-        return $selectorsHandler->selectorToXpath($selector, $locator);
+        return $selectorsHandler->selectorToXpath($selectorType, $locator);
     }
 }
