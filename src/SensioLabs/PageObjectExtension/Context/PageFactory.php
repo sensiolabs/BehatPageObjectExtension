@@ -64,7 +64,7 @@ class PageFactory implements PageFactoryInterface
         $pageClass = $this->pageNamespace.$this->classifyName($name);
 
         if (!class_exists($pageClass)) {
-            throw new \LogicException(sprintf('"%s" page not recognised', $name));
+            throw new \LogicException(sprintf('"%s" page not recognised. "%s" class not found.', $name, $pageClass));
         }
 
         return new $pageClass($this->session, $this, $this->pageParameters);
@@ -80,7 +80,7 @@ class PageFactory implements PageFactoryInterface
         $elementClass = $this->elementNamespace.$this->classifyName($name);
 
         if (!class_exists($elementClass)) {
-            throw new \LogicException(sprintf('"%s" element not recognised', $name));
+            throw new \LogicException(sprintf('"%s" element not recognised. "%s" class not found.', $name, $elementClass));
         }
 
         return new $elementClass($this->session, $this);

@@ -64,11 +64,11 @@ class PageFactory extends ObjectBehavior
 
     function it_should_complain_if_page_does_not_exist()
     {
-        $this->shouldThrow(new \LogicException('"Home" page not recognised'))->duringCreatePage('Home');
+        $this->shouldThrow(new \LogicException('"Home" page not recognised. "\\Home" class not found.'))->duringCreatePage('Home');
     }
 
     function it_should_complain_if_element_does_not_exist()
     {
-        $this->shouldThrow(new \LogicException('"Navigation" element not recognised'))->duringCreateElement('Navigation');
+        $this->shouldThrow(new \LogicException('"Navigation" element not recognised. "\\Navigation" class not found.'))->duringCreateElement('Navigation');
     }
 }
