@@ -2,9 +2,11 @@
 
 namespace spec\SensioLabs\PageObjectExtension;
 
+use PHPSpec2\Matcher\CustomMatchersProviderInterface;
+use PHPSpec2\Matcher\InlineMatcher;
 use PHPSpec2\ObjectBehavior;
 
-class Extension extends ObjectBehavior
+class Extension extends ObjectBehavior implements CustomMatchersProviderInterface
 {
     function it_should_be_a_behat_extension()
     {
@@ -25,9 +27,9 @@ class Extension extends ObjectBehavior
         $this->load(array(), $container)->shouldReturn(null);
     }
 
-    function it_has_no_compiler_passes()
+    function it_registeres_namespaces_compiler_pass()
     {
-        $this->getCompilerPasses()->shouldReturn(array());
+        $this->getCompilerPasses()->shouldHaveCompilerPass('SensioLabs\PageObjectExtension\Compiler\NamespacesPass');
     }
 
     private function servicesShouldBeRegistered($container, $serviceIds)
@@ -37,5 +39,20 @@ class Extension extends ObjectBehavior
         foreach ($serviceIds as $id) {
             $container->setDefinition($id, \Mockery::any())->shouldBeCalled();
         }
+    }
+
+    static public function getMatchers()
+    {
+        return array(
+            new InlineMatcher('haveCompilerPass', function($subject, $class) {
+                foreach ($subject as $pass) {
+                    if ($pass instanceof $class) {
+                        return true;
+                    }
+                }
+
+                return false;
+            })
+        );
     }
 }

@@ -3,6 +3,7 @@
 namespace SensioLabs\PageObjectExtension;
 
 use Behat\Behat\Extension\ExtensionInterface;
+use SensioLabs\PageObjectExtension\Compiler\NamespacesPass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -31,12 +32,8 @@ class Extension implements ExtensionInterface
             ->children()
                 ->arrayNode('namespaces')
                     ->children()
-                        ->scalarNode('page')
-                           ->defaultValue('\\')
-                        ->end()
-                        ->scalarNode('element')
-                            ->defaultValue('\\')
-                        ->end()
+                        ->scalarNode('page')->end()
+                        ->scalarNode('element')->end()
                     ->end()
                 ->end()
             ->end();
@@ -47,7 +44,9 @@ class Extension implements ExtensionInterface
      */
     public function getCompilerPasses()
     {
-        return array();
+        return array(
+            new NamespacesPass()
+        );
     }
 
     /**
