@@ -7,4 +7,4 @@ Behat extension providing tools to implement page objects pattern.
 
 ## Documentation
 
-[Official documentation](http://github.com/jakzal/PageObjectExtension/doc/index.rst)
+[Official documentation](http://github.com/jakzal/PageObjectExtension/blob/master/doc/index.rst)
