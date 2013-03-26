@@ -127,7 +127,10 @@ abstract class Page extends DocumentElement
             $statusCode = $this->getSession()->getStatusCode();
 
             if ($this->isErrorResponse($statusCode)) {
-                throw new UnexpectedPageException(sprintf('Could not open the page, received an error status code: %s', $statusCode));
+                $currentUrl = $this->getSession()->getCurrentUrl();
+                $message = sprintf('Could not open the page: "%s". Received an error status code: %s', $currentUrl, $statusCode);
+
+                throw new UnexpectedPageException($message);
             }
         } catch (DriverException $exception) {
         }

@@ -105,20 +105,22 @@ class Page extends ObjectBehavior
 
     function it_verifies_client_error_status_code_if_available($session, $factory)
     {
-        $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
-
-        $session->visit('http://behat.dev/employees/13')->shouldBeCalled();
+        $session->visit('/employees/13')->shouldBeCalled();
         $session->getStatusCode()->willReturn(404);
+        $session->getCurrentUrl()->willReturn('/employees/13');
 
-        $this->shouldThrow(new UnexpectedPageException('Could not open the page, received an error status code: 404'))->duringOpen(array('employee' => 13));
+        $this->shouldThrow(new UnexpectedPageException('Could not open the page: "/employees/13". Received an error status code: 404'))
+            ->duringOpen(array('employee' => 13));
     }
 
     function it_verifies_server_error_status_code_if_available($session)
     {
         $session->visit('/employees/13')->shouldBeCalled();
         $session->getStatusCode()->willReturn(500);
+        $session->getCurrentUrl()->willReturn('/employees/13');
 
-        $this->shouldThrow(new UnexpectedPageException('Could not open the page, received an error status code: 500'))->duringOpen(array('employee' => 13));
+        $this->shouldThrow(new UnexpectedPageException('Could not open the page: "/employees/13". Received an error status code: 500'))
+            ->duringOpen(array('employee' => 13));
     }
 
     function it_skips_status_code_check_if_driver_does_not_support_it($session)
