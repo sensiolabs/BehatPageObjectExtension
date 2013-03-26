@@ -11,7 +11,7 @@ class PageFactory implements PageFactoryInterface
     /**
      * @var Session $session
      */
-    private $sesion = null;
+    private $session = null;
 
     /**
      * @var array $parameters
