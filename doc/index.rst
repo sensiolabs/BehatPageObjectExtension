@@ -20,7 +20,7 @@ First, download phar archives:
   - page object extension
 
 After downloading and placing ``*.phar`` into project directory, you need to
-activate ``PageObjectExtension`` in your ``behat.yml``:
+activate ``BehatPageObjectExtension`` in your ``behat.yml``:
 
     .. code-block:: yaml
 
@@ -43,7 +43,7 @@ The easiest way to keep your suite updated is to use `Composer <http://getcompos
             "require": {
                 ...
 
-                "sensiolabs/page-object-extension": "*"
+                "sensiolabs/behat-page-object-extension": "*"
             }
         }
 
@@ -61,7 +61,7 @@ The easiest way to keep your suite updated is to use `Composer <http://getcompos
         default:
             # ...
             extensions:
-                SensioLabs\PageObjectExtension\Extension: ~
+                SensioLabs\Behat\PageObjectExtension\Extension: ~
 
 Creating a page object
 ----------------------

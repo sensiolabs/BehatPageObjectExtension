@@ -1,9 +1,9 @@
 {
-    "name": "sensiolabs/page-object-extension",
+    "name": "sensiolabs/behat-page-object-extension",
     "description": "Page object extension for Behat",
     "type": "library",
     "keywords": ["behat","bdd","page"],
-    "homepage": "https://github.com/sensio/PageObjectExtension",
+    "homepage": "https://github.com/sensiolabs/BehatPageObjectExtension",
     "license": "MIT",
     "require": {
         "php": ">=5.3.0",
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-0": {
-            "SensioLabs\\PageObjectExtension\\": "src/"
+            "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
         }
     },
     "config": {
