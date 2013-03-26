@@ -52,6 +52,7 @@ abstract class Page extends DocumentElement
         $this->getSession()->visit($path);
 
         $this->verifyResponse();
+        $this->verifyPage();
 
         return $this;
     }
@@ -130,6 +131,13 @@ abstract class Page extends DocumentElement
             }
         } catch (DriverException $exception) {
         }
+    }
+
+    /**
+     * Overload to verify if we're on an expected page. Throw an exception if not.
+     */
+    protected function verifyPage()
+    {
     }
 
     /**

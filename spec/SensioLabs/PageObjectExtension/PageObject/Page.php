@@ -10,7 +10,7 @@ use SensioLabs\PageObjectExtension\PageObject\Page as BasePage;
 
 class MyPage extends BasePage
 {
-    public $path = '/employees/{employee}';
+    protected $path = '/employees/{employee}';
 
     public function callGetPage($name)
     {
@@ -30,6 +30,14 @@ class MyPage extends BasePage
 
 class MyPageWithoutPath extends BasePage
 {
+}
+
+class MyPageWithValidation extends MyPage
+{
+    protected function verifyPage()
+    {
+        throw new UnexpectedPageException('Expected to be on "MyPage" but found "Homepage" instead');
+    }
 }
 
 class Page extends ObjectBehavior
@@ -119,6 +127,17 @@ class Page extends ObjectBehavior
         $session->getStatusCode()->willThrow(new DriverException(''));
 
         $this->open(array('employee' => 13))->shouldReturn($this);
+    }
+
+    function it_optionally_verifies_the_page($session, $factory)
+    {
+        $this->beAnInstanceOf('spec\SensioLabs\PageObjectExtension\PageObject\MyPageWithValidation');
+        $this->beConstructedWith($session, $factory);
+
+        $session->visit('/employees/13')->shouldBeCalled();
+        $session->getStatusCode()->willReturn(200);
+
+        $this->shouldThrow(new UnexpectedPageException('Expected to be on "MyPage" but found "Homepage" instead'))->duringOpen(array('employee' => 13));
     }
 
     function it_gives_clear_feedback_if_method_is_invalid($session, $factory)
