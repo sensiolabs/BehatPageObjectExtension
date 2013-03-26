@@ -1,7 +1,7 @@
 Page Object Extension
 =====================
 
-Behat extension providing tools to implement page objects pattern.
+Behat extension providing tools to implement page object pattern.
 
 Installation
 ------------
