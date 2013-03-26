@@ -3,9 +3,11 @@
 namespace SensioLabs\PageObjectExtension\PageObject;
 
 use Behat\Mink\Element\DocumentElement;
+use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Session;
 use SensioLabs\PageObjectExtension\Context\PageFactoryInterface;
 use SensioLabs\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
+use SensioLabs\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
 abstract class Page extends DocumentElement
 {
@@ -48,6 +50,8 @@ abstract class Page extends DocumentElement
         $path = $this->makeSurePathIsAbsolute($path);
 
         $this->getSession()->visit($path);
+
+        $this->verifyResponse();
 
         return $this;
     }
@@ -111,6 +115,31 @@ abstract class Page extends DocumentElement
         }
 
         return $this->path;
+    }
+
+    /**
+     * @throws UnexpectedPageException
+     */
+    protected function verifyResponse()
+    {
+        try {
+            $statusCode = $this->getSession()->getStatusCode();
+
+            if ($this->isErrorResponse($statusCode)) {
+                throw new UnexpectedPageException(sprintf('Could not open the page, received an error status code: %s', $statusCode));
+            }
+        } catch (DriverException $exception) {
+        }
+    }
+
+    /**
+     * @param string $statusCode
+     *
+     * @return boolean
+     */
+    protected function isErrorResponse($statusCode)
+    {
+        return in_array(substr($statusCode, 0, 1), array('4', '5'));
     }
 
     /**
