@@ -81,7 +81,7 @@ rather ask a page object to do this for us:
         <?php
 
         /**
-         * @Given /^(?:|I ) change my password$/
+         * @Given /^(?:|I )change my password$/
          */
         public function iChangeMyPassword()
         {
@@ -93,8 +93,8 @@ rather ask a page object to do this for us:
 
 Page objects hide the UI and expose clean services (like login or
 changePassword), which can be used in the context classes.
-On one side page objects are facing the developer, by providing him a clean
-interface to interact with the pages. On the other side they're facing the HTML,
+On one side, page objects are facing the developer by providing him a clean
+interface to interact with the pages. On the other side, they're facing the HTML,
 being the only thing that has knowledge about a structure of a page.
 
 The idea is we end up with much cleaner context classes and avoid duplication.
@@ -319,8 +319,8 @@ Custom elements
 ~~~~~~~~~~~~~~~
 
 In case of a very complex page, the page class might grow too big and become
-hard to maintain. In such scenarios one option is to create a dedicated element
-class.
+hard to maintain. In such scenarios one option is to extract part of the logic
+into a dedicated element class.
 
 To create an element we need to extend the
 ``SensioLabs\Behat\PageObjectExtension\PageObject\Element`` class.
