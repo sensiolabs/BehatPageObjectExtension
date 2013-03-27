@@ -7,9 +7,11 @@ Behat extension providing tools to implement page object pattern.
 Instead of messing with the low level page details in our context files, we'd
 ask a page object to do this for us:
 
-    $page->login('kuba', '123123')
-       ->changePassword('abcabc')
-       ->logout();
+    .. code-block:: php
+
+        $page->login('kuba', '123123')
+           ->changePassword('abcabc')
+           ->logout();
 
 Page objects hide the UI and expose clean services we can use in the context
 classes (login, changePassword etc). On one side they're facing the developer,
@@ -36,7 +38,7 @@ modelled as a separate page object. Our extension calls it an element.
 
         Page object pattern was defined for the first time by the Selenium
         community and you can read more about it on the
-        [Selenium wiki](https://code.google.com/p/selenium/wiki/PageObjects).
+        `Selenium wiki <https://code.google.com/p/selenium/wiki/PageObjects>`_.
 
 Installation
 ------------
@@ -165,8 +167,129 @@ This way we can map a name of a page directly to the class name.
         In future you'll be able to overload a factory to provide your own way
         of mapping page names to page object classes.
 
+Page is an instance of a
+`DocumentElement <http://mink.behat.org/api/behat/mink/element/documentelement.html>`_.
+This means that instead of accessing Mink or Session objects, we can take
+advantage of existing `Mink <http://mink.behat.org/>`_ Element's methods:
+
+    .. code-block:: php
+
+        <?php
+
+        use Behat\Mink\Exception\ElementNotFoundException;
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+
+        class Homepage extends Page
+        {
+            // ...
+
+            /**
+             * @param string $keywords
+             *
+             * @return Page
+             */
+            public function search($keywords)
+            {
+                $searchInput = $this->find('css', 'input#search');
+
+                if (!$searchInput) {
+                    throw new ElementNotFoundException($this->getSession(), 'input', 'css', 'input#search');
+                }
+
+                $searchInput->setValue($keywords);
+
+                $this->pressButton('Google Search');
+
+                return $this->getPage('Search results');
+            }
+        }
+
+Notice that after clicking the *Search* button we'll be redirected to a search results
+page. Our method reflects this intent and returns another page by creating it with
+a ``getPage()`` helper first. Pages are created with the same factory which is used in
+the context files.
+
+Refrence the official `Mink API documentation <http://mink.behat.org/api/>`_ for
+a full list of available methods:
+* `DocumentElement <http://mink.behat.org/api/behat/mink/element/documentelement.html>`_
+* `TraversableElement <http://mink.behat.org/api/behat/mink/element/traversableelement.html>`_
+* `Element <http://mink.behat.org/api/behat/mink/element/element.html>`_
+
 Using elements
 --------------
+
+Elements are page objects representing a section of a page. Good candidates for
+an element would be a navigation or a form.
+
+To create an element we need to extend the
+``SensioLabs\Behat\PageObjectExtension\PageObject\Element`` class. Here's a
+previous search example modeled as an element:
+
+
+    .. code-block:: php
+
+        <?php
+
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+
+        class SearchForm extends Element
+        {
+            /**
+             * @var array $selector
+             */
+            protected $selector = array('css' => '.content form#search');
+
+            /**
+             * @param string $keywords
+             *
+             * @return Page
+             */
+            public function search($keywords)
+            {
+                $this->fillField('q', $keywords);
+                $this->pressButton('Google Search');
+
+                return $this->getPage('Search results');
+            }
+        }
+
+Definining the ``$selector`` property is optional. When defined, it will limit
+all the operations on the page to the area withing the selector.
+Any selector supported by Mink can be used here.
+
+Elements are only accessible from pages:
+
+    .. code-block:: php
+
+        <?php
+
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+
+        class Homepage extends Page
+        {
+            // ...
+
+            /**
+             * @param string $keywords
+             *
+             * @return Page
+             */
+            public function search($keywords)
+            {
+                return $this->getElement('Search form')->search($keywords);
+            }
+        }
+
+Element is an instance of a
+`NodeElement <http://mink.behat.org/api/behat/mink/element/nodeelement.html>`_,
+so similarly to pages, we can take advantage of existing `Mink <http://mink.behat.org/>`_
+Element's methods. Main difference is we have more methods relating to the single
+``NodeElement``. Refrence the official `Mink API documentation <http://mink.behat.org/api/>`_ for
+a full list of available methods:
+* `NodeElement <http://mink.behat.org/api/behat/mink/element/nodeelement.html>`_
+* `TraversableElement <http://mink.behat.org/api/behat/mink/element/traversableelement.html>`_
+* `Element <http://mink.behat.org/api/behat/mink/element/element.html>`_
 
 Configuration options
 ---------------------
