@@ -1,44 +1,12 @@
 Page Object Extension
 =====================
 
-Behat extension providing tools to implement page object pattern.
+This Behat extension provides tools for implementing page object pattern.
 
-**Page object** encapsulates all the dirty details of an user interface.
-Instead of messing with the low level page details in our context files, we'd
-ask a page object to do this for us:
-
-    .. code-block:: php
-
-        $page->login('kuba', '123123')
-           ->changePassword('abcabc')
-           ->logout();
-
-Page objects hide the UI and expose clean services we can use in the context
-classes (login, changePassword etc). On one side they're facing the developer,
-by providing him a clean interface to interact with the pages. On the other side
-they're facing the HTML, being the only thing that has knowledge about the
-structure of a page.
-
-This way we end up with much cleaner context classes and avoid duplication.
-Since page objects group similar concepts together, they are easier to maintain.
-Instead of having a concept of a login form in multiple contexts, we only store
-it in one page object.
-
-When using page objects, the context files are only responsible for calling
-methods on the page objects and making assertions. It's important to make this
-separation and not make assertions in the page objects in general. Page objects
-should either return other page objects or provide ways to access attributes of
-a page (like a title).
-
-Page object doesn't have to represent a single page. It could also represent a
-part of it. If a certain area of page exposes lots of services, it can be
-modelled as a separate page object. Our extension calls it an element.
-
-    .. note::
-
-        Page object pattern was defined for the first time by the Selenium
-        community and you can read more about it on the
-        `Selenium wiki <https://code.google.com/p/selenium/wiki/PageObjects>`_.
+Page object pattern is a way of keeping your context files clean
+by separating UI knowledge from the actions and assertions.
+Read more on the page object pattern on the
+`Selenium wiki <https://code.google.com/p/selenium/wiki/PageObjects>`_.
 
 Installation
 ------------
@@ -101,11 +69,118 @@ The easiest way to keep your suite updated is to use
             extensions:
                 SensioLabs\Behat\PageObjectExtension\Extension: ~
 
-Creating a page object
-----------------------
+Page objects
+------------
+
+**Page object** encapsulates all the dirty details of an user interface.
+Instead of messing with the page internals in our context files, we'd
+rather ask a page object to do this for us:
+
+    .. code-block:: php
+
+        <?php
+
+        /**
+         * @Given /^(?:|I ) change my password$/
+         */
+        public function iChangeMyPassword()
+        {
+            // $page = get page...
+            $page->login('kuba', '123123')
+               ->changePassword('abcabc')
+               ->logout();
+        }
+
+Page objects hide the UI and expose clean services (like login or
+changePassword), which can be used in the context classes.
+On one side page objects are facing the developer, by providing him a clean
+interface to interact with the pages. On the other side they're facing the HTML,
+being the only thing that has knowledge about a structure of a page.
+
+The idea is we end up with much cleaner context classes and avoid duplication.
+Since page objects group similar concepts together, they are easier to maintain.
+For example, instead of having a concept of a login form in multiple contexts,
+we'd only store it in one page object.
+
+Creating a page object class
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To create a new page object extend the
 ``SensioLabs\Behat\PageObjectExtension\PageObject\Page`` class:
+
+    .. code-block:: php
+
+        <?php
+
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+
+        class Homepage extends Page
+        {
+        }
+
+Instantiating a page object
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Pages are created with a built in factory. The easiest way to use them in your
+context is to call ``getPage`` provided by the
+``SensioLabs\\Behat\\PageObjectExtension\\Context\\PageObjectContext``:
+
+    .. code-block:: php
+
+        <?php
+
+        use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
+
+        class SearchContext extends PageObjectContext
+        {
+            /**
+             * @Given /^(?:|I )search for (?P<keywords>.*?)$/
+             */
+            public function iSearchFor($keywords)
+            {
+                $this->getPage('Homepage')->search($keywords):
+            }
+        }
+
+    .. note::
+
+        Alternatively you could implement the
+        ``SensioLabs\\Behat\\PageObjectExtension\\Context\\PageObjectAwareInterface``.
+
+Page factory finds a corresponding class by the passed name:
+
+* "Homepage" becomes a "Homepage" class
+* "Article list" becomes an "ArticleList" class
+* "My awesome page" becomes a "MyAwesomePage" class
+
+    .. note::
+
+        In future you'll be able to overload a factory to provide your own way
+        of mapping page names to page object classes.
+
+Opening a page
+~~~~~~~~~~~~~~
+
+Page can be opened by calling the ``open()`` method:
+
+    .. code-block:: php
+
+        <?php
+
+        use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
+
+        class SearchContext extends PageObjectContext
+        {
+            /**
+             * @Given /^(?:|I )visited (?:|the )(?P<pageName>.*?)$/
+             */
+            public function iVisitedThePage($pageName)
+            {
+                $this->getPage($pageName)->open();
+            }
+        }
+
+However, to be able to do this we have to provide a ``$path`` property:
 
     .. code-block:: php
 
@@ -125,52 +200,28 @@ To create a new page object extend the
 
         ``$path`` represents an URL of your page. You can ommit the ``$path``
         if your page object is only returned from other pages and you're not
-        plainng on opening it directly. ``$path`` is only used if you call
+        planning on opening it directly. ``$path`` is only used if you call
         ``open()`` on the page.
 
-Pages are created with a factory. The easiest way to use them in your context
-is to extend the
-``SensioLabs\\Behat\\PageObjectExtension\\Context\\PageObjectContext``:
+Path can also be parametrised:
 
     .. code-block:: php
 
-        <?php
+            protected $path = '/employees/{employeeId}/messages';
 
-        use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
+Any parameters should be given to the ``open()`` method:
 
-        class SearchContext extends PageObjectContext
-        {
-            /**
-             * @Given /^(?:|I )visited (?:|the )(?P<pageName>.*?)$/
-             */
-            public function iVisitedThePage($pageName)
-            {
-                $this->getPage($pageName)->open();
-            }
-        }
+    .. code-block:: php
 
-    .. note::
+            $this->getPage($pageName)->open(array('employeeId' => 13));
 
-        Alternatively you could implement the
-        ``SensioLabs\\Behat\\PageObjectExtension\\Context\\PageObjectAwareInterface``.
+Implementing page objects
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Factory finds a corresponding class by the passed name:
-
-* "Homepage" becomes a "Homepage" class
-* "Article list" becomes an "ArticleList" class
-* "My awesome page" becomes a "MyAwesomePage" class
-
-This way we can map a name of a page directly to the class name.
-
-    .. note::
-
-        In future you'll be able to overload a factory to provide your own way
-        of mapping page names to page object classes.
-
-Page is an instance of a
+Page is an instance of a Mink's
 `DocumentElement <http://mink.behat.org/api/behat/mink/element/documentelement.html>`_.
-This means that instead of accessing Mink or Session objects, we can take
-advantage of existing `Mink <http://mink.behat.org/>`_ Element's methods:
+This means that instead of accessing ``Mink`` or ``Session`` objects, we can take
+advantage of existing `Mink <http://mink.behat.org/>`_ Element methods:
 
     .. code-block:: php
 
@@ -205,8 +256,8 @@ advantage of existing `Mink <http://mink.behat.org/>`_ Element's methods:
 
 Notice that after clicking the *Search* button we'll be redirected to a search results
 page. Our method reflects this intent and returns another page by creating it with
-a ``getPage()`` helper first. Pages are created with the same factory which is used in
-the context files.
+a ``getPage()`` helper method first.
+Pages are created with the same factory which is used in the context files.
 
 Refrence the official `Mink API documentation <http://mink.behat.org/api/>`_ for
 a full list of available methods:
@@ -214,12 +265,21 @@ a full list of available methods:
 * `TraversableElement <http://mink.behat.org/api/behat/mink/element/traversableelement.html>`_
 * `Element <http://mink.behat.org/api/behat/mink/element/element.html>`_
 
-Using elements
---------------
+Note that when using page objects, the context files are only responsible for calling
+methods on the page objects and making assertions. It's important to make this
+separation and avoid assertions in the page objects in general.
 
-Elements are page objects representing a section of a page.
+Page objects should either return other page objects or provide ways to access
+attributes of a page (like a title).
 
-The simplest way to use elements is to defined them inline in the page class:
+Inline elements
+~~~~~~~~~~~~~~~
+
+Page object doesn't have to relate to a whole page. It could also correspond to
+some part of it - an element. Elements are page objects representing a section
+of a page.
+
+The simplest way to use elements is to define them inline in the page class:
 
     .. code-block:: php
 
@@ -252,11 +312,16 @@ The simplest way to use elements is to defined them inline in the page class:
             }
         }
 
-The advantage of this approach is the curtial elements are defined in one place
-and we can reference them from multiple methods.
+The advantage of this approach is that all the important page elements
+are defined in one place and we can reference them from multiple methods.
+
+Custom elements
+~~~~~~~~~~~~~~~
 
 In case of a very complex page, the page class might grow too big and become
-hard to maintain. In such scenarios we can create dedicated element classess.
+hard to maintain. In such scenarios one option is to create a dedicated element
+class.
+
 To create an element we need to extend the
 ``SensioLabs\Behat\PageObjectExtension\PageObject\Element`` class.
 Here's a previous search example modeled as an element:
@@ -290,11 +355,11 @@ Here's a previous search example modeled as an element:
             }
         }
 
-Definining the ``$selector`` property is optional. When defined, it will limit
-all the operations on the page to the area withing the selector.
+Definining the ``$selector`` property is optional but adviced. When defined, it
+will limit all the operations on the page to the area withing the selector.
 Any selector supported by Mink can be used here.
 
-We can access custom elements just like we access inline ones:
+Accessing custom elements is much like accessing inline ones:
 
     .. code-block:: php
 
@@ -319,12 +384,13 @@ We can access custom elements just like we access inline ones:
 
     .. note::
 
-        Element class names follow the same rules as Page class names.
+        Page factory takes care of creating custom elements and their class names
+        follow the same rules as Page class names.
 
 Element is an instance of a
 `NodeElement <http://mink.behat.org/api/behat/mink/element/nodeelement.html>`_,
 so similarly to pages, we can take advantage of existing `Mink <http://mink.behat.org/>`_
-Element's methods. Main difference is we have more methods relating to the single
+Element methods. Main difference is we have more methods relating to the single
 ``NodeElement``. Refrence the official `Mink API documentation <http://mink.behat.org/api/>`_ for
 a full list of available methods:
 * `NodeElement <http://mink.behat.org/api/behat/mink/element/nodeelement.html>`_
