@@ -143,7 +143,7 @@ is to extend the
             /**
              * @Given /^(?:|I )visited (?:|the )(?P<pageName>.*?)$/
              */
-            public function iVisitedTheHomepage($pageName)
+            public function iVisitedThePage($pageName)
             {
                 $this->getPage($pageName)->open();
             }
@@ -190,15 +190,14 @@ advantage of existing `Mink <http://mink.behat.org/>`_ Element's methods:
              */
             public function search($keywords)
             {
-                $searchInput = $this->find('css', 'input#search');
+                $searchForm = $this->find('css', 'form#search');
 
-                if (!$searchInput) {
-                    throw new ElementNotFoundException($this->getSession(), 'input', 'css', 'input#search');
+                if (!$searchForm) {
+                    throw new ElementNotFoundException($this->getSession(), 'form', 'css', 'form#search');
                 }
 
-                $searchInput->setValue($keywords);
-
-                $this->pressButton('Google Search');
+                $searchForm->fillField('q', $keywords);
+                $searchForm->pressButton('Google Search');
 
                 return $this->getPage('Search results');
             }
@@ -218,12 +217,49 @@ a full list of available methods:
 Using elements
 --------------
 
-Elements are page objects representing a section of a page. Good candidates for
-an element would be a navigation or a form.
+Elements are page objects representing a section of a page.
 
+The simplest way to use elements is to defined them inline in the page class:
+
+    .. code-block:: php
+
+        <?php
+
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+
+        class Homepage extends Page
+        {
+            // ...
+
+            protected $elements = array(
+                'Search form' => array('css' => 'form#search'),
+                'Navigation' => array('css' => '.header div.navigation'),
+                'Article list' => array('xpath' => '//*[contains(@class, "content")]//ul[contains(@class, "articles")]')
+            );
+
+            /**
+             * @param string $keywords
+             *
+             * @return Page
+             */
+            public function search($keywords)
+            {
+                $searchForm = $this->getElement('Search form');
+                $searchForm->fillField('q', $keywords);
+                $searchForm->pressButton('Google Search');
+
+                return $this->getPage('Search results');
+            }
+        }
+
+The advantage of this approach is the curtial elements are defined in one place
+and we can reference them from multiple methods.
+
+In case of a very complex page, the page class might grow too big and become
+hard to maintain. In such scenarios we can create dedicated element classess.
 To create an element we need to extend the
-``SensioLabs\Behat\PageObjectExtension\PageObject\Element`` class. Here's a
-previous search example modeled as an element:
+``SensioLabs\Behat\PageObjectExtension\PageObject\Element`` class.
+Here's a previous search example modeled as an element:
 
 
     .. code-block:: php
@@ -258,7 +294,7 @@ Definining the ``$selector`` property is optional. When defined, it will limit
 all the operations on the page to the area withing the selector.
 Any selector supported by Mink can be used here.
 
-Elements are only accessible from pages:
+We can access custom elements just like we access inline ones:
 
     .. code-block:: php
 
@@ -280,6 +316,10 @@ Elements are only accessible from pages:
                 return $this->getElement('Search form')->search($keywords);
             }
         }
+
+    .. note::
+
+        Element class names follow the same rules as Page class names.
 
 Element is an instance of a
 `NodeElement <http://mink.behat.org/api/behat/mink/element/nodeelement.html>`_,

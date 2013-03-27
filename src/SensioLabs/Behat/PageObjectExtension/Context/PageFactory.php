@@ -4,6 +4,7 @@ namespace SensioLabs\Behat\PageObjectExtension\Context;
 
 use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+use SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 class PageFactory implements PageFactoryInterface
@@ -84,6 +85,16 @@ class PageFactory implements PageFactoryInterface
         }
 
         return new $elementClass($this->session, $this);
+    }
+
+    /**
+     * @param array|string $selector
+     *
+     * @return InlineElement
+     */
+    public function createInlineElement($selector)
+    {
+        return new InlineElement($selector, $this->session, $this);
     }
 
     /**

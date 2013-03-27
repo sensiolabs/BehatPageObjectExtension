@@ -40,6 +40,19 @@ class MyPageWithValidation extends MyPage
     }
 }
 
+class MyPageWithInlineElements extends BasePage
+{
+    protected $elements = array(
+        'Navigation' => array('xpath' => '//div/span[@class="navigation"]'),
+        'Search form' => array('css' => 'div.content form#search')
+    );
+
+    public function callGetElement($name)
+    {
+        return $this->getElement($name);
+    }
+}
+
 class Page extends ObjectBehavior
 {
     /**
@@ -163,6 +176,17 @@ class Page extends ObjectBehavior
         $element->beAnInstanceOf('SensioLabs\Behat\PageObjectExtension\PageObject\Element');
 
         $factory->createElement('Navigation')->willReturn($element);
+
+        $this->callGetElement('Navigation')->shouldReturn($element);
+    }
+
+    function it_creates_an_inline_element_if_present($session, $factory, $element)
+    {
+        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithInlineElements');
+        $this->beConstructedWith($session, $factory);
+
+        $element->beAnInstanceOf('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement');
+        $factory->createInlineElement(array('xpath' => '//div/span[@class="navigation"]'))->willReturn($element);
 
         $this->callGetElement('Navigation')->shouldReturn($element);
     }

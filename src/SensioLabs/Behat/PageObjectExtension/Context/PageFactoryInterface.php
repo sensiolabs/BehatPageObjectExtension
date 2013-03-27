@@ -3,6 +3,7 @@
 namespace SensioLabs\Behat\PageObjectExtension\Context;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+use SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 interface PageFactoryInterface
@@ -20,6 +21,13 @@ interface PageFactoryInterface
      * @return Element
      */
     public function createElement($name);
+
+    /**
+     * @param string|array $selector
+     *
+     * @return InlineElement
+     */
+    public function createInlineElement($selector);
 
     /**
      * @param string $namespace

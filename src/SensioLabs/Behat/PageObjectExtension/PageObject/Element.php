@@ -10,7 +10,7 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
 abstract class Element extends NodeElement
 {
     /**
-     * @var array $selector
+     * @var array|string $selector
      */
     protected $selector = array('xpath' => '//');
 

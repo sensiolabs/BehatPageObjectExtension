@@ -6,15 +6,22 @@ use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
 abstract class Page extends DocumentElement
 {
     /**
-     * @var string|null
+     * @var string|null $path
      */
     protected $path = null;
+
+    /**
+     * @var array $elements
+     */
+    protected $elements = array();
 
     /**
      * @var PageFactoryInterface $pageFactory
@@ -83,6 +90,10 @@ abstract class Page extends DocumentElement
      */
     protected function getElement($name)
     {
+        if (isset($this->elements[$name])) {
+            return $this->pageFactory->createInlineElement($this->elements[$name]);
+        }
+
         return $this->pageFactory->createElement($name);
     }
 

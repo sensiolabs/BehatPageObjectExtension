@@ -28,6 +28,13 @@ class PageFactory extends ObjectBehavior
         $this->createElement('Search box')->shouldBeAnInstanceOf('SearchBox');
     }
 
+    function it_should_create_an_inline_element()
+    {
+        $element = $this->createInlineElement(array('xpath' => '//div[@id="search"]'));
+        $element->shouldBeAnInstanceOf('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement');
+        $element->getXPath()->shouldReturn('//div[@id="search"]');
+    }
+
     function it_should_overwrite_the_default_page_namespace()
     {
         foreach ($this->getPageNamespaces() as $namespace => $class) {
