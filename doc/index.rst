@@ -123,7 +123,7 @@ Instantiating a page object
 
 Pages are created with a built in factory. The easiest way to use them in your
 context is to call ``getPage`` provided by the
-``SensioLabs\\Behat\\PageObjectExtension\\Context\\PageObjectContext``:
+``SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext``:
 
     .. code-block:: php
 
@@ -145,13 +145,13 @@ context is to call ``getPage`` provided by the
     .. note::
 
         Alternatively you could implement the
-        ``SensioLabs\\Behat\\PageObjectExtension\\Context\\PageObjectAwareInterface``.
+        ``SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface``.
 
 Page factory finds a corresponding class by the passed name:
 
-* "Homepage" becomes a "Homepage" class
-* "Article list" becomes an "ArticleList" class
-* "My awesome page" becomes a "MyAwesomePage" class
+* *"Homepage"* becomes a *"Homepage"* class
+* *"Article list"* becomes an *"ArticleList"* class
+* *"My awesome page"* becomes a *"MyAwesomePage"* class
 
     .. note::
 
@@ -218,7 +218,7 @@ Any parameters should be given to the ``open()`` method:
 Implementing page objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Page is an instance of a Mink's
+Page is an instance of a Mink
 `DocumentElement <http://mink.behat.org/api/behat/mink/element/documentelement.html>`_.
 This means that instead of accessing ``Mink`` or ``Session`` objects, we can take
 advantage of existing `Mink <http://mink.behat.org/>`_ Element methods:
@@ -356,8 +356,8 @@ Here's a previous search example modeled as an element:
             }
         }
 
-Definining the ``$selector`` property is optional but adviced. When defined, it
-will limit all the operations on the page to the area withing the selector.
+Definining the ``$selector`` property is optional but recommended. When defined,
+it will limit all the operations on the page to the area withing the selector.
 Any selector supported by Mink can be used here.
 
 Accessing custom elements is much like accessing inline ones:
