@@ -7,4 +7,4 @@ Behat extension providing tools to implement page object pattern.
 
 ## Documentation
 
-[Official documentation](http://github.com/sensiolabs/BehatPageObjectExtension/blob/master/doc/index.rst)
+[Official documentation](http://extensions.behat.org/page-object/)
