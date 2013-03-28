@@ -65,9 +65,9 @@ The easiest way to keep your suite updated is to use
     .. code-block:: yaml
 
         default:
-            # ...
-            extensions:
-                SensioLabs\Behat\PageObjectExtension\Extension: ~
+          # ...
+          extensions:
+            SensioLabs\Behat\PageObjectExtension\Extension: ~
 
 Page objects
 ------------
@@ -469,4 +469,20 @@ we need to install it first. Best way to do this is by adding it to the
 
 Configuration options
 ---------------------
+
+If you use namespaces with Behat, we'll try to guess the location
+of your page objects. The convention is to store pages in the ``Page``
+directory located in the same place where your context files are.
+Elements should go into additional ``Element`` subdirectory.
+
+Defaults can be simply changed in the ``behat.yml`` file:
+
+    .. code-block:: yaml
+
+        default:
+          extensions:
+            SensioLabs\Behat\PageObjectExtension\Extension:
+              namespaces:
+                page: Acme\Features\Context\Page
+                element: Acme\Features\Context\Page\Element
 
