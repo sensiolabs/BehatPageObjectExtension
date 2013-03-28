@@ -261,6 +261,7 @@ Pages are created with the same factory which is used in the context files.
 
 Refrence the official `Mink API documentation <http://mink.behat.org/api/>`_ for
 a full list of available methods:
+
 * `DocumentElement <http://mink.behat.org/api/behat/mink/element/documentelement.html>`_
 * `TraversableElement <http://mink.behat.org/api/behat/mink/element/traversableelement.html>`_
 * `Element <http://mink.behat.org/api/behat/mink/element/element.html>`_
@@ -393,6 +394,7 @@ so similarly to pages, we can take advantage of existing `Mink <http://mink.beha
 Element methods. Main difference is we have more methods relating to the single
 ``NodeElement``. Refrence the official `Mink API documentation <http://mink.behat.org/api/>`_ for
 a full list of available methods:
+
 * `NodeElement <http://mink.behat.org/api/behat/mink/element/nodeelement.html>`_
 * `TraversableElement <http://mink.behat.org/api/behat/mink/element/traversableelement.html>`_
 * `Element <http://mink.behat.org/api/behat/mink/element/element.html>`_
