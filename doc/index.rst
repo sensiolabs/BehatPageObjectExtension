@@ -461,7 +461,7 @@ To use the `expect() helper <https://github.com/BossaConsulting/phpspec2-expect>
 we need to install it first. Best way to do this is by adding it to the
 ``composer.json``:
 
-    .. code-block:: json
+    .. code-block:: js
 
         "require-dev": {
             "bossa/phpspec2-expect": "dev-master"
