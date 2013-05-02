@@ -4,17 +4,11 @@ namespace spec\SensioLabs\Behat\PageObjectExtension\Compiler;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class NamespacesPassSpec extends ObjectBehavior
 {
-    /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     */
-    function let($container)
-    {
-    }
-
-    function it_should_set_global_namespace_if_context_class_is_not_defined($container)
+    function it_should_set_global_namespace_if_context_class_is_not_defined(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
             'behat.context.class' => null,
@@ -30,7 +24,7 @@ class NamespacesPassSpec extends ObjectBehavior
         $this->process($container)->shouldReturn(null);
     }
 
-    function it_should_set_global_namespace_with_a_non_namespaced_context($container)
+    function it_should_set_global_namespace_with_a_non_namespaced_context(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
             'behat.context.class' => 'FeatureContext',
@@ -46,7 +40,7 @@ class NamespacesPassSpec extends ObjectBehavior
         $this->process($container)->shouldReturn(null);
     }
 
-    function it_should_automatically_populate_namespace_parameters($container)
+    function it_should_automatically_populate_namespace_parameters(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
             'behat.context.class' => 'Features\Context\FeatureContext',
@@ -62,7 +56,7 @@ class NamespacesPassSpec extends ObjectBehavior
         $this->process($container)->shouldReturn(null);
     }
 
-    function it_should_not_overwrite_the_namespace_if_it_is_provided_in_the_configuration($container)
+    function it_should_not_overwrite_the_namespace_if_it_is_provided_in_the_configuration(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
             'behat.context.class' => 'Features\Context\FeatureContext',
@@ -75,7 +69,7 @@ class NamespacesPassSpec extends ObjectBehavior
         $this->process($container)->shouldReturn(null);
     }
 
-    function it_should_automatically_populate_element_namespace_if_not_provided($container)
+    function it_should_automatically_populate_element_namespace_if_not_provided(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
             'behat.context.class' => 'Features\Context\FeatureContext',
@@ -89,7 +83,7 @@ class NamespacesPassSpec extends ObjectBehavior
         $this->process($container)->shouldReturn(null);
     }
 
-    function it_should_not_subnamespace_element_if_page_is_in_global_namespace($container)
+    function it_should_not_subnamespace_element_if_page_is_in_global_namespace(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
             'behat.context.class' => 'Features\Context\FeatureContext',
@@ -103,7 +97,7 @@ class NamespacesPassSpec extends ObjectBehavior
         $this->process($container)->shouldReturn(null);
     }
 
-    function it_should_not_overwrite_element_if_page_is_not_defined($container)
+    function it_should_not_overwrite_element_if_page_is_not_defined(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
             'behat.context.class' => 'Features\Context\FeatureContext',
@@ -117,14 +111,14 @@ class NamespacesPassSpec extends ObjectBehavior
         $this->process($container)->shouldReturn(null);
     }
 
-    private function givenContainer($container, $parameters)
+    private function givenContainer(ContainerBuilder $container, $parameters)
     {
         foreach ($parameters as $id => $value) {
             $container->getParameter($id)->willReturn($value);
         }
     }
 
-    private function expectContainer($container, $parameters)
+    private function expectContainer(ContainerBuilder $container, $parameters)
     {
         foreach ($parameters as $id => $value) {
             $container->setParameter($id, $value)->shouldBeCalled();

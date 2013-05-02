@@ -4,6 +4,8 @@ namespace spec\SensioLabs\Behat\PageObjectExtension;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ExtensionSpec extends ObjectBehavior
 {
@@ -12,11 +14,7 @@ class ExtensionSpec extends ObjectBehavior
         $this->shouldHaveType('Behat\Behat\Extension\ExtensionInterface');
     }
 
-    /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder                   $container
-     * @param \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag
-     */
-    function it_should_load_services($container, $parameterBag)
+    function it_should_load_services(ContainerBuilder $container, ParameterBagInterface $parameterBag)
     {
         $this->servicesShouldBeRegistered($container, array(
             'sensio_labs.page_object_extension.session',

@@ -2,6 +2,8 @@
 
 namespace spec\SensioLabs\Behat\PageObjectExtension\Context;
 
+use Behat\Mink\Selector\SelectorsHandler;
+use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
 
 require_once __DIR__.'/Fixtures/ArticleList.php';
@@ -9,11 +11,7 @@ require_once __DIR__.'/Fixtures/Element/SearchBox.php';
 
 class PageFactorySpec extends ObjectBehavior
 {
-    /**
-     * @param \Behat\Mink\Session                   $session
-     * @param \Behat\Mink\Selector\SelectorsHandler $selectorsHandler
-     */
-    function let($session, $selectorsHandler)
+    function let(Session $session, SelectorsHandler $selectorsHandler)
     {
         $this->beConstructedWith($session, array('base_url' => 'http://behat.dev'));
 

@@ -3,6 +3,8 @@
 namespace spec\SensioLabs\Behat\PageObjectExtension\Context;
 
 use PhpSpec\ObjectBehavior;
+use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 class PageObjectContextSpec extends ObjectBehavior
 {
@@ -11,11 +13,7 @@ class PageObjectContextSpec extends ObjectBehavior
         $this->shouldHaveType('Behat\Behat\Context\ExtendedContextInterface');
     }
 
-    /**
-     * @param \SensioLabs\Behat\PageObjectExtension\Context\PageFactory $pageFactory
-     * @param \SensioLabs\Behat\PageObjectExtension\PageObject\Page     $page
-     */
-    function it_should_create_a_page($pageFactory, $page)
+    function it_should_create_a_page(PageFactory $pageFactory, Page $page)
     {
         $pageFactory->createPage('Article list')->willReturn($page);
 

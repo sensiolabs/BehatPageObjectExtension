@@ -3,13 +3,11 @@
 namespace spec\SensioLabs\Behat\PageObjectExtension\Context\Initializer;
 
 use PhpSpec\ObjectBehavior;
+use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 
 class PageObjectAwareInitializerSpec extends ObjectBehavior
 {
-    /**
-     * @param \SensioLabs\Behat\PageObjectExtension\Context\PageFactory $pageFactory
-     */
-    function let($pageFactory)
+    function let(PageFactory $pageFactory)
     {
         $this->beConstructedWith($pageFactory);
     }
@@ -27,11 +25,10 @@ class PageObjectAwareInitializerSpec extends ObjectBehavior
         $this->supports($context)->shouldReturn(true);
     }
 
-    /**
-     * @param \Behat\Behat\Context\ContextInterface $context
-     */
     function it_should_not_support_other_contexts($context)
     {
+        $context->willImplement('Behat\Behat\Context\ContextInterface');
+
         $this->supports($context)->shouldReturn(false);
     }
 

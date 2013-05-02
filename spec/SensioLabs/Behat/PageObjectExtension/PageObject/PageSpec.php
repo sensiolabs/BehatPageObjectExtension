@@ -3,9 +3,13 @@
 namespace spec\SensioLabs\Behat\PageObjectExtension\PageObject;
 
 use Behat\Mink\Exception\DriverException;
+use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
+use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
+use SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page as BasePage;
 
 class MyPage extends BasePage
@@ -55,11 +59,7 @@ class MyPageWithInlineElements extends BasePage
 
 class PageSpec extends ObjectBehavior
 {
-    /**
-     * @param \Behat\Mink\Session                                                $session
-     * @param \SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface $factory
-     */
-    function let($session, $factory)
+    function let(Session $session, PageFactoryInterface $factory)
     {
         // until we have proper abstract class support in PhpSpec
         $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPage');
@@ -162,30 +162,25 @@ class PageSpec extends ObjectBehavior
         $this->shouldThrow(new \BadMethodCallException('"search" method is not available on the MyPage'))->during('search');
     }
 
-    function it_creates_a_page($factory, $page)
+    function it_creates_a_page($factory, BasePage $page)
     {
-        $page->willExtend('SensioLabs\Behat\PageObjectExtension\PageObject\Page');
-
         $factory->createPage('Home')->willReturn($page);
 
         $this->callGetPage('Home')->shouldReturn($page);
     }
 
-    function it_creates_an_element($factory, $element)
+    function it_creates_an_element($factory, Element $element)
     {
-        $element->willExtend('SensioLabs\Behat\PageObjectExtension\PageObject\Element');
-
         $factory->createElement('Navigation')->willReturn($element);
 
         $this->callGetElement('Navigation')->shouldReturn($element);
     }
 
-    function it_creates_an_inline_element_if_present($session, $factory, $element)
+    function it_creates_an_inline_element_if_present($session, $factory, InlineElement $element)
     {
         $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithInlineElements');
         $this->beConstructedWith($session, $factory);
 
-        $element->willExtend('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement');
         $factory->createInlineElement(array('xpath' => '//div/span[@class="navigation"]'))->willReturn($element);
 
         $this->callGetElement('Navigation')->shouldReturn($element);
