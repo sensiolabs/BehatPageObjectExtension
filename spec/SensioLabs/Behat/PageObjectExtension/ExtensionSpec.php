@@ -2,11 +2,10 @@
 
 namespace spec\SensioLabs\Behat\PageObjectExtension;
 
-use PHPSpec2\Matcher\CustomMatchersProviderInterface;
-use PHPSpec2\Matcher\InlineMatcher;
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
-class Extension extends ObjectBehavior implements CustomMatchersProviderInterface
+class ExtensionSpec extends ObjectBehavior
 {
     function it_should_be_a_behat_extension()
     {
@@ -14,37 +13,40 @@ class Extension extends ObjectBehavior implements CustomMatchersProviderInterfac
     }
 
     /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder                   $container
+     * @param \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag
      */
-    function it_should_load_services($container)
+    function it_should_load_services($container, $parameterBag)
     {
         $this->servicesShouldBeRegistered($container, array(
             'sensio_labs.page_object_extension.session',
             'sensio_labs.page_object_extension.page_factory',
             'sensio_labs.page_object_extension.context.initializer'
-        ));
+        ), $parameterBag);
 
         $this->load(array(), $container)->shouldReturn(null);
     }
 
-    function it_registeres_namespaces_compiler_pass()
+    function it_registers_namespaces_compiler_pass()
     {
         $this->getCompilerPasses()->shouldHaveCompilerPass('SensioLabs\Behat\PageObjectExtension\Compiler\NamespacesPass');
     }
 
-    private function servicesShouldBeRegistered($container, $serviceIds)
+    private function servicesShouldBeRegistered($container, $serviceIds, $parameterBag)
     {
-        $container->hasExtension(ANY_ARGUMENTS)->willReturn(false);
+        $container->hasExtension(Argument::any())->willReturn(false);
+        $container->addResource(Argument::any())->willReturn($container);
+        $container->getParameterBag()->willReturn($parameterBag);
 
         foreach ($serviceIds as $id) {
-            $container->setDefinition($id, \Mockery::any())->shouldBeCalled();
+            $container->setDefinition($id, Argument::any())->shouldBeCalled();
         }
     }
 
-    static public function getMatchers()
+    public function getMatchers()
     {
         return array(
-            new InlineMatcher('haveCompilerPass', function($subject, $class) {
+            'haveCompilerPass' => function($subject, $class) {
                 foreach ($subject as $pass) {
                     if ($pass instanceof $class) {
                         return true;
@@ -52,7 +54,7 @@ class Extension extends ObjectBehavior implements CustomMatchersProviderInterfac
                 }
 
                 return false;
-            })
+            }
         );
     }
 }

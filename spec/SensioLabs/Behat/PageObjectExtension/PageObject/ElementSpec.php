@@ -2,7 +2,7 @@
 
 namespace spec\SensioLabs\Behat\PageObjectExtension\PageObject;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element as BaseElement;
 
 class MyElement extends BaseElement
@@ -20,7 +20,7 @@ class MyElement extends BaseElement
     }
 }
 
-class Element extends ObjectBehavior
+class ElementSpec extends ObjectBehavior
 {
     /**
      * @param \Behat\Mink\Session                                                $session
@@ -29,7 +29,7 @@ class Element extends ObjectBehavior
      */
     function let($session, $factory, $selectorsHandler)
     {
-        // until we have proper abstract class support in PHPSpec2
+        // until we have proper abstract class support in PhpSpec
         $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyElement');
         $this->beConstructedWith($session, $factory);
 
@@ -54,7 +54,7 @@ class Element extends ObjectBehavior
 
     function it_creates_a_page($factory, $page)
     {
-        $page->beAnInstanceOf('SensioLabs\Behat\PageObjectExtension\PageObject\Element');
+        $page->willExtend('SensioLabs\Behat\PageObjectExtension\PageObject\Element');
 
         $factory->createPage('Home')->willReturn($page);
 

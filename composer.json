@@ -11,15 +11,15 @@
         "behat/mink-extension": "*"
     },
     "require-dev": {
-        "phpspec/php-diff": "*@dev",
-        "phpspec/phpspec2": "dev-develop"
+        "phpspec/phpspec": "dev-master"
     },
     "suggest": {
         "bossa/phpspec2-expect": "Allows to use PHPSpec2 matchers in Behat context files"
     },
     "autoload": {
         "psr-0": {
-            "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
+            "SensioLabs\\Behat\\PageObjectExtension\\": "src/",
+            "spec\\": "."
         }
     },
     "config": {

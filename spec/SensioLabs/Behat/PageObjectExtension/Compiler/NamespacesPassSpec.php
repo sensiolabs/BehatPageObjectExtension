@@ -2,9 +2,10 @@
 
 namespace spec\SensioLabs\Behat\PageObjectExtension\Compiler;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
-class NamespacesPass extends ObjectBehavior
+class NamespacesPassSpec extends ObjectBehavior
 {
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
@@ -82,7 +83,7 @@ class NamespacesPass extends ObjectBehavior
             'sensio_labs.page_object_extension.namespaces.element' => null
         ));
 
-        $container->setParameter('sensio_labs.page_object_extension.namespaces.page', ANY_ARGUMENT)->shouldNotBeCalled();
+        $container->setParameter('sensio_labs.page_object_extension.namespaces.page', Argument::any())->shouldNotBeCalled();
         $container->setParameter('sensio_labs.page_object_extension.namespaces.element', 'Features\Pages\Element')->shouldBeCalled();
 
         $this->process($container)->shouldReturn(null);
@@ -96,7 +97,7 @@ class NamespacesPass extends ObjectBehavior
             'sensio_labs.page_object_extension.namespaces.element' => null
         ));
 
-        $container->setParameter('sensio_labs.page_object_extension.namespaces.page', ANY_ARGUMENT)->shouldNotBeCalled();
+        $container->setParameter('sensio_labs.page_object_extension.namespaces.page', Argument::any())->shouldNotBeCalled();
         $container->setParameter('sensio_labs.page_object_extension.namespaces.element', '\\')->shouldBeCalled();
 
         $this->process($container)->shouldReturn(null);
@@ -111,7 +112,7 @@ class NamespacesPass extends ObjectBehavior
         ));
 
         $container->setParameter('sensio_labs.page_object_extension.namespaces.page', 'Features\Context\Page')->shouldBeCalled();
-        $container->setParameter('sensio_labs.page_object_extension.namespaces.element', ANY_ARGUMENT)->shouldNotBeCalled();
+        $container->setParameter('sensio_labs.page_object_extension.namespaces.element', Argument::any())->shouldNotBeCalled();
 
         $this->process($container)->shouldReturn(null);
     }

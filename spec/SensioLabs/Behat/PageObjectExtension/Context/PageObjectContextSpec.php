@@ -2,9 +2,9 @@
 
 namespace spec\SensioLabs\Behat\PageObjectExtension\Context;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class PageObjectContext extends ObjectBehavior
+class PageObjectContextSpec extends ObjectBehavior
 {
     function it_should_be_a_behat_context()
     {

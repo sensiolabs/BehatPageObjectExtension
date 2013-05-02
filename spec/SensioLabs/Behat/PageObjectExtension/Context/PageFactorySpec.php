@@ -2,9 +2,12 @@
 
 namespace spec\SensioLabs\Behat\PageObjectExtension\Context;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class PageFactory extends ObjectBehavior
+require_once __DIR__.'/Fixtures/ArticleList.php';
+require_once __DIR__.'/Fixtures/Element/SearchBox.php';
+
+class PageFactorySpec extends ObjectBehavior
 {
     /**
      * @param \Behat\Mink\Session                   $session

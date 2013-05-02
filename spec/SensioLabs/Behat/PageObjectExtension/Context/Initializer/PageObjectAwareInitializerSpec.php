@@ -2,9 +2,9 @@
 
 namespace spec\SensioLabs\Behat\PageObjectExtension\Context\Initializer;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class PageObjectAwareInitializer extends ObjectBehavior
+class PageObjectAwareInitializerSpec extends ObjectBehavior
 {
     /**
      * @param \SensioLabs\Behat\PageObjectExtension\Context\PageFactory $pageFactory
@@ -19,11 +19,11 @@ class PageObjectAwareInitializer extends ObjectBehavior
         $this->shouldHaveType('Behat\Behat\Context\Initializer\InitializerInterface');
     }
 
-    /**
-     * @param \SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface,\Behat\Behat\Context\ContextInterface $context
-     */
     function it_supports_page_object_aware($context)
     {
+        $context->willImplement('SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface');
+        $context->willImplement('Behat\Behat\Context\ContextInterface');
+
         $this->supports($context)->shouldReturn(true);
     }
 
@@ -35,11 +35,11 @@ class PageObjectAwareInitializer extends ObjectBehavior
         $this->supports($context)->shouldReturn(false);
     }
 
-    /**
-     * @param \SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface,\Behat\Behat\Context\ContextInterface $context
-     */
     function it_should_inject_the_page_factory_into_the_context($context, $pageFactory)
     {
+        $context->willImplement('SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface');
+        $context->willImplement('Behat\Behat\Context\ContextInterface');
+
         $context->setPageFactory($pageFactory)->shouldBeCalled();
 
         $this->initialize($context)->shouldReturn(null);
