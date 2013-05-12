@@ -11,10 +11,8 @@
     </parameters>
 
     <services>
-        <service id="sensio_labs.page_object_extension.session" class="%behat.mink.session.class%" factory-service="behat.mink" factory-method="getSession" public="false" />
-
         <service id="sensio_labs.page_object_extension.page_factory" class="%sensio_labs.page_object_extension.page_factory.class%" public="false">
-            <argument type="service" id="sensio_labs.page_object_extension.session" />
+            <argument type="service" id="behat.mink" />
             <argument>%behat.mink.parameters%</argument>
             <call method="setPageNamespace">
                 <argument>%sensio_labs.page_object_extension.namespaces.page%</argument>

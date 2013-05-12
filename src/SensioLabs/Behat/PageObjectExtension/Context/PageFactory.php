@@ -2,7 +2,7 @@
 
 namespace SensioLabs\Behat\PageObjectExtension\Context;
 
-use Behat\Mink\Session;
+use Behat\Mink\Mink;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -10,9 +10,9 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 class PageFactory implements PageFactoryInterface
 {
     /**
-     * @var Session $session
+     * @var Mink $mink
      */
-    private $session = null;
+    private $mink = null;
 
     /**
      * @var array $parameters
@@ -30,12 +30,12 @@ class PageFactory implements PageFactoryInterface
     private $elementNamespace = '\\';
 
     /**
-     * @var Session $session
-     * @var array   $pageParameters
+     * @var Mink  $mink
+     * @var array $pageParameters
      */
-    public function __construct(Session $session, array $pageParameters)
+    public function __construct(Mink $mink, array $pageParameters)
     {
-        $this->session = $session;
+        $this->mink = $mink;
         $this->pageParameters = $pageParameters;
     }
 
@@ -68,7 +68,7 @@ class PageFactory implements PageFactoryInterface
             throw new \LogicException(sprintf('"%s" page not recognised. "%s" class not found.', $name, $pageClass));
         }
 
-        return new $pageClass($this->session, $this, $this->pageParameters);
+        return new $pageClass($this->mink->getSession(), $this, $this->pageParameters);
     }
 
     /**
@@ -84,7 +84,7 @@ class PageFactory implements PageFactoryInterface
             throw new \LogicException(sprintf('"%s" element not recognised. "%s" class not found.', $name, $elementClass));
         }
 
-        return new $elementClass($this->session, $this);
+        return new $elementClass($this->mink->getSession(), $this);
     }
 
     /**
@@ -94,7 +94,7 @@ class PageFactory implements PageFactoryInterface
      */
     public function createInlineElement($selector)
     {
-        return new InlineElement($selector, $this->session, $this);
+        return new InlineElement($selector, $this->mink->getSession(), $this);
     }
 
     /**

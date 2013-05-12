@@ -17,7 +17,6 @@ class ExtensionSpec extends ObjectBehavior
     function it_should_load_services(ContainerBuilder $container, ParameterBagInterface $parameterBag)
     {
         $this->servicesShouldBeRegistered($container, array(
-            'sensio_labs.page_object_extension.session',
             'sensio_labs.page_object_extension.page_factory',
             'sensio_labs.page_object_extension.context.initializer'
         ), $parameterBag);

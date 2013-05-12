@@ -2,6 +2,7 @@
 
 namespace spec\SensioLabs\Behat\PageObjectExtension\Context;
 
+use Behat\Mink\Mink;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
@@ -11,10 +12,12 @@ require_once __DIR__.'/Fixtures/Element/SearchBox.php';
 
 class PageFactorySpec extends ObjectBehavior
 {
-    function let(Session $session, SelectorsHandler $selectorsHandler)
+    function let(Mink $mink, Session $session, SelectorsHandler $selectorsHandler)
     {
-        $this->beConstructedWith($session, array('base_url' => 'http://behat.dev'));
+        $this->beConstructedWith($mink, array('base_url' => 'http://behat.dev'));
 
+        $mink->getSession()->willReturn($session);
+        $mink->__destruct()->willReturn();
         $session->getSelectorsHandler()->willReturn($selectorsHandler);
         $selectorsHandler->selectorToXpath('xpath', '//div[@id="search"]')->willReturn('//div[@id="search"]');
     }
