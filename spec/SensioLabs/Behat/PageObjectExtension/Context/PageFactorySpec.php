@@ -8,7 +8,9 @@ use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
 
 require_once __DIR__.'/Fixtures/ArticleList.php';
+require_once __DIR__.'/Fixtures/NamespacedArticleList.php';
 require_once __DIR__.'/Fixtures/Element/SearchBox.php';
+require_once __DIR__.'/Fixtures/Element/NamespacedSearchBox.php';
 
 class PageFactorySpec extends ObjectBehavior
 {

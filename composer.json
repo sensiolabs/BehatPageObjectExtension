@@ -18,8 +18,7 @@
     },
     "autoload": {
         "psr-0": {
-            "SensioLabs\\Behat\\PageObjectExtension\\": "src/",
-            "spec\\": "."
+            "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
         }
     },
     "config": {
