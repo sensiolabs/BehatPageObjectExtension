@@ -8,6 +8,7 @@ use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
@@ -89,6 +90,22 @@ abstract class Page extends DocumentElement
      * @return Element
      */
     protected function getElement($name)
+    {
+        $element = $this->createElement($name);
+
+        if (!$this->has('xpath', $element->getXpath())) {
+            throw new ElementNotFoundException(sprintf('"%s" element is not present on the page', $name));
+        }
+
+        return $element;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Element
+     */
+    protected function createElement($name)
     {
         if (isset($this->elements[$name])) {
             return $this->pageFactory->createInlineElement($this->elements[$name]);

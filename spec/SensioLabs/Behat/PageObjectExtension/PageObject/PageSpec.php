@@ -2,11 +2,15 @@
 
 namespace spec\SensioLabs\Behat\PageObjectExtension\PageObject;
 
+use Behat\Mink\Driver\DriverInterface;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\DriverException;
+use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement;
@@ -59,11 +63,15 @@ class MyPageWithInlineElements extends BasePage
 
 class PageSpec extends ObjectBehavior
 {
-    function let(Session $session, PageFactoryInterface $factory)
+    function let(Session $session, PageFactoryInterface $factory, SelectorsHandler $selectorsHandler, DriverInterface $driver)
     {
         // until we have proper abstract class support in PhpSpec
         $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPage');
         $this->beConstructedWith($session, $factory);
+
+        $session->getSelectorsHandler()->willReturn($selectorsHandler);
+        $session->getDriver()->willReturn($driver);
+
     }
 
     function it_should_be_a_document_element()
@@ -169,21 +177,62 @@ class PageSpec extends ObjectBehavior
         $this->callGetPage('Home')->shouldReturn($page);
     }
 
-    function it_creates_an_element($factory, Element $element)
+    function it_creates_an_element($selectorsHandler, $driver, $factory, Element $element, NodeElement $node)
     {
+        $elementLocator = '//p[@id="navigation"]';
+
+        $element->getXpath()->willReturn($elementLocator);
+        $selectorsHandler->selectorToXpath('xpath', $elementLocator)->willReturn($elementLocator);
+        $driver->find('//html'.$elementLocator)->willReturn($node);
+
         $factory->createElement('Navigation')->willReturn($element);
 
         $this->callGetElement('Navigation')->shouldReturn($element);
     }
 
-    function it_creates_an_inline_element_if_present($session, $factory, InlineElement $element)
+    function it_throws_an_exception_if_locator_does_not_evaluate_to_a_node($selectorsHandler, $driver, $factory, Element $element)
+    {
+        $elementLocator = '//p[@id="navigation"]';
+
+        $element->getXpath()->willReturn($elementLocator);
+        $selectorsHandler->selectorToXpath('xpath', $elementLocator)->willReturn($elementLocator);
+        $driver->find('//html'.$elementLocator)->willReturn(null);
+
+        $factory->createElement('Navigation')->willReturn($element);
+
+        $this->shouldThrow(new ElementNotFoundException('"Navigation" element is not present on the page'))->duringCallGetElement('Navigation');
+    }
+
+    function it_creates_an_inline_element_if_present($session, $factory, $selectorsHandler, $driver, InlineElement $element, NodeElement $node)
     {
         $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithInlineElements');
         $this->beConstructedWith($session, $factory);
 
-        $factory->createInlineElement(array('xpath' => '//div/span[@class="navigation"]'))->willReturn($element);
+        $elementLocator = '//div/span[@class="navigation"]';
+
+        $element->getXpath()->willReturn($elementLocator);
+        $selectorsHandler->selectorToXpath('xpath', $elementLocator)->willReturn($elementLocator);
+        $driver->find('//html'.$elementLocator)->willReturn($node);
+
+        $factory->createInlineElement(array('xpath' => $elementLocator))->willReturn($element);
 
         $this->callGetElement('Navigation')->shouldReturn($element);
+    }
+
+    function it_throws_an_exception_if_locator_does_not_evaluate_to_a_node_with_an_inline_element($session, $factory, $selectorsHandler, $driver, InlineElement $element, NodeElement $node)
+    {
+        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithInlineElements');
+        $this->beConstructedWith($session, $factory);
+
+        $elementLocator = '//div/span[@class="navigation"]';
+
+        $element->getXpath()->willReturn($elementLocator);
+        $selectorsHandler->selectorToXpath('xpath', $elementLocator)->willReturn($elementLocator);
+        $driver->find('//html'.$elementLocator)->willReturn(null);
+
+        $factory->createInlineElement(array('xpath' => $elementLocator))->willReturn($element);
+
+        $this->shouldThrow(new ElementNotFoundException('"Navigation" element is not present on the page'))->duringCallGetElement('Navigation');
     }
 
     function it_returns_the_page_name()
