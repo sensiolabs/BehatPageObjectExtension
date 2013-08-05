@@ -34,6 +34,11 @@ class MyPage extends BasePage
     {
         return $this->getName();
     }
+
+    public function callHasElement($name)
+    {
+        return $this->hasElement($name);
+    }
 }
 
 class MyPageWithoutPath extends BasePage
@@ -58,6 +63,11 @@ class MyPageWithInlineElements extends BasePage
     public function callGetElement($name)
     {
         return $this->getElement($name);
+    }
+
+    public function callHasElement($name)
+    {
+        return $this->hasElement($name);
     }
 }
 
@@ -188,6 +198,7 @@ class PageSpec extends ObjectBehavior
         $factory->createElement('Navigation')->willReturn($element);
 
         $this->callGetElement('Navigation')->shouldReturn($element);
+        $this->callHasElement('Navigation')->shouldReturn(true);
     }
 
     function it_throws_an_exception_if_locator_does_not_evaluate_to_a_node($selectorsHandler, $driver, $factory, Element $element)
@@ -201,6 +212,7 @@ class PageSpec extends ObjectBehavior
         $factory->createElement('Navigation')->willReturn($element);
 
         $this->shouldThrow(new ElementNotFoundException('"Navigation" element is not present on the page'))->duringCallGetElement('Navigation');
+        $this->callHasElement('Navigation')->shouldReturn(false);
     }
 
     function it_creates_an_inline_element_if_present($session, $factory, $selectorsHandler, $driver, InlineElement $element, NodeElement $node)
@@ -217,6 +229,7 @@ class PageSpec extends ObjectBehavior
         $factory->createInlineElement(array('xpath' => $elementLocator))->willReturn($element);
 
         $this->callGetElement('Navigation')->shouldReturn($element);
+        $this->callHasElement('Navigation')->shouldReturn(true);
     }
 
     function it_throws_an_exception_if_locator_does_not_evaluate_to_a_node_with_an_inline_element($session, $factory, $selectorsHandler, $driver, InlineElement $element, NodeElement $node)
@@ -233,6 +246,7 @@ class PageSpec extends ObjectBehavior
         $factory->createInlineElement(array('xpath' => $elementLocator))->willReturn($element);
 
         $this->shouldThrow(new ElementNotFoundException('"Navigation" element is not present on the page'))->duringCallGetElement('Navigation');
+        $this->callHasElement('Navigation')->shouldReturn(false);
     }
 
     function it_returns_the_page_name()
