@@ -103,6 +103,16 @@ abstract class Page extends DocumentElement
     /**
      * @param string $name
      *
+     * @return boolean
+     */
+    protected function hasElement($name)
+    {
+        return $this->has('xpath', $this->createElement($name)->getXpath());
+    }
+
+    /**
+     * @param string $name
+     *
      * @return Element
      */
     protected function createElement($name)
