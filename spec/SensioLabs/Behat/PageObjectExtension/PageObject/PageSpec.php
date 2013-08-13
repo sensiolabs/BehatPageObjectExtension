@@ -25,11 +25,6 @@ class MyPage extends BasePage
         return $this->getPage($name);
     }
 
-    public function callGetElement($name)
-    {
-        return $this->getElement($name);
-    }
-
     public function callGetName()
     {
         return $this->getName();
@@ -59,11 +54,6 @@ class MyPageWithInlineElements extends BasePage
         'Navigation' => array('xpath' => '//div/span[@class="navigation"]'),
         'Search form' => array('css' => 'div.content form#search')
     );
-
-    public function callGetElement($name)
-    {
-        return $this->getElement($name);
-    }
 
     public function callHasElement($name)
     {
@@ -197,7 +187,7 @@ class PageSpec extends ObjectBehavior
 
         $factory->createElement('Navigation')->willReturn($element);
 
-        $this->callGetElement('Navigation')->shouldReturn($element);
+        $this->getElement('Navigation')->shouldReturn($element);
         $this->callHasElement('Navigation')->shouldReturn(true);
     }
 
@@ -211,7 +201,7 @@ class PageSpec extends ObjectBehavior
 
         $factory->createElement('Navigation')->willReturn($element);
 
-        $this->shouldThrow(new ElementNotFoundException('"Navigation" element is not present on the page'))->duringCallGetElement('Navigation');
+        $this->shouldThrow(new ElementNotFoundException('"Navigation" element is not present on the page'))->duringGetElement('Navigation');
         $this->callHasElement('Navigation')->shouldReturn(false);
     }
 
@@ -228,7 +218,7 @@ class PageSpec extends ObjectBehavior
 
         $factory->createInlineElement(array('xpath' => $elementLocator))->willReturn($element);
 
-        $this->callGetElement('Navigation')->shouldReturn($element);
+        $this->getElement('Navigation')->shouldReturn($element);
         $this->callHasElement('Navigation')->shouldReturn(true);
     }
 
@@ -245,7 +235,7 @@ class PageSpec extends ObjectBehavior
 
         $factory->createInlineElement(array('xpath' => $elementLocator))->willReturn($element);
 
-        $this->shouldThrow(new ElementNotFoundException('"Navigation" element is not present on the page'))->duringCallGetElement('Navigation');
+        $this->shouldThrow(new ElementNotFoundException('"Navigation" element is not present on the page'))->duringGetElement('Navigation');
         $this->callHasElement('Navigation')->shouldReturn(false);
     }
 
