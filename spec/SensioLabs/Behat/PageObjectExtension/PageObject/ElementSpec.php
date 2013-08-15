@@ -8,6 +8,8 @@ use PhpSpec\ObjectBehavior;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element as BaseElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Selector\SelectorFactoryInterface;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Selector\SelectorInterface;
 
 class MyElement extends BaseElement
 {
@@ -26,11 +28,18 @@ class MyElement extends BaseElement
 
 class ElementSpec extends ObjectBehavior
 {
-    function let(Session $session, PageFactoryInterface $factory, SelectorsHandler $selectorsHandler)
+    function let(Session $session, PageFactoryInterface $factory, SelectorFactoryInterface $selectorFactory, SelectorsHandler $selectorsHandler, SelectorInterface $selector)
     {
         // until we have proper abstract class support in PhpSpec
         $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyElement');
-        $this->beConstructedWith($session, $factory);
+        $this->beConstructedWith($session, $factory, $selectorFactory);
+
+        $type = 'xpath';
+        $path = '//div[@id="my-box"]';
+        $selectorFactory->create(array($type => $path))->willReturn($selector);
+        $selector->getPath()->willReturn($path);
+        $selector->getType()->willReturn($type);
+        $selector->asArray()->willReturn(array($type => $path));
 
         $session->getSelectorsHandler()->willReturn($selectorsHandler);
         $selectorsHandler->selectorToXpath('xpath', '//div[@id="my-box"]')->willReturn('//div[@id="my-box"]');

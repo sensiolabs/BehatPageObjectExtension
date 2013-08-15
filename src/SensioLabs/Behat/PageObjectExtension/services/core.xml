@@ -7,18 +7,35 @@
         <parameter key="sensio_labs.page_object_extension.namespaces.page" type="constant">null</parameter>
         <parameter key="sensio_labs.page_object_extension.namespaces.element" type="constant">null</parameter>
         <parameter key="sensio_labs.page_object_extension.page_factory.class">SensioLabs\Behat\PageObjectExtension\Context\PageFactory</parameter>
+        <parameter key="sensio_labs.page_object_extension.selector_factory.class">SensioLabs\Behat\PageObjectExtension\PageObject\Selector\SelectorFactory</parameter>
+
+        <parameter key="sensio_labs.page_object_extension.selector.css_selector.class">SensioLabs\Behat\PageObjectExtension\PageObject\Selector\CssSelector</parameter>
+        <parameter key="sensio_labs.page_object_extension.selector.xpath_selector.class">SensioLabs\Behat\PageObjectExtension\PageObject\Selector\XpathSelector</parameter>
+
         <parameter key="sensio_labs.page_object_extension.context.initializer.class">SensioLabs\Behat\PageObjectExtension\Context\Initializer\PageObjectAwareInitializer</parameter>
     </parameters>
 
     <services>
         <service id="sensio_labs.page_object_extension.page_factory" class="%sensio_labs.page_object_extension.page_factory.class%" public="false">
             <argument type="service" id="behat.mink" />
+            <argument type="service" id="sensio_labs.page_object_extension.selector_factory" />
             <argument>%behat.mink.parameters%</argument>
             <call method="setPageNamespace">
                 <argument>%sensio_labs.page_object_extension.namespaces.page%</argument>
             </call>
             <call method="setElementNamespace">
                 <argument>%sensio_labs.page_object_extension.namespaces.element%</argument>
+            </call>
+        </service>
+
+        <service id="sensio_labs.page_object_extension.selector_factory" class="%sensio_labs.page_object_extension.selector_factory.class%" public="false">
+            <call method="registry">
+                <argument>css</argument>
+                <argument>%sensio_labs.page_object_extension.selector.css_selector.class%</argument>
+            </call>
+            <call method="registry">
+                <argument>xpath</argument>
+                <argument>%sensio_labs.page_object_extension.selector.xpath_selector.class%</argument>
             </call>
         </service>
 

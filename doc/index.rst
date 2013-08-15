@@ -316,6 +316,87 @@ The simplest way to use elements is to define them inline in the page class:
 The advantage of this approach is that all the important page elements
 are defined in one place and we can reference them from multiple methods.
 
+Also you may define elements with more object oriented approach, simple by defining Page::createSelectors method:
+
+    .. code-block:: php
+
+        <?php
+
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Selector\CssSelector;
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Selector\XpathSelector;
+
+        class Homepage extends Page
+        {
+            // ...
+
+            /**
+             * {@inheritdoc}
+             */
+            protected function createSelectors()
+            {
+                $this->addSelector('Search form', new CssSelector('form#search'));
+                $this->addSelector('Navigation', new CssSelector('.header div.navigation'));
+                $this->addSelector('Article list', new XpathSelector('//*[contains(@class, "content")]//ul[contains(@class, "articles")]');
+            }
+
+            /**
+             * @param string $keywords
+             *
+             * @return Page
+             */
+            public function search($keywords)
+            {
+                $searchForm = $this->getElement('Search form');
+                $searchForm->fillField('q', $keywords);
+                $searchForm->pressButton('Google Search');
+
+                return $this->getPage('Search results');
+            }
+        }
+
+it is also possible to mix both definitions:
+
+    .. code-block:: php
+
+        <?php
+
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Selector\CssSelector;
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Selector\XpathSelector;
+
+        class Homepage extends Page
+        {
+            // ...
+
+            protected $elements = array(
+                'Search form' => array('css' => 'form#search')
+            );
+
+            /**
+             * {@inheritdoc}
+             */
+            protected function createSelectors()
+            {
+                $this->addSelector('Navigation', new CssSelector('.header div.navigation'));
+                $this->addSelector('Article list', new XpathSelector('//*[contains(@class, "content")]//ul[contains(@class, "articles")]');
+            }
+
+            /**
+             * @param string $keywords
+             *
+             * @return Page
+             */
+            public function search($keywords)
+            {
+                $searchForm = $this->getElement('Search form');
+                $searchForm->fillField('q', $keywords);
+                $searchForm->pressButton('Google Search');
+
+                return $this->getPage('Search results');
+            }
+        }
+
 Custom elements
 ~~~~~~~~~~~~~~~
 
@@ -359,6 +440,37 @@ Here's a previous search example modeled as an element:
 Definining the ``$selector`` property is optional but recommended. When defined,
 it will limit all the operations on the page to the area withing the selector.
 Any selector supported by Mink can be used here.
+
+Also you may define limit selector using SelectorInterface implementations, simply create method getSelector():
+
+    .. code-block:: php
+
+        <?php
+
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Selector\CssSelector;
+
+        class SearchForm extends Element
+        {
+            protected function getSelector()
+            {
+                return new CssSelector('div.content');
+            }
+
+            /**
+             * @param string $keywords
+             *
+             * @return Page
+             */
+            public function search($keywords)
+            {
+                $this->fillField('q', $keywords);
+                $this->pressButton('Google Search');
+
+                return $this->getPage('Search results');
+            }
+        }
 
 Accessing custom elements is much like accessing inline ones:
 

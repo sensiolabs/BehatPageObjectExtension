@@ -6,6 +6,8 @@ use Behat\Mink\Mink;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Selector\SelectorFactoryInterface;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Selector\SelectorInterface;
 
 class PageFactory implements PageFactoryInterface
 {
@@ -30,13 +32,22 @@ class PageFactory implements PageFactoryInterface
     private $elementNamespace = '\\';
 
     /**
-     * @var Mink  $mink
-     * @var array $pageParameters
+     * @var SelectorFactoryInterface
      */
-    public function __construct(Mink $mink, array $pageParameters)
+    private $selectorFactory;
+
+    /**
+     * Create page factory
+     *
+     * @param Mink                     $mink
+     * @param SelectorFactoryInterface $selectorFactory
+     * @param array                    $pageParameters
+     */
+    public function __construct(Mink $mink, SelectorFactoryInterface $selectorFactory, array $pageParameters)
     {
         $this->mink = $mink;
         $this->pageParameters = $pageParameters;
+        $this->selectorFactory = $selectorFactory;
     }
 
     /**
@@ -68,7 +79,7 @@ class PageFactory implements PageFactoryInterface
             throw new \LogicException(sprintf('"%s" page not recognised. "%s" class not found.', $name, $pageClass));
         }
 
-        return new $pageClass($this->mink->getSession(), $this, $this->pageParameters);
+        return new $pageClass($this->mink->getSession(), $this, $this->selectorFactory, $this->pageParameters);
     }
 
     /**
@@ -84,7 +95,7 @@ class PageFactory implements PageFactoryInterface
             throw new \LogicException(sprintf('"%s" element not recognised. "%s" class not found.', $name, $elementClass));
         }
 
-        return new $elementClass($this->mink->getSession(), $this);
+        return new $elementClass($this->mink->getSession(), $this, $this->selectorFactory);
     }
 
     /**
@@ -94,7 +105,11 @@ class PageFactory implements PageFactoryInterface
      */
     public function createInlineElement($selector)
     {
-        return new InlineElement($selector, $this->mink->getSession(), $this);
+        if ($selector instanceof SelectorInterface) {
+            $selector = $selector->asArray();
+        }
+
+        return new InlineElement($selector, $this->mink->getSession(), $this, $this->selectorFactory);
     }
 
     /**

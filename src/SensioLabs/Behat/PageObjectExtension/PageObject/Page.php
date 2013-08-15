@@ -7,9 +7,13 @@ use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\InvalidPageDeclarationException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Selector\SelectorFactoryInterface;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Selector\SelectorInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 abstract class Page extends DocumentElement
 {
@@ -24,6 +28,11 @@ abstract class Page extends DocumentElement
     protected $elements = array();
 
     /**
+     * @var ParameterBag
+     */
+    protected $selectors;
+
+    /**
      * @var PageFactoryInterface $pageFactory
      */
     private $pageFactory = null;
@@ -34,16 +43,28 @@ abstract class Page extends DocumentElement
     private $parameters = array();
 
     /**
-     * @param Session              $session
-     * @param PageFactoryInterface $pageFactory
-     * @param array                $parameters
+     * @var SelectorFactoryInterface
      */
-    public function __construct(Session $session, PageFactoryInterface $pageFactory, array $parameters = array())
+    private $selectorFactory;
+
+    /**
+     * @param Session                  $session
+     * @param PageFactoryInterface     $pageFactory
+     * @param SelectorFactoryInterface $selectorFactory
+     * @param array                    $parameters
+     */
+    public function __construct(Session $session, PageFactoryInterface $pageFactory, SelectorFactoryInterface $selectorFactory, array $parameters = array())
     {
         parent::__construct($session);
 
-        $this->pageFactory = $pageFactory;
-        $this->parameters = $parameters;
+        $this->pageFactory     = $pageFactory;
+        $this->parameters      = $parameters;
+        $this->selectorFactory = $selectorFactory;
+
+        $this->selectors       = new ParameterBag();
+
+        $this->createSelectorsFromElementsArray();
+        $this->createSelectors();
     }
 
     /**
@@ -83,6 +104,11 @@ abstract class Page extends DocumentElement
         return $this->pageFactory->createPage($name);
     }
 
+    protected function getParameters()
+    {
+        return $this->elements;
+    }
+
     /**
      * @param string $name
      *
@@ -90,8 +116,8 @@ abstract class Page extends DocumentElement
      */
     protected function getElement($name)
     {
-        if (isset($this->elements[$name])) {
-            return $this->pageFactory->createInlineElement($this->elements[$name]);
+        if ($this->selectors->has($name)) {
+            return $this->pageFactory->createInlineElement($this->selectors->get($name));
         }
 
         return $this->pageFactory->createElement($name);
@@ -165,6 +191,26 @@ abstract class Page extends DocumentElement
     }
 
     /**
+     * Create selectors in child classes with addSelector method
+     *
+     * @throws Exception\InvalidPageDeclarationException
+     */
+    protected function createSelectors()
+    {
+    }
+
+    /**
+     * Add new selector to selectors definition
+     *
+     * @param string            $name
+     * @param SelectorInterface $selector
+     */
+    protected function addSelector($name, SelectorInterface $selector)
+    {
+        $this->selectors->set($name, $selector);
+    }
+
+    /**
      * @param string $path
      *
      * @return string
@@ -190,5 +236,17 @@ abstract class Page extends DocumentElement
         }
 
         return $url;
+    }
+
+    /**
+     * Converts simple array selector definition to new ParameterBag of SelectorInterfaces objects
+     *
+     * @throws Exception\InvalidPageDeclarationException
+     */
+    private function createSelectorsFromElementsArray()
+    {
+        foreach ($this->elements as $key => $element) {
+            $this->addSelector($key, $this->selectorFactory->create($element));
+        }
     }
 }
