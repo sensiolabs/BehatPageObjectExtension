@@ -15,7 +15,7 @@ class PageObjectContext extends BehatContext implements PageObjectAwareInterface
 
     /**
      * @param string $name
-     *
+     * @throws \RuntimeException
      * @return Page
      */
     public function getPage($name)
@@ -25,6 +25,20 @@ class PageObjectContext extends BehatContext implements PageObjectAwareInterface
         }
 
         return $this->pageFactory->createPage($name);
+    }
+
+    /**
+     * @param $name
+     * @throws \RuntimeException
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Element
+     */
+    public function getElement($name)
+    {
+        if (null === $this->pageFactory) {
+            throw new \RuntimeException('To create elements you need to pass a factory with setPageFactory()');
+        }
+
+        return $this->pageFactory->createElement($name);
     }
 
     /**
