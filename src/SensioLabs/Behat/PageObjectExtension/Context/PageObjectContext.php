@@ -5,6 +5,7 @@ namespace SensioLabs\Behat\PageObjectExtension\Context;
 use Behat\Behat\Context\BehatContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 class PageObjectContext extends BehatContext implements PageObjectAwareInterface
 {
@@ -15,8 +16,10 @@ class PageObjectContext extends BehatContext implements PageObjectAwareInterface
 
     /**
      * @param string $name
-     * @throws \RuntimeException
+     *
      * @return Page
+     *
+     * @throws \RuntimeException
      */
     public function getPage($name)
     {
@@ -28,9 +31,11 @@ class PageObjectContext extends BehatContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
+     *
+     * @return Element
+     *
      * @throws \RuntimeException
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Element
      */
     public function getElement($name)
     {
