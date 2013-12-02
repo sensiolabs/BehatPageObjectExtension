@@ -66,6 +66,16 @@ abstract class Page extends DocumentElement
     }
 
     /**
+     * @return Page
+     */
+    public function shouldBeOpen()
+    {
+        $this->verifyPage();
+
+        return $this;
+    }
+
+    /**
      * @param string $name
      * @param array  $arguments
      */
