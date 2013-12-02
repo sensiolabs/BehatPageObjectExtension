@@ -70,6 +70,7 @@ abstract class Page extends DocumentElement
      */
     public function shouldBeOpen()
     {
+        $this->verifyResponse();
         $this->verifyPage();
 
         return $this;
