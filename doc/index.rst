@@ -357,7 +357,7 @@ Here's a previous search example modeled as an element:
         }
 
 Definining the ``$selector`` property is optional but recommended. When defined,
-it will limit all the operations on the page to the area withing the selector.
+it will limit all the operations on the page to the area within the selector.
 Any selector supported by Mink can be used here.
 
 Accessing custom elements is much like accessing inline ones:
