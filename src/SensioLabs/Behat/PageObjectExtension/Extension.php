@@ -36,9 +36,10 @@ class Extension implements ExtensionInterface
         $builder
             ->children()
                 ->arrayNode('namespaces')
+                    ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('page')->isRequired()->end()
-                        ->scalarNode('element')->isRequired()->end()
+                        ->scalarNode('page')->defaultValue('Page\\')->end()
+                        ->scalarNode('element')->defaultValue('Page\\Element\\')->end()
                     ->end()
                 ->end()
             ->end();

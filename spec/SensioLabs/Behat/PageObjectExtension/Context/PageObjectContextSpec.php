@@ -11,7 +11,7 @@ class PageObjectContextSpec extends ObjectBehavior
 {
     function it_should_be_a_behat_context()
     {
-        $this->shouldHaveType('Behat\Behat\Context\ExtendedContextInterface');
+        $this->shouldHaveType('Behat\Behat\Context\Context');
     }
 
     function it_should_create_a_page(PageFactory $pageFactory, Page $page)

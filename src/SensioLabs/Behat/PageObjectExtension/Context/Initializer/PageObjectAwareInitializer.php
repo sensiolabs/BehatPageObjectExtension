@@ -23,13 +23,25 @@ class PageObjectAwareInitializer implements ContextInitializer
     }
 
     /**
+     * Supports the  provided context?
+     *
+     * @param Context $context
+     *
+     * @return boolean
+     */
+    public function supports(Context $context)
+    {
+        return $context instanceof PageObjectAwareInterface;
+    }
+
+    /**
      * Initializes provided context.
      *
      * @param Context $context
      */
     public function initializeContext(Context $context)
     {
-        if (!$context instanceof PageObjectAwareInterface) {
+        if (!$this->supports($context)) {
             return;
         }
 
