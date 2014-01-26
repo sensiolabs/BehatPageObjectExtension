@@ -3,7 +3,6 @@
 namespace SensioLabs\Behat\PageObjectExtension\Context;
 
 use Behat\Behat\Context\Context;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 

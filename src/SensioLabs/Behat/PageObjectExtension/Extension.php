@@ -5,9 +5,6 @@ namespace SensioLabs\Behat\PageObjectExtension;
 use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use SensioLabs\Behat\PageObjectExtension\Compiler\NamespacesPass;
 
 use Behat\Behat\Context\ServiceContainer\ContextExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
