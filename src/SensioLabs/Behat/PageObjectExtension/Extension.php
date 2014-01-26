@@ -2,75 +2,89 @@
 
 namespace SensioLabs\Behat\PageObjectExtension;
 
-use Behat\Behat\Extension\ExtensionInterface;
-use SensioLabs\Behat\PageObjectExtension\Compiler\NamespacesPass;
+use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
+use Behat\Testwork\ServiceContainer\ExtensionManager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use SensioLabs\Behat\PageObjectExtension\Compiler\NamespacesPass;
+
+use Behat\Behat\Context\ServiceContainer\ContextExtension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
+
+use Behat\MinkExtension\Extension as MinkExtension;
 
 class Extension implements ExtensionInterface
 {
+    const PAGE_OBJECT_FACTORY = 'sensio_labs.page_object_extension.page_factory';
     /**
-     * @param array            $config
-     * @param ContainerBuilder $container
+     * {@inheritDoc}
      */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(ContainerBuilder $container, array $config)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/services'));
-        $loader->load('core.xml');
-
-        $this->updateNamespaceParameters($config, $container);
+        $this->loadPageObjectFactory($container, $config);
+        $this->loadContextInitializer($container);
     }
 
     /**
-     * @param ArrayNodeDefinition $builder
+     * {@inheritDoc}
      */
-    public function getConfig(ArrayNodeDefinition $builder)
+    public function configure(ArrayNodeDefinition $builder)
     {
         $builder
             ->children()
                 ->arrayNode('namespaces')
                     ->children()
-                        ->scalarNode('page')->end()
-                        ->scalarNode('element')->end()
+                        ->scalarNode('page')->isRequired()->end()
+                        ->scalarNode('element')->isRequired()->end()
                     ->end()
                 ->end()
             ->end();
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
-    public function getCompilerPasses()
+    public function getConfigKey()
     {
-        return array(
-            new NamespacesPass()
-        );
+        return 'page_object';
     }
 
     /**
-     * @param array $config
-     * @param ContainerBuilder $container
+     * {@inheritdoc}
      */
-    private function updateNamespaceParameters(array $config, ContainerBuilder $container)
+    public function initialize(ExtensionManager $extensionManager)
     {
-        if (!isset($config['namespaces'])) {
-            return;
-        }
+    }
 
-        if (isset($config['namespaces']['page'])) {
-            $container->setParameter(
-                'sensio_labs.page_object_extension.namespaces.page',
-                $config['namespaces']['page']
-            );
-        }
+    /**
+     * {@inheritDoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+    }
 
-        if (isset($config['namespaces']['element'])) {
-            $container->setParameter(
-                'sensio_labs.page_object_extension.namespaces.element',
-                $config['namespaces']['element']
-            );
-        }
+    private function loadPageObjectFactory(ContainerBuilder $container, array $config)
+    {
+        $definition = new Definition('SensioLabs\Behat\PageObjectExtension\Context\PageFactory', array(
+            new Reference(MinkExtension::MINK_ID),
+            '%mink.parameters%'
+        ));
+
+        $definition->addMethodCall('setPageNamespace', array($config['namespaces']['page']));
+        $definition->addMethodCall('setElementNamespace', array($config['namespaces']['element']));
+
+        $container->setDefinition(self::PAGE_OBJECT_FACTORY, $definition);
+    }
+
+    private function loadContextInitializer(ContainerBuilder $container)
+    {
+        $definition = new Definition('SensioLabs\Behat\PageObjectExtension\Context\Initializer\PageObjectAwareInitializer', array(
+            new Reference(self::PAGE_OBJECT_FACTORY)
+        ));
+        $definition->addTag(ContextExtension::INITIALIZER_TAG, array('priority' => 0));
+        $container->setDefinition('sensio_labs.page_object_extension.context.initializer', $definition);
     }
 }
