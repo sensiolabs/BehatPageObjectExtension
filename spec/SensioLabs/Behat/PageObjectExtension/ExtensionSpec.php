@@ -11,7 +11,7 @@ class ExtensionSpec extends ObjectBehavior
 {
     function it_should_be_a_behat_extension()
     {
-        $this->shouldHaveType('Behat\Behat\Extension\ExtensionInterface');
+        $this->shouldHaveType('Behat\Testwork\ServiceContainer\Extension');
     }
 
     function it_should_load_services(ContainerBuilder $container, ParameterBagInterface $parameterBag)
@@ -21,12 +21,14 @@ class ExtensionSpec extends ObjectBehavior
             'sensio_labs.page_object_extension.context.initializer'
         ), $parameterBag);
 
-        $this->load(array(), $container)->shouldReturn(null);
-    }
+        $config = array(
+            'namespaces' => array(
+                'page'    => 'Page\\',
+                'element' => 'Page\\Element\\'
+            )
+        );
 
-    function it_registers_namespaces_compiler_pass()
-    {
-        $this->getCompilerPasses()->shouldHaveCompilerPass('SensioLabs\Behat\PageObjectExtension\Compiler\NamespacesPass');
+        $this->load($container, $config)->shouldReturn(null);
     }
 
     private function servicesShouldBeRegistered($container, $serviceIds, $parameterBag)
@@ -38,20 +40,5 @@ class ExtensionSpec extends ObjectBehavior
         foreach ($serviceIds as $id) {
             $container->setDefinition($id, Argument::any())->shouldBeCalled();
         }
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'haveCompilerPass' => function($subject, $class) {
-                foreach ($subject as $pass) {
-                    if ($pass instanceof $class) {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        );
     }
 }
