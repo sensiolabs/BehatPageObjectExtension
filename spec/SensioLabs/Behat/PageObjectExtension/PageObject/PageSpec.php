@@ -243,4 +243,28 @@ class PageSpec extends ObjectBehavior
     {
         $this->callGetName()->shouldReturn('MyPage');
     }
+
+    function it_confirms_the_open_page_is_open($session)
+    {
+        $session->getStatusCode()->willReturn(200);
+
+        $this->isOpen()->shouldReturn(true);
+    }
+
+    function it_confirms_the_page_is_not_open_on_error($session)
+    {
+        $session->getStatusCode()->willReturn(404);
+
+        $this->isOpen()->shouldReturn(false);
+    }
+
+    function it_confirms_the_page_is_not_open_if_another_page_is_open_instead($session, $factory)
+    {
+        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithValidation');
+        $this->beConstructedWith($session, $factory);
+
+        $session->getStatusCode()->willReturn(200);
+
+        $this->isOpen()->shouldReturn(false);
+    }
 }

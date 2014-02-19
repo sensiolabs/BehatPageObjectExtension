@@ -64,6 +64,21 @@ abstract class Page extends DocumentElement
     }
 
     /**
+     * @return boolean
+     */
+    public function isOpen()
+    {
+        try {
+            $this->verifyResponse();
+            $this->verifyPage();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * @param string $name
      * @param array  $arguments
      */
