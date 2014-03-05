@@ -10,17 +10,19 @@ interface PageFactoryInterface
 {
     /**
      * @param string $name
+     * @param object $context
      *
      * @return Page
      */
-    public function createPage($name);
+    public function createPage($name, $context = null);
 
     /**
      * @param string $name
+     * @param object $context
      *
      * @return Element
      */
-    public function createElement($name);
+    public function createElement($name, $context = null);
 
     /**
      * @param string|array $selector
