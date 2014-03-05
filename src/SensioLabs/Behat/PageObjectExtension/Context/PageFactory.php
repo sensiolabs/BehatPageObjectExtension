@@ -57,12 +57,17 @@ class PageFactory implements PageFactoryInterface
 
     /**
      * @param string $name
+     * @param object $context
      *
      * @return Page
      */
-    public function createPage($name)
+    public function createPage($name, $context = null)
     {
         $pageClass = $this->pageNamespace.$this->classifyName($name);
+
+        if ($context && !class_exists($pageClass)) {
+            $pageClass = $this->getNamespace($context).$this->classifyName($name);
+        }
 
         if (!class_exists($pageClass)) {
             throw new \LogicException(sprintf('"%s" page not recognised. "%s" class not found.', $name, $pageClass));
@@ -73,12 +78,17 @@ class PageFactory implements PageFactoryInterface
 
     /**
      * @param string $name
+     * @param object $context
      *
      * @return Element
      */
-    public function createElement($name)
+    public function createElement($name, $context = null)
     {
         $elementClass = $this->elementNamespace.$this->classifyName($name);
+
+        if ($context && !class_exists($pageClass)) {
+            $elementClass = $this->getNamespace($context).$this->classifyName($name);
+        }
 
         if (!class_exists($elementClass)) {
             throw new \LogicException(sprintf('"%s" element not recognised. "%s" class not found.', $name, $elementClass));
@@ -105,5 +115,18 @@ class PageFactory implements PageFactoryInterface
     protected function classifyName($name)
     {
         return str_replace(' ', '', ucwords($name));
+    }
+
+    /**
+     * @param object $context
+     *
+     * @return string
+     */
+    private function getNamespace($context)
+    {
+        $namespace = get_class($context);
+        $pos = strrpos($namespace, '\\');
+
+        return ($pos !== false ? substr($namespace, 0, $pos) : '') . '\\Page\\';
     }
 }

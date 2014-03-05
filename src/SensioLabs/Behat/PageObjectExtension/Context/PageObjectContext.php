@@ -27,7 +27,7 @@ class PageObjectContext extends BehatContext implements PageObjectAwareInterface
             throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
         }
 
-        return $this->pageFactory->createPage($name);
+        return $this->pageFactory->createPage($name, $this);
     }
 
     /**
@@ -43,7 +43,7 @@ class PageObjectContext extends BehatContext implements PageObjectAwareInterface
             throw new \RuntimeException('To create elements you need to pass a factory with setPageFactory()');
         }
 
-        return $this->pageFactory->createElement($name);
+        return $this->pageFactory->createElement($name, $this);
     }
 
     /**
