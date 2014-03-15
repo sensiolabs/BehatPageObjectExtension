@@ -127,7 +127,7 @@ abstract class Page extends DocumentElement
      *
      * @return mixed
      */
-    protected function getParameter($name)
+    public function getParameter($name)
     {
         return isset($this->parameters[$name]) ? $this->parameters[$name] : null;
     }
@@ -145,7 +145,7 @@ abstract class Page extends DocumentElement
      *
      * @return string
      */
-    protected function getPath()
+    public function getPath()
     {
         if (null === $this->path) {
             throw new PathNotProvidedException('You must add a path property to your page object');

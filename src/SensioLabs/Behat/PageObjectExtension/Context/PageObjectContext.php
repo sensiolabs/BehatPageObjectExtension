@@ -53,4 +53,14 @@ class PageObjectContext extends BehatContext implements PageObjectAwareInterface
     {
         $this->pageFactory = $pageFactory;
     }
+
+    /**
+     * @param Page $page
+     *
+     * @return boolean
+     */
+    public function isOpen(Page $page)
+    {
+        return $page->getSession()->getCurrentUrl() === rtrim($page->getParameter('base_url'), '/') . $page->getPath();
+    }
 }
