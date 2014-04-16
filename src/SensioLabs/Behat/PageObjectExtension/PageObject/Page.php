@@ -135,7 +135,7 @@ abstract class Page extends DocumentElement
     /**
      * @return string
      */
-    protected function getName()
+    public function getName()
     {
         return preg_replace('/^.*\\\(.*?)$/', '$1', get_called_class());
     }
