@@ -12,8 +12,8 @@
 
     <services>
         <service id="sensio_labs.page_object_extension.page_factory" class="%sensio_labs.page_object_extension.page_factory.class%" public="false">
-            <argument type="service" id="behat.mink" />
-            <argument>%behat.mink.parameters%</argument>
+            <argument type="service" id="mink" />
+            <argument>%mink.parameters%</argument>
             <call method="setPageNamespace">
                 <argument>%sensio_labs.page_object_extension.namespaces.page%</argument>
             </call>
@@ -24,7 +24,7 @@
 
         <service id="sensio_labs.page_object_extension.context.initializer" class="%sensio_labs.page_object_extension.context.initializer.class%">
             <argument type="service" id="sensio_labs.page_object_extension.page_factory" />
-            <tag name="behat.context.initializer" />
+            <tag name="context.initializer" />
         </service>
     </services>
 </container>
