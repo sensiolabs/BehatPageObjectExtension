@@ -2,7 +2,6 @@
 
 namespace SensioLabs\Behat\PageObjectExtension\Compiler;
 
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
@@ -59,11 +58,16 @@ class NamespacesPass implements CompilerPassInterface
      */
     private function guessPageNamespace(ContainerBuilder $container)
     {
-        $contextClass = (string) $container->getParameter('behat.context.class');
-        $contextNamespace = preg_replace('/^(.+)\\\\[^\\\\]+$/', '$1', $contextClass);
+        $settings = $container->getParameter('suite.generic.default_settings');
+        $contexts = isset($settings['contexts']) ? $settings['contexts'] : array();
+        $contextClass = isset($contexts[0]) ? $contexts[0] : null;
 
-        if ($contextNamespace !== $contextClass) {
-            return $contextNamespace.'\\Page';
+        if ($contextClass) {
+            $contextNamespace = preg_replace('/^(.+)\\\\[^\\\\]+$/', '$1', $contextClass);
+
+            if ($contextNamespace !== $contextClass) {
+                return $contextNamespace.'\\Page';
+            }
         }
 
         return '\\';

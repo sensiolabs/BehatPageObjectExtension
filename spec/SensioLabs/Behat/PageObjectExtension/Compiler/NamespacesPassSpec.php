@@ -11,7 +11,7 @@ class NamespacesPassSpec extends ObjectBehavior
     function it_should_set_global_namespace_if_context_class_is_not_defined(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
-            'behat.context.class' => null,
+            'suite.generic.default_settings' => array(),
             'sensio_labs.page_object_extension.namespaces.page' => null,
             'sensio_labs.page_object_extension.namespaces.element' => null
         ));
@@ -27,7 +27,7 @@ class NamespacesPassSpec extends ObjectBehavior
     function it_should_set_global_namespace_with_a_non_namespaced_context(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
-            'behat.context.class' => 'FeatureContext',
+            'suite.generic.default_settings' => array('contexts' => array('FeatureContext')),
             'sensio_labs.page_object_extension.namespaces.page' => null,
             'sensio_labs.page_object_extension.namespaces.element' => null
         ));
@@ -43,7 +43,7 @@ class NamespacesPassSpec extends ObjectBehavior
     function it_should_automatically_populate_namespace_parameters(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
-            'behat.context.class' => 'Features\Context\FeatureContext',
+            'suite.generic.default_settings' => array('contexts' => array('Features\Context\FeatureContext')),
             'sensio_labs.page_object_extension.namespaces.page' => null,
             'sensio_labs.page_object_extension.namespaces.element' => null
         ));
@@ -59,7 +59,7 @@ class NamespacesPassSpec extends ObjectBehavior
     function it_should_not_overwrite_the_namespace_if_it_is_provided_in_the_configuration(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
-            'behat.context.class' => 'Features\Context\FeatureContext',
+            'suite.generic.default_settings' => array('contexts' => array('Features\Context\FeatureContext')),
             'sensio_labs.page_object_extension.namespaces.page' => 'Features\Pages',
             'sensio_labs.page_object_extension.namespaces.element' => 'Features\Pages\Element'
         ));
@@ -72,7 +72,7 @@ class NamespacesPassSpec extends ObjectBehavior
     function it_should_automatically_populate_element_namespace_if_not_provided(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
-            'behat.context.class' => 'Features\Context\FeatureContext',
+            'suite.generic.default_settings' => array('contexts' => array('Features\Context\FeatureContext')),
             'sensio_labs.page_object_extension.namespaces.page' => 'Features\Pages',
             'sensio_labs.page_object_extension.namespaces.element' => null
         ));
@@ -86,7 +86,7 @@ class NamespacesPassSpec extends ObjectBehavior
     function it_should_not_subnamespace_element_if_page_is_in_global_namespace(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
-            'behat.context.class' => 'Features\Context\FeatureContext',
+            'suite.generic.default_settings' => array('contexts' => array('Features\Context\FeatureContext')),
             'sensio_labs.page_object_extension.namespaces.page' => '\\',
             'sensio_labs.page_object_extension.namespaces.element' => null
         ));
@@ -100,7 +100,7 @@ class NamespacesPassSpec extends ObjectBehavior
     function it_should_not_overwrite_element_if_page_is_not_defined(ContainerBuilder $container)
     {
         $this->givenContainer($container, array(
-            'behat.context.class' => 'Features\Context\FeatureContext',
+            'suite.generic.default_settings' => array('contexts' => array('Features\Context\FeatureContext')),
             'sensio_labs.page_object_extension.namespaces.page' => null,
             'sensio_labs.page_object_extension.namespaces.element' => '\\Element'
         ));
