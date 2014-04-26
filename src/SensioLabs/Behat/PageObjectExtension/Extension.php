@@ -2,31 +2,35 @@
 
 namespace SensioLabs\Behat\PageObjectExtension;
 
-use Behat\Behat\Extension\ExtensionInterface;
+use Behat\Testwork\ServiceContainer\Extension as TestworkExtension;
+use Behat\Testwork\ServiceContainer\ExtensionManager;
 use SensioLabs\Behat\PageObjectExtension\Compiler\NamespacesPass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-class Extension implements ExtensionInterface
+class Extension implements TestworkExtension
 {
     /**
-     * @param array            $config
-     * @param ContainerBuilder $container
+     * {@inheritdoc}
      */
-    public function load(array $config, ContainerBuilder $container)
+    public function getConfigKey()
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/services'));
-        $loader->load('core.xml');
-
-        $this->updateNamespaceParameters($config, $container);
+        return 'page_object';
     }
 
     /**
-     * @param ArrayNodeDefinition $builder
+     * {@inheritdoc}
      */
-    public function getConfig(ArrayNodeDefinition $builder)
+    public function initialize(ExtensionManager $extensionManager)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(ArrayNodeDefinition $builder)
     {
         $builder
             ->children()
@@ -40,20 +44,30 @@ class Extension implements ExtensionInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
-    public function getCompilerPasses()
+    public function load(ContainerBuilder $container, array $config)
     {
-        return array(
-            new NamespacesPass()
-        );
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/services'));
+        $loader->load('core.xml');
+
+        $container->addCompilerPass(new NamespacesPass());
+
+        $this->updateNamespaceParameters($container, $config);
     }
 
     /**
-     * @param array $config
-     * @param ContainerBuilder $container
+     * {@inheritdoc}
      */
-    private function updateNamespaceParameters(array $config, ContainerBuilder $container)
+    public function process(ContainerBuilder $container)
+    {
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param array            $config
+     */
+    private function updateNamespaceParameters(ContainerBuilder $container, array $config)
     {
         if (!isset($config['namespaces'])) {
             return;

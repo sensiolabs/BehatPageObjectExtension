@@ -9,49 +9,37 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ExtensionSpec extends ObjectBehavior
 {
-    function it_should_be_a_behat_extension()
-    {
-        $this->shouldHaveType('Behat\Behat\Extension\ExtensionInterface');
-    }
-
-    function it_should_load_services(ContainerBuilder $container, ParameterBagInterface $parameterBag)
-    {
-        $this->servicesShouldBeRegistered($container, array(
-            'sensio_labs.page_object_extension.page_factory',
-            'sensio_labs.page_object_extension.context.initializer'
-        ), $parameterBag);
-
-        $this->load(array(), $container)->shouldReturn(null);
-    }
-
-    function it_registers_namespaces_compiler_pass()
-    {
-        $this->getCompilerPasses()->shouldHaveCompilerPass('SensioLabs\Behat\PageObjectExtension\Compiler\NamespacesPass');
-    }
-
-    private function servicesShouldBeRegistered($container, $serviceIds, $parameterBag)
+    function let(ContainerBuilder $container, ParameterBagInterface $parameterBag)
     {
         $container->hasExtension(Argument::any())->willReturn(false);
         $container->addResource(Argument::any())->willReturn($container);
         $container->getParameterBag()->willReturn($parameterBag);
-
-        foreach ($serviceIds as $id) {
-            $container->setDefinition($id, Argument::any())->shouldBeCalled();
-        }
+        $container->setDefinition(Argument::cetera())->willReturn(null);
+        $container->addCompilerPass(Argument::cetera())->willReturn(null);
     }
 
-    public function getMatchers()
+    function it_provides_a_config_key()
     {
-        return array(
-            'haveCompilerPass' => function($subject, $class) {
-                foreach ($subject as $pass) {
-                    if ($pass instanceof $class) {
-                        return true;
-                    }
-                }
+        $this->getConfigKey()->shouldReturn('page_object');
+    }
 
-                return false;
-            }
-        );
+    function it_should_be_a_testwork_extension()
+    {
+        $this->shouldHaveType('Behat\Testwork\ServiceContainer\Extension');
+    }
+
+    function it_should_load_services(ContainerBuilder $container)
+    {
+        $container->setDefinition('sensio_labs.page_object_extension.page_factory', Argument::any())->shouldBeCalled();
+        $container->setDefinition('sensio_labs.page_object_extension.context.initializer', Argument::any())->shouldBeCalled();
+
+        $this->load($container, array())->shouldReturn(null);
+    }
+
+    function it_registers_namespaces_compiler_pass(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(Argument::type('SensioLabs\Behat\PageObjectExtension\Compiler\NamespacesPass'))->shouldBeCalled();
+
+        $this->load($container, array())->shouldReturn(null);
     }
 }
