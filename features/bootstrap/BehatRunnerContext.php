@@ -101,7 +101,13 @@ CONFIG;
      */
     public function itShouldPass()
     {
-        expect($this->process->getExitCode())->toBe(0);
+        try {
+            expect($this->process->getExitCode())->toBe(0);
+        } catch (\Exception $e) {
+            echo $this->getOutput();
+
+            throw $e;
+        }
     }
 
     /**
