@@ -1,16 +1,15 @@
 <?php
 
-namespace SensioLabs\Behat\PageObjectExtension;
+namespace SensioLabs\Behat\PageObjectExtension\ServiceContainer;
 
 use Behat\Testwork\ServiceContainer\Extension as TestworkExtension;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
-use SensioLabs\Behat\PageObjectExtension\Compiler\NamespacesPass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-class Extension implements TestworkExtension
+class PageObjectExtension implements TestworkExtension
 {
     /**
      * {@inheritdoc}
@@ -48,8 +47,8 @@ class Extension implements TestworkExtension
      */
     public function load(ContainerBuilder $container, array $config)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/services'));
-        $loader->load('core.xml');
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/config'));
+        $loader->load('services.xml');
 
         $this->updateNamespaceParameters($container, $config);
     }

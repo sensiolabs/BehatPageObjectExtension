@@ -11,7 +11,7 @@ Feature: Using page objects with a factory
         default:
           contexts: [SearchContext]
       extensions:
-        SensioLabs\Behat\PageObjectExtension\Extension: ~
+        SensioLabs\Behat\PageObjectExtension: ~
         Behat\MinkExtension:
           goutte: ~
           base_url: http://localhost:8000

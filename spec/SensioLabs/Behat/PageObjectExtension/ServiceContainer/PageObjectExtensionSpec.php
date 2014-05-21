@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\SensioLabs\Behat\PageObjectExtension;
+namespace spec\SensioLabs\Behat\PageObjectExtension\ServiceContainer;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class ExtensionSpec extends ObjectBehavior
+class PageObjectExtensionSpec extends ObjectBehavior
 {
     function let(ContainerBuilder $container, ParameterBagInterface $parameterBag)
     {

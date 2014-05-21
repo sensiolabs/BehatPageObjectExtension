@@ -11,7 +11,7 @@ Feature: Changing page object namespaces
         default:
           contexts: [SearchContext]
       extensions:
-        SensioLabs\Behat\PageObjectExtension\Extension:
+        SensioLabs\Behat\PageObjectExtension:
           namespaces:
             page: Acme\Page
             element: Acme\Element
@@ -107,7 +107,7 @@ Feature: Changing page object namespaces
         default:
           contexts: [SearchContext]
       extensions:
-        SensioLabs\Behat\PageObjectExtension\Extension:
+        SensioLabs\Behat\PageObjectExtension:
           namespaces:
             page: Acme\Page
         Behat\MinkExtension:
