@@ -164,7 +164,6 @@ Feature: Verifying if a page is open
     2 steps (1 passed, 1 failed)
     """
 
-  @wip
   Scenario: Verifying if a page is open by its contents
     Given I configured the page object extension
     And a context file "features/bootstrap/SearchContext.php" contains:
@@ -241,7 +240,7 @@ Feature: Verifying if a page is open
 
     (::) failed steps (::)
 
-    01. The page does not look like a news list page
+    01. Expected the news list page to be open
         In step `Then I should see a list of recent news articles'. # SearchContext::iShouldSeeListOfRecentNewsArticles()
         From scenario `Viewing recent news articles'.               # features/news.feature:6
         Of feature `Viewing the news list'.                         # features/news.feature
@@ -250,7 +249,6 @@ Feature: Verifying if a page is open
     2 steps (1 passed, 1 failed)
     """
 
-  @wip
   Scenario: Verifying if a page is open by the response
     Given I configured the page object extension
     And a context file "features/bootstrap/SearchContext.php" contains:
@@ -327,7 +325,7 @@ Feature: Verifying if a page is open
 
     (::) failed steps (::)
 
-    01. The request to the News List did not return a successful response
+    01. Expected the news list page to be open
         In step `Then I should see a list of recent news articles'. # SearchContext::iShouldSeeListOfRecentNewsArticles()
         From scenario `Viewing recent news articles'.               # features/news.feature:6
         Of feature `Viewing the news list'.                         # features/news.feature
