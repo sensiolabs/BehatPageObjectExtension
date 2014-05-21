@@ -83,7 +83,6 @@ Feature: Verifying if a page is open
     2 steps (2 passed)
     """
 
-  @wip
   Scenario: Verifying if a page is open by url
     Given I configured the page object extension
     And a context file "features/bootstrap/SearchContext.php" contains:
@@ -155,7 +154,7 @@ Feature: Verifying if a page is open
 
     (::) failed steps (::)
 
-    01. The current url "http://localhost:8000/news/page-object-extension-2.0-released" does not match the expected "http://localhost:8000/news/behat-3-released"
+    01. Expected the news page to be open
         In step `Then I should see the news article'. # SearchContext::isShouldSeeTheNewsArticle()
         From scenario `Reading a news article'.       # features/news.feature:6
         Of feature `Reading news'.                    # features/news.feature

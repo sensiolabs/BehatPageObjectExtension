@@ -52,25 +52,24 @@ abstract class Page extends DocumentElement
      */
     public function open(array $urlParameters = array())
     {
-        $path = $this->unmaskUrl($urlParameters);
-        $path = $this->makeSurePathIsAbsolute($path);
+        $url = $this->getUrl($urlParameters);
 
-        $this->getSession()->visit($path);
+        $this->getSession()->visit($url);
 
-        $this->verifyResponse();
-        $this->verifyPage();
+        $this->verify($urlParameters);
 
         return $this;
     }
 
     /**
+     * @param array $urlParameters
+     *
      * @return boolean
      */
-    public function isOpen()
+    public function isOpen(array $urlParameters = array())
     {
         try {
-            $this->verifyResponse();
-            $this->verifyPage();
+            $this->verify($urlParameters);
         } catch (\Exception $e) {
             return false;
         }
@@ -170,6 +169,26 @@ abstract class Page extends DocumentElement
     }
 
     /**
+     * @param array $urlParameters
+     *
+     * @return string
+     */
+    protected function getUrl(array $urlParameters = array())
+    {
+        return $this->makeSurePathIsAbsolute($this->unmaskUrl($urlParameters));
+    }
+
+    /**
+     * @param array $urlParameters
+     */
+    protected function verify(array $urlParameters)
+    {
+        $this->verifyResponse();
+        $this->verifyUrl($urlParameters);
+        $this->verifyPage();
+    }
+
+    /**
      * @throws UnexpectedPageException
      */
     protected function verifyResponse()
@@ -188,7 +207,16 @@ abstract class Page extends DocumentElement
     }
 
     /**
-     * Overload to verify if we're on an expected page. Throw an exception if not.
+     * Overload to verify if the current url matches the expected one. Throw an exception otherwise.
+     *
+     * @param array $urlParameters
+     */
+    protected function verifyUrl(array $urlParameters = array())
+    {
+    }
+
+    /**
+     * Overload to verify if we're on an expected page. Throw an exception otherwise.
      */
     protected function verifyPage()
     {

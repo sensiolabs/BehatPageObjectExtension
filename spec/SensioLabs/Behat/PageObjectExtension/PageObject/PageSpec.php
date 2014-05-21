@@ -34,6 +34,11 @@ class MyPage extends BasePage
     {
         return $this->hasElement($name);
     }
+
+    public function callGetUrl(array $urlParameters = array())
+    {
+        return $this->getUrl($urlParameters);
+    }
 }
 
 class MyPageWithoutPath extends BasePage
@@ -45,6 +50,16 @@ class MyPageWithValidation extends MyPage
     protected function verifyPage()
     {
         throw new UnexpectedPageException('Expected to be on "MyPage" but found "Homepage" instead');
+    }
+}
+
+class MyPageWithUrlValidation extends MyPage
+{
+    protected function verifyUrl(array $urlParameters = array())
+    {
+        if (isset($urlParameters['employee'])) {
+            throw new UnexpectedPageException(sprintf('Expected to be on "/employee/%s" but found "/other-page" instead', $urlParameters['employee']));
+        }
     }
 }
 
@@ -124,6 +139,13 @@ class PageSpec extends ObjectBehavior
             ->duringOpen();
     }
 
+    function it_provides_a_way_to_generate_an_url_for_extension($session, $factory)
+    {
+        $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
+
+        $this->callGetUrl(array('employee' => 13))->shouldReturn('http://behat.dev/employees/13');
+    }
+
     function it_verifies_client_error_status_code_if_available($session, $factory)
     {
         $session->visit('/employees/13')->shouldBeCalled();
@@ -161,6 +183,17 @@ class PageSpec extends ObjectBehavior
         $session->getStatusCode()->willReturn(200);
 
         $this->shouldThrow(new UnexpectedPageException('Expected to be on "MyPage" but found "Homepage" instead'))->duringOpen(array('employee' => 13));
+    }
+
+    function it_optionally_verifies_the_url($session, $factory)
+    {
+        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithUrlValidation');
+        $this->beConstructedWith($session, $factory);
+
+        $session->visit('/employees/13')->willReturn();
+        $session->getStatusCode()->willReturn(200);
+
+        $this->shouldThrow(new UnexpectedPageException('Expected to be on "/employee/13" but found "/other-page" instead'))->duringOpen(array('employee' => 13));
     }
 
     function it_gives_clear_feedback_if_method_is_invalid($session, $factory)
@@ -260,11 +293,11 @@ class PageSpec extends ObjectBehavior
 
     function it_confirms_the_page_is_not_open_if_another_page_is_open_instead($session, $factory)
     {
-        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithValidation');
+        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithUrlValidation');
         $this->beConstructedWith($session, $factory);
 
         $session->getStatusCode()->willReturn(200);
 
-        $this->isOpen()->shouldReturn(false);
+        $this->isOpen(array('employee' => 13))->shouldReturn(false);
     }
 }
