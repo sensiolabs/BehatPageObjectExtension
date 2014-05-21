@@ -111,11 +111,35 @@ CONFIG;
     }
 
     /**
+     * @Then /^it should fail$/
+     */
+    public function itShouldFail()
+    {
+        try {
+            expect($this->process->getExitCode())->notToBe(0);
+        } catch (\Exception $e) {
+            echo $this->getOutput();
+
+            throw $e;
+        }
+    }
+
+    /**
      * @Then /^it should pass with:$/
      */
     public function itShouldPassWith(PyStringNode $expectedOutput)
     {
         $this->itShouldPass();
+
+        expect($this->getOutput())->toMatch('/'.preg_quote($expectedOutput, '/').'/sm');
+    }
+
+    /**
+     * @Then /^it should fail with:$/
+     */
+    public function itShouldFailWith(PyStringNode $expectedOutput)
+    {
+        $this->itShouldFail();
 
         expect($this->getOutput())->toMatch('/'.preg_quote($expectedOutput, '/').'/sm');
     }
