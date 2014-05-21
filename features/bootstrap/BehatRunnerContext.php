@@ -1,12 +1,12 @@
 <?php
 
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
-class BehatRunnerContext extends BehatContext
+class BehatRunnerContext implements Context
 {
     /**
      * @var string|null
@@ -50,16 +50,18 @@ class BehatRunnerContext extends BehatContext
     {
         $config = <<<CONFIG
 default:
-  context:
-    class: SearchContext
+  suites:
+    default:
+      contexts: [SearchContext]
   extensions:
     SensioLabs\Behat\PageObjectExtension\Extension: ~
-    Behat\MinkExtension\Extension:
+    Behat\MinkExtension:
       goutte: ~
       base_url: http://localhost:8000
 CONFIG;
 
-        $this->givenBehatConfiguration(new PyStringNode($config));
+
+        $this->givenBehatConfiguration(new PyStringNode(explode("\n", $config), 0));
     }
 
     /**
@@ -86,10 +88,11 @@ CONFIG;
         $this->process->setWorkingDirectory($this->workingDir);
         $this->process->setCommandLine(
             sprintf(
-                '%s %s %s',
+                '%s %s %s %s',
                 $this->phpBin,
                 escapeshellarg(BEHAT_BIN_PATH),
-                '--no-time --format=progress'
+                strtr('--format-settings=\'{"timer": false}\'', array('\'' => '"', '"' => '\"')),
+                '--format=progress'
             )
         );
         $this->process->start();

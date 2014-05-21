@@ -7,11 +7,12 @@ Feature: Using page objects with a factory
     Given a behat configuration:
     """
     default:
-      context:
-        class: SearchContext
+      suites:
+        default:
+          contexts: [SearchContext]
       extensions:
         SensioLabs\Behat\PageObjectExtension\Extension: ~
-        Behat\MinkExtension\Extension:
+        Behat\MinkExtension:
           goutte: ~
           base_url: http://localhost:8000
     """
@@ -76,6 +77,8 @@ Feature: Using page objects with a factory
     """
     <?php
 
+    namespace Page;
+
     use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
     class Homepage extends Page
@@ -110,6 +113,8 @@ Feature: Using page objects with a factory
     And a page object file "features/bootstrap/Page/WebSearchResults.php" contains:
     """
     <?php
+
+    namespace Page;
 
     use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -146,6 +151,8 @@ Feature: Using page objects with a factory
     """
     <?php
 
+    namespace Page;
+
     use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
     class ImagesSearchResults extends Page
@@ -170,6 +177,8 @@ Feature: Using page objects with a factory
     And a page object file "features/bootstrap/Page/Element/SearchResultsNavigation.php" contains:
     """
     <?php
+
+    namespace Page\Element;
 
     use Behat\Mink\Exception\ElementNotFoundException;
     use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
