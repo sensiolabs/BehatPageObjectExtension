@@ -34,7 +34,7 @@ Feature: Verifying if a page is open
         }
     }
     """
-    And a page object file "features/bootstrap/Page/Homepage.php" contains:
+    And a page object file "features/bootstrap/Page/NewsList.php" contains:
     """
     <?php
 
@@ -201,7 +201,7 @@ Feature: Verifying if a page is open
         }
     }
     """
-    And a page object file "features/bootstrap/Page/Homepage.php" contains:
+    And a page object file "features/bootstrap/Page/NewsList.php" contains:
     """
     <?php
 
@@ -287,7 +287,7 @@ Feature: Verifying if a page is open
         }
     }
     """
-    And a page object file "features/bootstrap/Page/Homepage.php" contains:
+    And a page object file "features/bootstrap/Page/NewsList.php" contains:
     """
     <?php
 
