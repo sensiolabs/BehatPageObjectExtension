@@ -7,4 +7,4 @@ Behat extension providing tools to implement page object pattern. This is the ve
 
 ## Documentation
 
-[Official documentation](docs/index.rst)
+[Official documentation](doc/index.rst)
