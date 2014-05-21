@@ -215,6 +215,23 @@ Any parameters should be given to the ``open()`` method:
 
             $this->getPage($pageName)->open(array('employeeId' => 13));
 
+It's also possible to check if a given page is opened with ``isOpen()`` method:
+
+    .. code-block:: php
+
+        $isOpen = $this->getPage($pageName)->isOpen(array('employeeId' => 13));
+
+Both ``open()`` and ``isOpen()`` run the same verifications, which can be overriden:
+
+* ``verifyResponse()`` - verifies if the response was successful.
+  It only works for drivers which support getting a response status code.
+* ``verifyUrl()`` - verifies if the current URL matches the expected one.
+  It is up to you to implement the logic here. The method should throw an exception
+  in case URLs don't match.
+* ``verifyPage()`` - verifies if the page content matches the expected content.
+  It is up to you to implement the logic here. The method should throw an exception
+  in case the content expected to be present on the page is not there.
+
 Implementing page objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 

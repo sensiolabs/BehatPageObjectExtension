@@ -38,4 +38,17 @@ class PageObjectContextSpec extends ObjectBehavior
         $this->shouldThrow(new \RuntimeException('To create elements you need to pass a factory with setPageFactory()'))
             ->duringGetElement('Search box');
     }
+
+    function it_exposes_the_page_factory(PageFactory $pageFactory)
+    {
+        $this->setPageFactory($pageFactory);
+
+        $this->getPageFactory()->shouldReturn($pageFactory);
+    }
+
+    function it_throws_an_exception_if_page_factory_is_not_set_but_accessed()
+    {
+        $this->shouldThrow(new \RuntimeException('To access the page factory you need to pass it first with setPageFactory()'))
+            ->duringGetPageFactory();
+    }
 }

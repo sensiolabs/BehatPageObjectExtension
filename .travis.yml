@@ -1,10 +1,12 @@
 language: php
 
 php:
-  - 5.3
   - 5.4
+  - 5.5
 
 before_script:
-  - composer --prefer-source --dev install
+  - composer self-update && composer --dev install
 
-script: ./bin/phpspec run -f pretty
+script:
+  - ./bin/phpspec run -f pretty
+  - ./bin/behat
