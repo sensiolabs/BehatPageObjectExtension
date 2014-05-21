@@ -11,7 +11,11 @@
         "behat/mink-extension": "~2.0@dev"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.0"
+        "phpspec/phpspec": "~2.0",
+        "bossa/phpspec2-expect": "~1.0",
+        "behat/mink-goutte-driver": "~1.0",
+        "symfony/filesystem": "~2.3",
+        "symfony/process": "~2.3"
     },
     "suggest": {
         "bossa/phpspec2-expect": "Allows to use PHPSpec2 matchers in Behat context files"
