@@ -12,7 +12,7 @@ require_once __DIR__.'/Fixtures/NamespacedArticleList.php';
 require_once __DIR__.'/Fixtures/Element/SearchBox.php';
 require_once __DIR__.'/Fixtures/Element/NamespacedSearchBox.php';
 
-class PageFactorySpec extends ObjectBehavior
+class DefaultPageFactorySpec extends ObjectBehavior
 {
     function let(Mink $mink, Session $session, SelectorsHandler $selectorsHandler)
     {
@@ -22,6 +22,11 @@ class PageFactorySpec extends ObjectBehavior
         $mink->__destruct()->willReturn();
         $session->getSelectorsHandler()->willReturn($selectorsHandler);
         $selectorsHandler->selectorToXpath('xpath', '//div[@id="search"]')->willReturn('//div[@id="search"]');
+    }
+
+    function it_is_a_page_object_factory()
+    {
+        $this->shouldHaveType('SensioLabs\Behat\PageObjectExtension\Context\PageFactory');
     }
 
     function it_should_create_a_page()

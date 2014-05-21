@@ -3,7 +3,7 @@
 namespace SensioLabs\Behat\PageObjectExtension\PageObject;
 
 use Behat\Mink\Session;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
+use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 
 class InlineElement extends Element
 {
@@ -13,11 +13,11 @@ class InlineElement extends Element
     protected $selector = null;
 
     /**
-     * @param array|string         $selector
-     * @param Session              $session
-     * @param PageFactoryInterface $pageFactory
+     * @param array|string $selector
+     * @param Session      $session
+     * @param PageFactory  $pageFactory
      */
-    public function __construct($selector, Session $session, PageFactoryInterface $pageFactory)
+    public function __construct($selector, Session $session, PageFactory $pageFactory)
     {
         $this->selector = $selector;
 

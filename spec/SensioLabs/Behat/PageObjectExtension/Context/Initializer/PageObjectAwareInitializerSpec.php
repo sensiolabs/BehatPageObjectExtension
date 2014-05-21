@@ -20,14 +20,14 @@ class PageObjectAwareInitializerSpec extends ObjectBehavior
 
     function it_should_inject_the_page_factory_into_the_context(Context $context, PageFactory $pageFactory)
     {
-        $context->implement('SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface');
+        $context->implement('SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware');
 
         $context->setPageFactory($pageFactory)->shouldBeCalled();
 
         $this->initializeContext($context)->shouldReturn(null);
     }
 
-    function it_should_not_inject_the_page_factory_into_non_page_object_aware_contexts(Context $context, PageFactory $pageFactory)
+    function it_should_not_inject_the_page_factory_into_non_page_object_aware_contexts(Context $context)
     {
         $this->initializeContext($context)->shouldReturn(null);
     }

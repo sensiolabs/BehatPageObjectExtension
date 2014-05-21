@@ -6,7 +6,7 @@ use Behat\Behat\Context\Context;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
-class PageObjectContext implements Context, PageObjectAwareInterface
+class PageObjectContext implements Context, PageObjectAware
 {
     /**
      * @var PageFactory $pageFactory
@@ -46,9 +46,9 @@ class PageObjectContext implements Context, PageObjectAwareInterface
     }
 
     /**
-     * @param PageFactoryInterface $pageFactory
+     * @param PageFactory $pageFactory
      */
-    public function setPageFactory(PageFactoryInterface $pageFactory)
+    public function setPageFactory(PageFactory $pageFactory)
     {
         $this->pageFactory = $pageFactory;
     }
