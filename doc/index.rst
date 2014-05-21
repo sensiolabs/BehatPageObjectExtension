@@ -13,7 +13,7 @@ Installation
 
 This extension requires:
 
-* Behat 2.4+
+* Behat 3.0+
 
 Through PHAR
 ~~~~~~~~~~~~
@@ -49,7 +49,7 @@ The easiest way to keep your suite updated is to use
             "require": {
                 ...
 
-                "sensiolabs/behat-page-object-extension": "*"
+                "sensiolabs/behat-page-object-extension": "~2.0"
             }
         }
 
@@ -67,7 +67,7 @@ The easiest way to keep your suite updated is to use
         default:
           # ...
           extensions:
-            SensioLabs\Behat\PageObjectExtension\Extension: ~
+            SensioLabs\Behat\PageObjectExtension: ~
 
 Page objects
 ------------
@@ -495,7 +495,7 @@ we need to install it first. Best way to do this is by adding it to the
     .. code-block:: js
 
         "require-dev": {
-            "bossa/phpspec2-expect": "dev-master"
+            "bossa/phpspec2-expect": "~1.0"
         }
 
 Configuration options
@@ -512,7 +512,7 @@ Defaults can be simply changed in the ``behat.yml`` file:
 
         default:
           extensions:
-            SensioLabs\Behat\PageObjectExtension\Extension:
+            SensioLabs\Behat\PageObjectExtension:
               namespaces:
                 page: Acme\Features\Context\Page
                 element: Acme\Features\Context\Page\Element
