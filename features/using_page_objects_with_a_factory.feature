@@ -3,7 +3,7 @@ Feature: Using page objects with a factory
   As a Developer
   I need to encapsulate knowledge about pages in page objects
 
-  Scenario: Delegating page interactions to page objects
+  Scenario: Using a factory to create page objects
     Given a behat configuration:
     """
     default:
