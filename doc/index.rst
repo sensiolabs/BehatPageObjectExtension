@@ -112,6 +112,8 @@ To create a new page object extend the
 
         <?php
 
+        namespace Page;
+
         use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
         class Homepage extends Page
@@ -186,6 +188,8 @@ However, to be able to do this we have to provide a ``$path`` property:
 
         <?php
 
+        namespace Page;
+
         use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
         class Homepage extends Page
@@ -243,6 +247,8 @@ advantage of existing `Mink <http://mink.behat.org/>`_ Element methods:
     .. code-block:: php
 
         <?php
+
+        namespace Page;
 
         use Behat\Mink\Exception\ElementNotFoundException;
         use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -303,6 +309,8 @@ The simplest way to use elements is to define them inline in the page class:
 
         <?php
 
+        namespace Page;
+
         use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
         class Homepage extends Page
@@ -349,6 +357,8 @@ Here's a previous search example modeled as an element:
 
         <?php
 
+        namespace Page\Element;
+
         use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
         use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -382,6 +392,8 @@ Accessing custom elements is much like accessing inline ones:
     .. code-block:: php
 
         <?php
+
+        namespace Page;
 
         use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -448,6 +460,8 @@ instead of retrieving them ourselves in the context file:
 Our page object could look like the following:
 
     .. code-block:: php
+
+        namespace Page;
 
         class ConferenceList extends Page
         {
