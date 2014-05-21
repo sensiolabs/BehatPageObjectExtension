@@ -14,12 +14,8 @@
         <service id="sensio_labs.page_object_extension.page_factory" class="%sensio_labs.page_object_extension.page_factory.class%" public="false">
             <argument type="service" id="mink" />
             <argument>%mink.parameters%</argument>
-            <call method="setPageNamespace">
-                <argument>%sensio_labs.page_object_extension.namespaces.page%</argument>
-            </call>
-            <call method="setElementNamespace">
-                <argument>%sensio_labs.page_object_extension.namespaces.element%</argument>
-            </call>
+            <argument>%sensio_labs.page_object_extension.namespaces.page%</argument>
+            <argument>%sensio_labs.page_object_extension.namespaces.element%</argument>
         </service>
 
         <service id="sensio_labs.page_object_extension.context.initializer" class="%sensio_labs.page_object_extension.context.initializer.class%">

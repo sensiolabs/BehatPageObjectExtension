@@ -33,26 +33,12 @@ class DefaultPageFactory implements PageFactory
      * @var Mink  $mink
      * @var array $pageParameters
      */
-    public function __construct(Mink $mink, array $pageParameters)
+    public function __construct(Mink $mink, array $pageParameters, $pageNamespace = '\\', $elementNamespace = '\\')
     {
         $this->mink = $mink;
         $this->pageParameters = $pageParameters;
-    }
-
-    /**
-     * @param string $namespace
-     */
-    public function setPageNamespace($namespace)
-    {
-        $this->pageNamespace = rtrim($namespace, '\\').'\\';
-    }
-
-    /**
-     * @param string $namespace
-     */
-    public function setElementNamespace($namespace)
-    {
-        $this->elementNamespace = rtrim($namespace, '\\').'\\';
+        $this->pageNamespace = rtrim($pageNamespace, '\\').'\\';
+        $this->elementNamespace = rtrim($elementNamespace, '\\').'\\';
     }
 
     /**

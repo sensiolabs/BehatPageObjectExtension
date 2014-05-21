@@ -28,14 +28,4 @@ interface PageFactory
      * @return InlineElement
      */
     public function createInlineElement($selector);
-
-    /**
-     * @param string $namespace
-     */
-    public function setPageNamespace($namespace);
-
-    /**
-     * @param string $namespace
-     */
-    public function setElementNamespace($namespace);
 }

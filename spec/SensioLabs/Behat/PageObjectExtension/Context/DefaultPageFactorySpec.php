@@ -46,10 +46,10 @@ class DefaultPageFactorySpec extends ObjectBehavior
         $element->getXPath()->shouldReturn('//div[@id="search"]');
     }
 
-    function it_should_overwrite_the_default_page_namespace()
+    function it_should_overwrite_the_default_page_namespace(Mink $mink)
     {
         foreach ($this->getPageNamespaces() as $namespace => $class) {
-            $this->setPageNamespace($namespace);
+            $this->beConstructedWith($mink, array('base_url' => 'http://behat.dev'), $namespace);
             $this->createPage('Namespaced Article list')->shouldBeAnInstanceOf($class);
         }
     }
@@ -63,10 +63,10 @@ class DefaultPageFactorySpec extends ObjectBehavior
         );
     }
 
-    function it_should_overwrite_the_default_element_namespace()
+    function it_should_overwrite_the_default_element_namespace(Mink $mink)
     {
         foreach ($this->getElementNamespaces() as $namespace => $class) {
-            $this->setElementNamespace($namespace);
+            $this->beConstructedWith($mink, array('base_url' => 'http://behat.dev'), null, $namespace);
             $this->createElement('Namespaced search box')->shouldBeAnInstanceOf($class);
         }
     }
