@@ -51,8 +51,6 @@ class Extension implements TestworkExtension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/services'));
         $loader->load('core.xml');
 
-        $container->addCompilerPass(new NamespacesPass());
-
         $this->updateNamespaceParameters($container, $config);
     }
 

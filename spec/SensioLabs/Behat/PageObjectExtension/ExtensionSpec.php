@@ -35,11 +35,4 @@ class ExtensionSpec extends ObjectBehavior
 
         $this->load($container, array())->shouldReturn(null);
     }
-
-    function it_registers_namespaces_compiler_pass(ContainerBuilder $container)
-    {
-        $container->addCompilerPass(Argument::type('SensioLabs\Behat\PageObjectExtension\Compiler\NamespacesPass'))->shouldBeCalled();
-
-        $this->load($container, array())->shouldReturn(null);
-    }
 }
