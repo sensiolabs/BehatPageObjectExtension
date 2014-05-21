@@ -53,4 +53,12 @@ class PageObjectContext extends BehatContext implements PageObjectAwareInterface
     {
         $this->pageFactory = $pageFactory;
     }
+
+    /**
+     * @return PageFactory
+     */
+    public function getPageFactory()
+    {
+        return $this->pageFactory;
+    }
 }
