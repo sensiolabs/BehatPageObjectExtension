@@ -5,7 +5,7 @@ namespace SensioLabs\Behat\PageObjectExtension\Context;
 interface PageObjectAwareInterface
 {
     /**
-     * @param PageFactory $pageFactory
+     * @param PageFactoryInterface $pageFactory
      */
-    public function setPageFactory(PageFactory $factory);
+    public function setPageFactory(PageFactoryInterface $factory);
 }

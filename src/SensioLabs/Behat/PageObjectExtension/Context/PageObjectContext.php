@@ -46,9 +46,9 @@ class PageObjectContext implements Context, PageObjectAwareInterface
     }
 
     /**
-     * @param PageFactory $pageFactory
+     * @param PageFactoryInterface $pageFactory
      */
-    public function setPageFactory(PageFactory $pageFactory)
+    public function setPageFactory(PageFactoryInterface $pageFactory)
     {
         $this->pageFactory = $pageFactory;
     }
