@@ -3,6 +3,7 @@
 namespace SensioLabs\Behat\PageObjectExtension\Context;
 
 use Behat\Mink\Mink;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -63,6 +64,11 @@ class PageFactory implements PageFactoryInterface
     public function createPage($name)
     {
         $pageClass = $this->pageNamespace.$this->classifyName($name);
+        $namespace = $this->getPageObjectNamespace();
+
+        if (!class_exists($pageClass) && $namespace) {
+            $pageClass = $namespace.$this->classifyName($name);
+        }
 
         if (!class_exists($pageClass)) {
             throw new \LogicException(sprintf('"%s" page not recognised. "%s" class not found.', $name, $pageClass));
@@ -79,6 +85,11 @@ class PageFactory implements PageFactoryInterface
     public function createElement($name)
     {
         $elementClass = $this->elementNamespace.$this->classifyName($name);
+        $namespace = $this->getPageObjectNamespace();
+
+        if (!class_exists($elementClass) && $namespace) {
+            $elementClass = $namespace.$this->classifyName($name);
+        }
 
         if (!class_exists($elementClass)) {
             throw new \LogicException(sprintf('"%s" element not recognised. "%s" class not found.', $name, $elementClass));
@@ -105,5 +116,22 @@ class PageFactory implements PageFactoryInterface
     protected function classifyName($name)
     {
         return str_replace(' ', '', ucwords($name));
+    }
+
+    /**
+     * @return string|null
+     */
+    private function getPageObjectNamespace()
+    {
+        $backtrace = debug_backtrace();
+
+        if (isset($backtrace[2]['object']) && $backtrace[2]['object'] instanceof PageObjectContext) {
+            $namespace = get_class($backtrace[2]['object']);
+            $pos = strrpos($namespace, '\\');
+
+            return ($pos !== false ? substr($namespace, 0, $pos) : '') . '\\Page\\';
+        }
+
+        return null;
     }
 }
