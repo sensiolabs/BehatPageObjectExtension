@@ -3,7 +3,7 @@ Feature: Verifying if a page is open
   As a Developer
   I need to check if a page is open
 
-  Scenario: Verifying if a page is open without parameters
+  Scenario: Verifying if a page is open (without parameters)
     Given I configured the page object extension
     And a context file "features/bootstrap/SearchContext.php" contains:
     """
@@ -83,7 +83,7 @@ Feature: Verifying if a page is open
     2 steps (2 passed)
     """
 
-  Scenario: Verifying if a page is open by url
+  Scenario: Verifying if a page is open (with an url)
     Given I configured the page object extension
     And a context file "features/bootstrap/SearchContext.php" contains:
     """
@@ -163,7 +163,7 @@ Feature: Verifying if a page is open
     2 steps (1 passed, 1 failed)
     """
 
-  Scenario: Verifying if a page is open by its contents
+  Scenario: Verifying if a page is open (with its contents)
     Given I configured the page object extension
     And a context file "features/bootstrap/SearchContext.php" contains:
     """
@@ -248,7 +248,7 @@ Feature: Verifying if a page is open
     2 steps (1 passed, 1 failed)
     """
 
-  Scenario: Verifying if a page is open by the response
+  Scenario: Verifying if a page is open (with the response)
     Given I configured the page object extension
     And a context file "features/bootstrap/SearchContext.php" contains:
     """
