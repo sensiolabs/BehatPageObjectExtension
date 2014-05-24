@@ -12,22 +12,22 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageExce
 abstract class Page extends DocumentElement
 {
     /**
-     * @var string|null $path
+     * @var string|null
      */
     protected $path = null;
 
     /**
-     * @var array $elements
+     * @var array
      */
     protected $elements = array();
 
     /**
-     * @var Factory $factory
+     * @var Factory
      */
     private $factory = null;
 
     /**
-     * @var array $parameters
+     * @var array
      */
     private $parameters = array();
 

@@ -11,22 +11,22 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 class DefaultFactory implements Factory
 {
     /**
-     * @var Mink $mink
+     * @var Mink
      */
     private $mink = null;
 
     /**
-     * @var array $parameters
+     * @var array
      */
     private $pageParameters = array();
 
     /**
-     * @var string $pageNamespace
+     * @var string
      */
     private $pageNamespace = '\\';
 
     /**
-     * @var string $elementNamespace
+     * @var string
      */
     private $elementNamespace = '\\';
 

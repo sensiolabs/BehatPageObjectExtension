@@ -10,7 +10,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 class PageObjectContext implements Context, PageObjectAware
 {
     /**
-     * @var PageObjectFactory $pageObjectFactory
+     * @var PageObjectFactory
      */
     private $pageObjectFactory = null;
 

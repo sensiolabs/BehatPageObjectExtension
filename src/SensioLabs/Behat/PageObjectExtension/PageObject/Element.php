@@ -9,12 +9,12 @@ use Behat\Mink\Session;
 abstract class Element extends NodeElement
 {
     /**
-     * @var array|string $selector
+     * @var array|string
      */
     protected $selector = array('xpath' => '//');
 
     /**
-     * @var Factory $factory
+     * @var Factory
      */
     private $factory = null;
 

@@ -7,7 +7,7 @@ use Behat\Mink\Session;
 class InlineElement extends Element
 {
     /**
-     * @var array|string $selector
+     * @var array|string
      */
     protected $selector = null;
 
