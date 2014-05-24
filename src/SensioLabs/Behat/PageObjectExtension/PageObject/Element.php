@@ -65,8 +65,8 @@ abstract class Element extends NodeElement
      */
     private function getSelectorAsXpath(SelectorsHandler $selectorsHandler)
     {
-        $selectorType = key($this->selector);
-        $locator = $this->selector[$selectorType];
+        $selectorType = is_array($this->selector) ? key($this->selector) : 'css';
+        $locator = is_array($this->selector) ? $this->selector[$selectorType] : $this->selector;
 
         return $selectorsHandler->selectorToXpath($selectorType, $locator);
     }

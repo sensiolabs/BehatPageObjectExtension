@@ -84,7 +84,7 @@ Feature: Using page objects with a factory
     class Homepage extends Page
     {
         /**
-         * @var string $path
+         * @var string
          */
         protected $path = '/';
 
@@ -236,3 +236,163 @@ Feature: Using page objects with a factory
     2 scenarios (2 passed)
     7 steps (7 passed)
     """
+
+  Scenario: Using a factory to create elements with simplified selectors
+    Given I configured the page object extension
+    And a context file "features/bootstrap/SearchContext.php" contains:
+    """
+    <?php
+
+    use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
+
+    class SearchContext extends PageObjectContext
+    {
+        /**
+         * @Given /^I visited the homepage$/
+         */
+        public function iVisitedTheHomepage()
+        {
+            $this->getPage('Homepage')->open();
+        }
+
+        /**
+         * @When /^I should not see the "(?P<tab>[^"]*)" tab$/
+         */
+        public function iShouldSeeNotTheTab($tab)
+        {
+            if ($this->getElement('Search results navigation')->hasTab($tab)) {
+                throw new \LogicException(sprintf('%s tab is present on the page', $tab));
+            }
+        }
+    }
+    """
+    And a page object file "features/bootstrap/Page/Homepage.php" contains:
+    """
+    <?php
+
+    namespace Page;
+
+    use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+
+    class Homepage extends Page
+    {
+        /**
+         * @var string
+         */
+        protected $path = '/';
+    }
+    """
+    And a page object file "features/bootstrap/Page/Element/SearchResultsNavigation.php" contains:
+    """
+    <?php
+
+    namespace Page\Element;
+
+    use Behat\Mink\Exception\ElementNotFoundException;
+    use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+    use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+
+    class SearchResultsNavigation extends Element
+    {
+        /**
+         * @var string
+         */
+        protected $selector = 'div.tabs';
+
+        /**
+         * @return boolean
+         */
+        public function hasTab($name)
+        {
+            return $this->hasLink($name);
+        }
+    }
+    """
+    And a feature file "features/search.feature" contains:
+    """
+    Feature: Search
+      In order to find lolcats
+      As a Cat Lover
+      I want to search the internetz
+
+      Scenario: Searching for lolcats
+        Given I visited the homepage
+         Then I should not see the "Images" tab
+    """
+    When I run behat
+    Then it should pass
+
+
+  Scenario: Using a factory to create inline elements with simplified selectors
+    Given I configured the page object extension
+    And a context file "features/bootstrap/SearchContext.php" contains:
+    """
+    <?php
+
+    use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
+
+    class SearchContext extends PageObjectContext
+    {
+        /**
+         * @Given /^I visited the homepage$/
+         */
+        public function iVisitedTheHomepage()
+        {
+            $this->getPage('Homepage')->open();
+        }
+
+        /**
+         * @When /^I should see the search box$/
+         */
+        public function iShouldSeeTheSearchBox()
+        {
+            if (!$this->getPage('Homepage')->hasSearchBox()) {
+                throw new \LogicException('Could not find the search box');
+            }
+        }
+    }
+    """
+    And a page object file "features/bootstrap/Page/Homepage.php" contains:
+    """
+    <?php
+
+    namespace Page;
+
+    use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+
+    class Homepage extends Page
+    {
+        /**
+         * @var string
+         */
+        protected $path = '/';
+
+        /**
+         * @var array
+         */
+        protected $elements = array(
+            'Search box' => 'input[name="Search"]'
+        );
+
+        /**
+         * @return boolean
+         */
+        public function hasSearchBox()
+        {
+            return $this->hasElement('Search box');
+        }
+    }
+    """
+    And a feature file "features/search.feature" contains:
+    """
+    Feature: Search
+      In order to find lolcats
+      As a Cat Lover
+      I want to search the internetz
+
+      Scenario: Searching for lolcats
+        Given I visited the homepage
+         Then I should see the search box
+    """
+    When I run behat
+    Then it should pass

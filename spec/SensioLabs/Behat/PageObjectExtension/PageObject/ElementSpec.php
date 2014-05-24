@@ -24,6 +24,11 @@ class MyElement extends BaseElement
     }
 }
 
+class MySimpleElement extends BaseElement
+{
+    public $selector = 'div#my-box';
+}
+
 class ElementSpec extends ObjectBehavior
 {
     function let(Session $session, Factory $factory, SelectorsHandler $selectorsHandler)
@@ -43,6 +48,16 @@ class ElementSpec extends ObjectBehavior
 
     function it_should_relate_to_a_subsection_of_a_page()
     {
+        $this->getXpath()->shouldReturn('//div[@id="my-box"]');
+    }
+
+    function it_assumes_a_css_selector_if_not_specified(Session $session, Factory $factory, SelectorsHandler $selectorsHandler)
+    {
+        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MySimpleElement');
+        $this->beConstructedWith($session, $factory);
+
+        $selectorsHandler->selectorToXpath('css', 'div#my-box')->willReturn('//div[@id="my-box"]');
+
         $this->getXpath()->shouldReturn('//div[@id="my-box"]');
     }
 
