@@ -5,21 +5,21 @@ namespace SensioLabs\Behat\PageObjectExtension\Context\Initializer;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Initializer\ContextInitializer;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 
 class PageObjectAwareInitializer implements ContextInitializer
 {
     /**
-     * @var PageFactory $pageFactory
+     * @var PageObjectFactory $pageObjectFactory
      */
-    private $pageFactory = null;
+    private $pageObjectFactory = null;
 
     /**
-     * @param PageFactory $pageFactory
+     * @param PageObjectFactory $pageObjectFactory
      */
-    public function __construct(PageFactory $pageFactory)
+    public function __construct(PageObjectFactory $pageObjectFactory)
     {
-        $this->pageFactory = $pageFactory;
+        $this->pageObjectFactory = $pageObjectFactory;
     }
 
     /**
@@ -28,7 +28,7 @@ class PageObjectAwareInitializer implements ContextInitializer
     public function initializeContext(Context $context)
     {
         if ($context instanceof PageObjectAware) {
-            $context->setPageFactory($this->pageFactory);
+            $context->setPageObjectFactory($this->pageObjectFactory);
         }
     }
 }

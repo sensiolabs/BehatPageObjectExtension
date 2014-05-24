@@ -6,7 +6,7 @@
     <parameters>
         <parameter key="sensio_labs.page_object_extension.namespaces.page" type="string">Page</parameter>
         <parameter key="sensio_labs.page_object_extension.namespaces.element" type="string">%sensio_labs.page_object_extension.namespaces.page%\Element</parameter>
-        <parameter key="sensio_labs.page_object_extension.page_factory.class">SensioLabs\Behat\PageObjectExtension\Context\DefaultPageFactory</parameter>
+        <parameter key="sensio_labs.page_object_extension.page_factory.class">SensioLabs\Behat\PageObjectExtension\PageObject\Factory\DefaultFactory</parameter>
         <parameter key="sensio_labs.page_object_extension.context.initializer.class">SensioLabs\Behat\PageObjectExtension\Context\Initializer\PageObjectAwareInitializer</parameter>
     </parameters>
 

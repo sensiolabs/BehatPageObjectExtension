@@ -8,7 +8,7 @@ use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
@@ -78,7 +78,7 @@ class MyPageWithInlineElements extends BasePage
 
 class PageSpec extends ObjectBehavior
 {
-    function let(Session $session, PageFactory $factory, SelectorsHandler $selectorsHandler, DriverInterface $driver)
+    function let(Session $session, Factory $factory, SelectorsHandler $selectorsHandler, DriverInterface $driver)
     {
         // until we have proper abstract class support in PhpSpec
         $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPage');

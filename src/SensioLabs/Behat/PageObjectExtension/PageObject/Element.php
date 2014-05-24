@@ -5,7 +5,6 @@ namespace SensioLabs\Behat\PageObjectExtension\PageObject;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 
 abstract class Element extends NodeElement
 {
@@ -15,19 +14,19 @@ abstract class Element extends NodeElement
     protected $selector = array('xpath' => '//');
 
     /**
-     * @var PageFactory $pageFactory
+     * @var Factory $factory
      */
-    private $pageFactory = null;
+    private $factory = null;
 
     /**
-     * @param Session     $session
-     * @param PageFactory $pageFactory
+     * @param Session $session
+     * @param Factory $factory
      */
-    public function __construct(Session $session, PageFactory $pageFactory)
+    public function __construct(Session $session, Factory $factory)
     {
         parent::__construct($this->getSelectorAsXpath($session->getSelectorsHandler()), $session);
 
-        $this->pageFactory = $pageFactory;
+        $this->factory = $factory;
     }
 
     /**
@@ -48,7 +47,7 @@ abstract class Element extends NodeElement
      */
     protected function getPage($name)
     {
-        return $this->pageFactory->createPage($name);
+        return $this->factory->createPage($name);
     }
 
     /**

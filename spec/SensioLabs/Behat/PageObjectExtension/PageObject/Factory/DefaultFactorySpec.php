@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\SensioLabs\Behat\PageObjectExtension\Context;
+namespace spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 
 use Behat\Mink\Mink;
 use Behat\Mink\Selector\SelectorsHandler;
@@ -12,7 +12,7 @@ require_once __DIR__.'/Fixtures/NamespacedArticleList.php';
 require_once __DIR__.'/Fixtures/Element/SearchBox.php';
 require_once __DIR__.'/Fixtures/Element/NamespacedSearchBox.php';
 
-class DefaultPageFactorySpec extends ObjectBehavior
+class DefaultFactorySpec extends ObjectBehavior
 {
     function let(Mink $mink, Session $session, SelectorsHandler $selectorsHandler)
     {
@@ -26,7 +26,7 @@ class DefaultPageFactorySpec extends ObjectBehavior
 
     function it_is_a_page_object_factory()
     {
-        $this->shouldHaveType('SensioLabs\Behat\PageObjectExtension\Context\PageFactory');
+        $this->shouldHaveType('SensioLabs\Behat\PageObjectExtension\PageObject\Factory');
     }
 
     function it_should_create_a_page()
@@ -57,9 +57,9 @@ class DefaultPageFactorySpec extends ObjectBehavior
     private function getPageNamespaces()
     {
         return array(
-            'spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures' => '\spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures\NamespacedArticleList',
-            '\spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures' => '\spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures\NamespacedArticleList',
-            'spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures\\' => '\spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures\NamespacedArticleList'
+            'spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures' => '\spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures\NamespacedArticleList',
+            '\spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures' => '\spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures\NamespacedArticleList',
+            'spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures\\' => '\spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures\NamespacedArticleList'
         );
     }
 
@@ -74,9 +74,9 @@ class DefaultPageFactorySpec extends ObjectBehavior
     private function getElementNamespaces()
     {
         return array(
-            'spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures\Element' => '\spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures\Element\NamespacedSearchBox',
-            '\spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures\Element' => '\spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures\Element\NamespacedSearchBox',
-            'spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures\Element\\' => '\spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures\Element\NamespacedSearchBox'
+            'spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures\Element' => '\spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures\Element\NamespacedSearchBox',
+            '\spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures\Element' => '\spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures\Element\NamespacedSearchBox',
+            'spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures\Element\\' => '\spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures\Element\NamespacedSearchBox'
         );
     }
 

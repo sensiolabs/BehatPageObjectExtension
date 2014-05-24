@@ -1,12 +1,8 @@
 <?php
 
-namespace SensioLabs\Behat\PageObjectExtension\Context;
+namespace SensioLabs\Behat\PageObjectExtension\PageObject;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
-use SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-
-interface PageFactory
+interface Factory
 {
     /**
      * @param string $name

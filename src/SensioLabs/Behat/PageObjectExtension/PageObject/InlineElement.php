@@ -3,7 +3,6 @@
 namespace SensioLabs\Behat\PageObjectExtension\PageObject;
 
 use Behat\Mink\Session;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 
 class InlineElement extends Element
 {
@@ -15,12 +14,12 @@ class InlineElement extends Element
     /**
      * @param array|string $selector
      * @param Session      $session
-     * @param PageFactory  $pageFactory
+     * @param Factory      $factory
      */
-    public function __construct($selector, Session $session, PageFactory $pageFactory)
+    public function __construct($selector, Session $session, Factory $factory)
     {
         $this->selector = $selector;
 
-        parent::__construct($session, $pageFactory);
+        parent::__construct($session, $factory);
     }
 }

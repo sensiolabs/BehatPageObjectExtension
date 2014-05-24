@@ -12,7 +12,7 @@ Feature: Injecting a page object factory
     use Behat\Behat\Context\Context;
     use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
     use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
-    use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+    use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
     use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
     class SearchContext implements Context, PageObjectAware
@@ -20,9 +20,9 @@ Feature: Injecting a page object factory
         private $factory;
 
         /**
-         * @param PageFactory $pageFactory
+         * @param PageObjectFactory $pageObjectFactory
          */
-        public function setPageFactory(PageFactory $factory)
+        public function setPageObjectFactory(PageObjectFactory $factory)
         {
             $this->factory = $factory;
         }

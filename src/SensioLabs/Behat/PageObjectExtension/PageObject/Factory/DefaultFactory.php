@@ -1,13 +1,14 @@
 <?php
 
-namespace SensioLabs\Behat\PageObjectExtension\Context;
+namespace SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 
 use Behat\Mink\Mink;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 
-class DefaultPageFactory implements PageFactory
+class DefaultFactory implements Factory
 {
     /**
      * @var Mink $mink

@@ -5,7 +5,7 @@ namespace spec\SensioLabs\Behat\PageObjectExtension\PageObject;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element as BaseElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -26,7 +26,7 @@ class MyElement extends BaseElement
 
 class ElementSpec extends ObjectBehavior
 {
-    function let(Session $session, PageFactory $factory, SelectorsHandler $selectorsHandler)
+    function let(Session $session, Factory $factory, SelectorsHandler $selectorsHandler)
     {
         // until we have proper abstract class support in PhpSpec
         $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyElement');
@@ -51,7 +51,7 @@ class ElementSpec extends ObjectBehavior
         $this->shouldThrow(new \BadMethodCallException('"search" method is not available on the MyElement'))->during('search');
     }
 
-    function it_creates_a_page(PageFactory $factory, Page $page)
+    function it_creates_a_page(Factory $factory, Page $page)
     {
         $factory->createPage('Home')->willReturn($page);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\SensioLabs\Behat\PageObjectExtension\Context\Fixtures;
+namespace spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory\Fixtures;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 

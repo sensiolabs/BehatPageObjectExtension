@@ -4,13 +4,13 @@ namespace spec\SensioLabs\Behat\PageObjectExtension\Context\Initializer;
 
 use Behat\Behat\Context\Context;
 use PhpSpec\ObjectBehavior;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 
 class PageObjectAwareInitializerSpec extends ObjectBehavior
 {
-    function let(PageFactory $pageFactory)
+    function let(PageObjectFactory $pageObjectFactory)
     {
-        $this->beConstructedWith($pageFactory);
+        $this->beConstructedWith($pageObjectFactory);
     }
 
     function it_should_be_an_initializer()
@@ -18,11 +18,11 @@ class PageObjectAwareInitializerSpec extends ObjectBehavior
         $this->shouldHaveType('Behat\Behat\Context\Initializer\ContextInitializer');
     }
 
-    function it_should_inject_the_page_factory_into_the_context(Context $context, PageFactory $pageFactory)
+    function it_should_inject_the_page_factory_into_the_context(Context $context, PageObjectFactory $pageObjectFactory)
     {
         $context->implement('SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware');
 
-        $context->setPageFactory($pageFactory)->shouldBeCalled();
+        $context->setPageObjectFactory($pageObjectFactory)->shouldBeCalled();
 
         $this->initializeContext($context)->shouldReturn(null);
     }

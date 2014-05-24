@@ -5,7 +5,6 @@ namespace SensioLabs\Behat\PageObjectExtension\PageObject;
 use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Session;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
@@ -23,9 +22,9 @@ abstract class Page extends DocumentElement
     protected $elements = array();
 
     /**
-     * @var PageFactory $pageFactory
+     * @var Factory $factory
      */
-    private $pageFactory = null;
+    private $factory = null;
 
     /**
      * @var array $parameters
@@ -33,15 +32,15 @@ abstract class Page extends DocumentElement
     private $parameters = array();
 
     /**
-     * @param Session     $session
-     * @param PageFactory $pageFactory
-     * @param array       $parameters
+     * @param Session $session
+     * @param Factory $factory
+     * @param array   $parameters
      */
-    public function __construct(Session $session, PageFactory $pageFactory, array $parameters = array())
+    public function __construct(Session $session, Factory $factory, array $parameters = array())
     {
         parent::__construct($session);
 
-        $this->pageFactory = $pageFactory;
+        $this->factory = $factory;
         $this->parameters = $parameters;
     }
 
@@ -109,7 +108,7 @@ abstract class Page extends DocumentElement
      */
     protected function getPage($name)
     {
-        return $this->pageFactory->createPage($name);
+        return $this->factory->createPage($name);
     }
 
     /**
@@ -130,10 +129,10 @@ abstract class Page extends DocumentElement
     protected function createElement($name)
     {
         if (isset($this->elements[$name])) {
-            return $this->pageFactory->createInlineElement($this->elements[$name]);
+            return $this->factory->createInlineElement($this->elements[$name]);
         }
 
-        return $this->pageFactory->createElement($name);
+        return $this->factory->createElement($name);
     }
 
     /**

@@ -3,15 +3,16 @@
 namespace SensioLabs\Behat\PageObjectExtension\Context;
 
 use Behat\Behat\Context\Context;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 class PageObjectContext implements Context, PageObjectAware
 {
     /**
-     * @var PageFactory $pageFactory
+     * @var PageObjectFactory $pageObjectFactory
      */
-    private $pageFactory = null;
+    private $pageObjectFactory = null;
 
     /**
      * @param string $name
@@ -22,11 +23,11 @@ class PageObjectContext implements Context, PageObjectAware
      */
     public function getPage($name)
     {
-        if (null === $this->pageFactory) {
-            throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
+        if (null === $this->pageObjectFactory) {
+            throw new \RuntimeException('To create pages you need to pass a factory with setPageObjectFactory()');
         }
 
-        return $this->pageFactory->createPage($name);
+        return $this->pageObjectFactory->createPage($name);
     }
 
     /**
@@ -38,30 +39,30 @@ class PageObjectContext implements Context, PageObjectAware
      */
     public function getElement($name)
     {
-        if (null === $this->pageFactory) {
-            throw new \RuntimeException('To create elements you need to pass a factory with setPageFactory()');
+        if (null === $this->pageObjectFactory) {
+            throw new \RuntimeException('To create elements you need to pass a factory with setPageObjectFactory()');
         }
 
-        return $this->pageFactory->createElement($name);
+        return $this->pageObjectFactory->createElement($name);
     }
 
     /**
-     * @param PageFactory $pageFactory
+     * @param PageObjectFactory $pageObjectFactory
      */
-    public function setPageFactory(PageFactory $pageFactory)
+    public function setPageObjectFactory(PageObjectFactory $pageObjectFactory)
     {
-        $this->pageFactory = $pageFactory;
+        $this->pageObjectFactory = $pageObjectFactory;
     }
 
     /**
-     * @return PageFactory
+     * @return PageObjectFactory
      */
-    public function getPageFactory()
+    public function getPageObjectFactory()
     {
-        if (null === $this->pageFactory) {
-            throw new \RuntimeException('To access the page factory you need to pass it first with setPageFactory()');
+        if (null === $this->pageObjectFactory) {
+            throw new \RuntimeException('To access the page factory you need to pass it first with setPageObjectFactory()');
         }
 
-        return $this->pageFactory;
+        return $this->pageObjectFactory;
     }
 }
