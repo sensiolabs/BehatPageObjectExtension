@@ -43,7 +43,7 @@ abstract class Element extends NodeElement
     /**
      * @param string $name
      *
-     * @return Page|Element
+     * @return Page
      */
     protected function getPage($name)
     {

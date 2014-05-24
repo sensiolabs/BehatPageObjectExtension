@@ -138,7 +138,7 @@ abstract class Page extends DocumentElement
     /**
      * @param string $name
      *
-     * @return mixed
+     * @return string|null
      */
     protected function getParameter($name)
     {

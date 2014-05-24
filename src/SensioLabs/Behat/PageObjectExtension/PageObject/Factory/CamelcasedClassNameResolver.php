@@ -83,7 +83,7 @@ class CamelcasedClassNameResolver implements ClassNameResolver
     }
 
     /**
-     * @param array $namespaces
+     * @param array $classCandidates
      *
      * @return null|string
      */

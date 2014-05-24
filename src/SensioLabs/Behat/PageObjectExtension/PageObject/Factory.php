@@ -6,6 +6,7 @@ interface Factory
 {
     /**
      * @param string
+     * @param string $name
      *
      * @return Page
      */
@@ -13,6 +14,7 @@ interface Factory
 
     /**
      * @param string
+     * @param string $name
      *
      * @return Element
      */
