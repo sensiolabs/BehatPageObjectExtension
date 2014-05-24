@@ -2,6 +2,6 @@
 
 namespace SensioLabs\Behat\PageObjectExtension\PageObject\Exception;
 
-class PathNotProvidedException extends \RuntimeException
+class PathNotProvidedException extends \RuntimeException implements Exception
 {
 }
