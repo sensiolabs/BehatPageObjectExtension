@@ -202,6 +202,7 @@ abstract class Page extends DocumentElement
                 throw new UnexpectedPageException($message);
             }
         } catch (DriverException $exception) {
+            // ignore drivers which cannot check the response status code
         }
     }
 
