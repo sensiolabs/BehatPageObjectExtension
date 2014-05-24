@@ -16,30 +16,24 @@ class DefaultFactory implements Factory
     private $mink = null;
 
     /**
+     * @var ClassNameResolver
+     */
+    private $classNameResolver;
+
+    /**
      * @var array
      */
     private $pageParameters = array();
 
     /**
-     * @var string
-     */
-    private $pageNamespace = '\\';
-
-    /**
-     * @var string
-     */
-    private $elementNamespace = '\\';
-
-    /**
      * @var Mink  $mink
      * @var array $pageParameters
      */
-    public function __construct(Mink $mink, array $pageParameters, $pageNamespace = '\\', $elementNamespace = '\\')
+    public function __construct(Mink $mink, ClassNameResolver $classNameResolver, array $pageParameters)
     {
         $this->mink = $mink;
         $this->pageParameters = $pageParameters;
-        $this->pageNamespace = rtrim($pageNamespace, '\\').'\\';
-        $this->elementNamespace = rtrim($elementNamespace, '\\').'\\';
+        $this->classNameResolver = $classNameResolver;
     }
 
     /**
@@ -49,11 +43,7 @@ class DefaultFactory implements Factory
      */
     public function createPage($name)
     {
-        $pageClass = $this->pageNamespace.$this->classifyName($name);
-
-        if (!class_exists($pageClass)) {
-            throw new \LogicException(sprintf('"%s" page not recognised. "%s" class not found.', $name, $pageClass));
-        }
+        $pageClass = $this->classNameResolver->resolvePage($name);
 
         return new $pageClass($this->mink->getSession(), $this, $this->pageParameters);
     }
@@ -65,11 +55,7 @@ class DefaultFactory implements Factory
      */
     public function createElement($name)
     {
-        $elementClass = $this->elementNamespace.$this->classifyName($name);
-
-        if (!class_exists($elementClass)) {
-            throw new \LogicException(sprintf('"%s" element not recognised. "%s" class not found.', $name, $elementClass));
-        }
+        $elementClass = $this->classNameResolver->resolveElement($name);
 
         return new $elementClass($this->mink->getSession(), $this);
     }
@@ -82,15 +68,5 @@ class DefaultFactory implements Factory
     public function createInlineElement($selector)
     {
         return new InlineElement($selector, $this->mink->getSession(), $this);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function classifyName($name)
-    {
-        return str_replace(' ', '', ucwords($name));
     }
 }
