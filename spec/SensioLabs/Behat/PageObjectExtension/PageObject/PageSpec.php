@@ -104,7 +104,7 @@ class PageSpec extends ObjectBehavior
 
     function it_prepends_base_url($session, $factory)
     {
-        $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
+        $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev'));
 
         $session->visit('http://behat.dev/employees/13')->shouldBeCalled();
         $session->getStatusCode()->willReturn(200);
