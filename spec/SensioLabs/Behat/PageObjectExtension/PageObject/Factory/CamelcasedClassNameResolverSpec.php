@@ -4,7 +4,6 @@ namespace spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 
 use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 require_once __DIR__.'/Fixtures/ArticleList.php';
 require_once __DIR__.'/Fixtures/NamespacedArticleList.php';
