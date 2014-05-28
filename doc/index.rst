@@ -13,7 +13,7 @@ Installation
 
 This extension requires:
 
-* Behat 2.4+
+* Behat 3.0+
 
 Through PHAR
 ~~~~~~~~~~~~
@@ -49,7 +49,7 @@ The easiest way to keep your suite updated is to use
             "require": {
                 ...
 
-                "sensiolabs/behat-page-object-extension": "*"
+                "sensiolabs/behat-page-object-extension": "~2.0"
             }
         }
 
@@ -67,7 +67,7 @@ The easiest way to keep your suite updated is to use
         default:
           # ...
           extensions:
-            SensioLabs\Behat\PageObjectExtension\Extension: ~
+            SensioLabs\Behat\PageObjectExtension: ~
 
 Page objects
 ------------
@@ -111,6 +111,8 @@ To create a new page object extend the
     .. code-block:: php
 
         <?php
+
+        namespace Page;
 
         use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -186,6 +188,8 @@ However, to be able to do this we have to provide a ``$path`` property:
 
         <?php
 
+        namespace Page;
+
         use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
         class Homepage extends Page
@@ -243,6 +247,8 @@ advantage of existing `Mink <http://mink.behat.org/>`_ Element methods:
     .. code-block:: php
 
         <?php
+
+        namespace Page;
 
         use Behat\Mink\Exception\ElementNotFoundException;
         use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -303,6 +309,8 @@ The simplest way to use elements is to define them inline in the page class:
 
         <?php
 
+        namespace Page;
+
         use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
         class Homepage extends Page
@@ -310,7 +318,7 @@ The simplest way to use elements is to define them inline in the page class:
             // ...
 
             protected $elements = array(
-                'Search form' => array('css' => 'form#search'),
+                'Search form' => 'form#search',
                 'Navigation' => array('css' => '.header div.navigation'),
                 'Article list' => array('xpath' => '//*[contains(@class, "content")]//ul[contains(@class, "articles")]')
             );
@@ -333,6 +341,10 @@ The simplest way to use elements is to define them inline in the page class:
 The advantage of this approach is that all the important page elements
 are defined in one place and we can reference them from multiple methods.
 
+The `$elements` array should be a list of selectors indexed by element
+names. The selector can be either a string or an array. If it's a string,
+a css selector is assumed. The key of an array is used otherwise.
+
 Custom elements
 ~~~~~~~~~~~~~~~
 
@@ -349,15 +361,17 @@ Here's a previous search example modeled as an element:
 
         <?php
 
+        namespace Page\Element;
+
         use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
         use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
         class SearchForm extends Element
         {
             /**
-             * @var array $selector
+             * @var array|string $selector
              */
-            protected $selector = array('css' => '.content form#search');
+            protected $selector = '.content form#search';
 
             /**
              * @param string $keywords
@@ -377,11 +391,16 @@ Definining the ``$selector`` property is optional but recommended. When defined,
 it will limit all the operations on the page to the area within the selector.
 Any selector supported by Mink can be used here.
 
+Similarly to the inline elements, the selector can be either a string or an array.
+If it's a string, a css selector is assumed. The key of an array is used otherwise.
+
 Accessing custom elements is much like accessing inline ones:
 
     .. code-block:: php
 
         <?php
+
+        namespace Page;
 
         use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -449,6 +468,8 @@ Our page object could look like the following:
 
     .. code-block:: php
 
+        namespace Page;
+
         class ConferenceList extends Page
         {
             public function hasEnrolmentButtonFor($conferenceName)
@@ -481,7 +502,7 @@ we need to install it first. Best way to do this is by adding it to the
     .. code-block:: js
 
         "require-dev": {
-            "bossa/phpspec2-expect": "dev-master"
+            "bossa/phpspec2-expect": "~1.0"
         }
 
 Configuration options
@@ -498,7 +519,7 @@ Defaults can be simply changed in the ``behat.yml`` file:
 
         default:
           extensions:
-            SensioLabs\Behat\PageObjectExtension\Extension:
+            SensioLabs\Behat\PageObjectExtension:
               namespaces:
                 page: Acme\Features\Context\Page
                 element: Acme\Features\Context\Page\Element

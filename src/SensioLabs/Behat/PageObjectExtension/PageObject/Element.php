@@ -5,29 +5,28 @@ namespace SensioLabs\Behat\PageObjectExtension\PageObject;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
 
 abstract class Element extends NodeElement
 {
     /**
-     * @var array|string $selector
+     * @var array|string
      */
     protected $selector = array('xpath' => '//');
 
     /**
-     * @var PageFactoryInterface $pageFactory
+     * @var Factory
      */
-    private $pageFactory = null;
+    private $factory = null;
 
     /**
-     * @param Session              $session
-     * @param PageFactoryInterface $pageFactory
+     * @param Session $session
+     * @param Factory $factory
      */
-    public function __construct(Session $session, PageFactoryInterface $pageFactory)
+    public function __construct(Session $session, Factory $factory)
     {
         parent::__construct($this->getSelectorAsXpath($session->getSelectorsHandler()), $session);
 
-        $this->pageFactory = $pageFactory;
+        $this->factory = $factory;
     }
 
     /**
@@ -44,11 +43,11 @@ abstract class Element extends NodeElement
     /**
      * @param string $name
      *
-     * @return Page|Element
+     * @return Page
      */
     protected function getPage($name)
     {
-        return $this->pageFactory->createPage($name);
+        return $this->factory->createPage($name);
     }
 
     /**
@@ -66,8 +65,8 @@ abstract class Element extends NodeElement
      */
     private function getSelectorAsXpath(SelectorsHandler $selectorsHandler)
     {
-        $selectorType = key($this->selector);
-        $locator = $this->selector[$selectorType];
+        $selectorType = is_array($this->selector) ? key($this->selector) : 'css';
+        $locator = is_array($this->selector) ? $this->selector[$selectorType] : $this->selector;
 
         return $selectorsHandler->selectorToXpath($selectorType, $locator);
     }

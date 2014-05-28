@@ -5,7 +5,6 @@ namespace SensioLabs\Behat\PageObjectExtension\PageObject;
 use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Session;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
@@ -13,35 +12,35 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageExce
 abstract class Page extends DocumentElement
 {
     /**
-     * @var string|null $path
+     * @var string|null
      */
     protected $path = null;
 
     /**
-     * @var array $elements
+     * @var array
      */
     protected $elements = array();
 
     /**
-     * @var PageFactoryInterface $pageFactory
+     * @var Factory
      */
-    private $pageFactory = null;
+    private $factory = null;
 
     /**
-     * @var array $parameters
+     * @var array
      */
     private $parameters = array();
 
     /**
-     * @param Session              $session
-     * @param PageFactoryInterface $pageFactory
-     * @param array                $parameters
+     * @param Session $session
+     * @param Factory $factory
+     * @param array   $parameters
      */
-    public function __construct(Session $session, PageFactoryInterface $pageFactory, array $parameters = array())
+    public function __construct(Session $session, Factory $factory, array $parameters = array())
     {
         parent::__construct($session);
 
-        $this->pageFactory = $pageFactory;
+        $this->factory = $factory;
         $this->parameters = $parameters;
     }
 
@@ -109,7 +108,7 @@ abstract class Page extends DocumentElement
      */
     protected function getPage($name)
     {
-        return $this->pageFactory->createPage($name);
+        return $this->factory->createPage($name);
     }
 
     /**
@@ -130,16 +129,16 @@ abstract class Page extends DocumentElement
     protected function createElement($name)
     {
         if (isset($this->elements[$name])) {
-            return $this->pageFactory->createInlineElement($this->elements[$name]);
+            return $this->factory->createInlineElement($this->elements[$name]);
         }
 
-        return $this->pageFactory->createElement($name);
+        return $this->factory->createElement($name);
     }
 
     /**
      * @param string $name
      *
-     * @return mixed
+     * @return string|null
      */
     protected function getParameter($name)
     {
@@ -203,6 +202,7 @@ abstract class Page extends DocumentElement
                 throw new UnexpectedPageException($message);
             }
         } catch (DriverException $exception) {
+            // ignore drivers which cannot check the response status code
         }
     }
 

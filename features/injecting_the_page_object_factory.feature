@@ -9,20 +9,20 @@ Feature: Injecting a page object factory
     """
     <?php
 
-    use Behat\Behat\Context\BehatContext;
-    use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
+    use Behat\Behat\Context\Context;
+    use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
     use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
-    use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+    use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
     use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
-    class SearchContext extends BehatContext implements PageObjectAwareInterface
+    class SearchContext implements Context, PageObjectAware
     {
         private $factory;
 
         /**
-         * @param PageFactory $pageFactory
+         * @param PageObjectFactory $pageObjectFactory
          */
-        public function setPageFactory(PageFactory $factory)
+        public function setPageObjectFactory(PageObjectFactory $factory)
         {
             $this->factory = $factory;
         }
@@ -57,6 +57,8 @@ Feature: Injecting a page object factory
     And a page object file "features/bootstrap/Page/Homepage.php" contains:
     """
     <?php
+
+    namespace Page;
 
     use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 

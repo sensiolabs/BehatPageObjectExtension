@@ -38,6 +38,8 @@ Feature: Verifying if a page is open
     """
     <?php
 
+    namespace Page;
+
     use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
     class NewsList extends Page
@@ -119,6 +121,8 @@ Feature: Verifying if a page is open
     """
     <?php
 
+    namespace Page;
+
     use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
     class News extends Page
@@ -152,12 +156,10 @@ Feature: Verifying if a page is open
     """
     .F
 
-    (::) failed steps (::)
+    --- Failed steps:
 
-    01. Expected the news page to be open
-        In step `Then I should see the news article'. # SearchContext::isShouldSeeTheNewsArticle()
-        From scenario `Reading a news article'.       # features/news.feature:6
-        Of feature `Reading news'.                    # features/news.feature
+        Then I should see the news article # features/news.feature:8
+          Expected the news page to be open (LogicException)
 
     1 scenario (1 failed)
     2 steps (1 passed, 1 failed)
@@ -203,6 +205,8 @@ Feature: Verifying if a page is open
     """
     <?php
 
+    namespace Page;
+
     use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
     class NewsList extends Page
@@ -237,12 +241,10 @@ Feature: Verifying if a page is open
     """
     .F
 
-    (::) failed steps (::)
+    --- Failed steps:
 
-    01. Expected the news list page to be open
-        In step `Then I should see a list of recent news articles'. # SearchContext::iShouldSeeListOfRecentNewsArticles()
-        From scenario `Viewing recent news articles'.               # features/news.feature:6
-        Of feature `Viewing the news list'.                         # features/news.feature
+        Then I should see a list of recent news articles # features/news.feature:8
+          Expected the news list page to be open (LogicException)
 
     1 scenario (1 failed)
     2 steps (1 passed, 1 failed)
@@ -288,6 +290,8 @@ Feature: Verifying if a page is open
     """
     <?php
 
+    namespace Page;
+
     use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
     class NewsList extends Page
@@ -322,12 +326,10 @@ Feature: Verifying if a page is open
     """
     .F
 
-    (::) failed steps (::)
+    --- Failed steps:
 
-    01. Expected the news list page to be open
-        In step `Then I should see a list of recent news articles'. # SearchContext::iShouldSeeListOfRecentNewsArticles()
-        From scenario `Viewing recent news articles'.               # features/news.feature:6
-        Of feature `Viewing the news list'.                         # features/news.feature
+        Then I should see a list of recent news articles # features/news.feature:8
+          Expected the news list page to be open (LogicException)
 
     1 scenario (1 failed)
     2 steps (1 passed, 1 failed)

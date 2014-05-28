@@ -1,9 +1,9 @@
 <?php
 
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Context\Context;
 use Symfony\Component\Process\Process;
 
-class PhpServerContext extends BehatContext
+class PhpServerContext implements Context
 {
     /**
      * @var Process

@@ -2,43 +2,33 @@
 
 namespace spec\SensioLabs\Behat\PageObjectExtension\Context\Initializer;
 
+use Behat\Behat\Context\Context;
 use PhpSpec\ObjectBehavior;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 
 class PageObjectAwareInitializerSpec extends ObjectBehavior
 {
-    function let(PageFactory $pageFactory)
+    function let(PageObjectFactory $pageObjectFactory)
     {
-        $this->beConstructedWith($pageFactory);
+        $this->beConstructedWith($pageObjectFactory);
     }
 
     function it_should_be_an_initializer()
     {
-        $this->shouldHaveType('Behat\Behat\Context\Initializer\InitializerInterface');
+        $this->shouldHaveType('Behat\Behat\Context\Initializer\ContextInitializer');
     }
 
-    function it_supports_page_object_aware($context)
+    function it_should_inject_the_page_factory_into_the_context(Context $context, PageObjectFactory $pageObjectFactory)
     {
-        $context->implement('SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface');
-        $context->implement('Behat\Behat\Context\ContextInterface');
+        $context->implement('SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware');
 
-        $this->supports($context)->shouldReturn(true);
+        $context->setPageObjectFactory($pageObjectFactory)->shouldBeCalled();
+
+        $this->initializeContext($context)->shouldReturn(null);
     }
 
-    function it_should_not_support_other_contexts($context)
+    function it_should_not_inject_the_page_factory_into_non_page_object_aware_contexts(Context $context)
     {
-        $context->implement('Behat\Behat\Context\ContextInterface');
-
-        $this->supports($context)->shouldReturn(false);
-    }
-
-    function it_should_inject_the_page_factory_into_the_context($context, $pageFactory)
-    {
-        $context->implement('SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface');
-        $context->implement('Behat\Behat\Context\ContextInterface');
-
-        $context->setPageFactory($pageFactory)->shouldBeCalled();
-
-        $this->initialize($context)->shouldReturn(null);
+        $this->initializeContext($context)->shouldReturn(null);
     }
 }

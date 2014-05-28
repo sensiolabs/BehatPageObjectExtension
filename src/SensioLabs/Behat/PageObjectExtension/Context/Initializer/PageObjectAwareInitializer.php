@@ -2,41 +2,33 @@
 
 namespace SensioLabs\Behat\PageObjectExtension\Context\Initializer;
 
-use Behat\Behat\Context\ContextInterface;
-use Behat\Behat\Context\Initializer\InitializerInterface;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Context\Initializer\ContextInitializer;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 
-class PageObjectAwareInitializer implements InitializerInterface
+class PageObjectAwareInitializer implements ContextInitializer
 {
     /**
-     * @var PageFactory $pageFactory
+     * @var PageObjectFactory
      */
-    private $pageFactory = null;
+    private $pageObjectFactory = null;
 
     /**
-     * @param PageFactory $pageFactory
+     * @param PageObjectFactory $pageObjectFactory
      */
-    public function __construct(PageFactory $pageFactory)
+    public function __construct(PageObjectFactory $pageObjectFactory)
     {
-        $this->pageFactory = $pageFactory;
+        $this->pageObjectFactory = $pageObjectFactory;
     }
 
     /**
-     * @param ContextInterface $context
-     *
-     * @return boolean
+     * @param Context $context
      */
-    public function supports(ContextInterface $context)
+    public function initializeContext(Context $context)
     {
-        return $context instanceof PageObjectAwareInterface;
-    }
-
-    /**
-     * @param ContextInterface $context
-     */
-    public function initialize(ContextInterface $context)
-    {
-        $context->setPageFactory($this->pageFactory);
+        if ($context instanceof PageObjectAware) {
+            $context->setPageObjectFactory($this->pageObjectFactory);
+        }
     }
 }

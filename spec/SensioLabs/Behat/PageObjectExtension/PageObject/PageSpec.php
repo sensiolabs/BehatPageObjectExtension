@@ -8,7 +8,7 @@ use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
@@ -78,7 +78,7 @@ class MyPageWithInlineElements extends BasePage
 
 class PageSpec extends ObjectBehavior
 {
-    function let(Session $session, PageFactoryInterface $factory, SelectorsHandler $selectorsHandler, DriverInterface $driver)
+    function let(Session $session, Factory $factory, SelectorsHandler $selectorsHandler, DriverInterface $driver)
     {
         // until we have proper abstract class support in PhpSpec
         $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPage');
@@ -104,7 +104,7 @@ class PageSpec extends ObjectBehavior
 
     function it_prepends_base_url($session, $factory)
     {
-        $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
+        $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev'));
 
         $session->visit('http://behat.dev/employees/13')->shouldBeCalled();
         $session->getStatusCode()->willReturn(200);
