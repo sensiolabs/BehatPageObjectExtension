@@ -318,7 +318,7 @@ The simplest way to use elements is to define them inline in the page class:
             // ...
 
             protected $elements = array(
-                'Search form' => array('css' => 'form#search'),
+                'Search form' => 'form#search',
                 'Navigation' => array('css' => '.header div.navigation'),
                 'Article list' => array('xpath' => '//*[contains(@class, "content")]//ul[contains(@class, "articles")]')
             );
@@ -340,6 +340,10 @@ The simplest way to use elements is to define them inline in the page class:
 
 The advantage of this approach is that all the important page elements
 are defined in one place and we can reference them from multiple methods.
+
+The `$elements` array should be a list of selectors indexed by element
+names. The selector can be either a string or an array. If it's a string,
+a css selector is assumed. The key of an array is used otherwise.
 
 Custom elements
 ~~~~~~~~~~~~~~~
@@ -365,9 +369,9 @@ Here's a previous search example modeled as an element:
         class SearchForm extends Element
         {
             /**
-             * @var array $selector
+             * @var array|string $selector
              */
-            protected $selector = array('css' => '.content form#search');
+            protected $selector = '.content form#search';
 
             /**
              * @param string $keywords
@@ -386,6 +390,9 @@ Here's a previous search example modeled as an element:
 Definining the ``$selector`` property is optional but recommended. When defined,
 it will limit all the operations on the page to the area within the selector.
 Any selector supported by Mink can be used here.
+
+Similarly to the inline elements, the selector can be either a string or an array.
+If it's a string, a css selector is assumed. The key of an array is used otherwise.
 
 Accessing custom elements is much like accessing inline ones:
 
