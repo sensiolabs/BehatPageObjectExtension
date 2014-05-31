@@ -13,6 +13,7 @@
         <parameter key="sensio_labs.page_object_extension.page_factory.default.class">SensioLabs\Behat\PageObjectExtension\PageObject\Factory\DefaultFactory</parameter>
         <parameter key="sensio_labs.page_object_extension.class_name_resolver.camelcased.class">SensioLabs\Behat\PageObjectExtension\PageObject\Factory\CamelcasedClassNameResolver</parameter>
         <parameter key="sensio_labs.page_object_extension.context.initializer.class">SensioLabs\Behat\PageObjectExtension\Context\Initializer\PageObjectAwareInitializer</parameter>
+        <parameter key="sensio_labs.page_object_extension.context.argument_resolver.page_object.class">SensioLabs\Behat\PageObjectExtension\Context\Argument\PageObjectArgumentResolver</parameter>
     </parameters>
 
     <services>
@@ -34,6 +35,11 @@
         <service id="sensio_labs.page_object_extension.context.initializer" class="%sensio_labs.page_object_extension.context.initializer.class%">
             <argument type="service" id="sensio_labs.page_object_extension.page_factory" />
             <tag name="context.initializer" />
+        </service>
+
+        <service id="sensio_labs.page_object_extension.context.argument_resolver.page_object" class="%sensio_labs.page_object_extension.context.argument_resolver.page_object.class%">
+            <argument type="service" id="sensio_labs.page_object_extension.page_factory" />
+            <tag name="context.argument_resolver"/>
         </service>
     </services>
 </container>

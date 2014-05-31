@@ -7,6 +7,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 
 class DefaultFactory implements Factory
 {
@@ -45,7 +46,7 @@ class DefaultFactory implements Factory
     {
         $pageClass = $this->classNameResolver->resolvePage($name);
 
-        return new $pageClass($this->mink->getSession(), $this, $this->pageParameters);
+        return $this->instantiatePage($pageClass);
     }
 
     /**
@@ -57,7 +58,7 @@ class DefaultFactory implements Factory
     {
         $elementClass = $this->classNameResolver->resolveElement($name);
 
-        return new $elementClass($this->mink->getSession(), $this);
+        return $this->instantiateElement($elementClass);
     }
 
     /**
@@ -68,5 +69,41 @@ class DefaultFactory implements Factory
     public function createInlineElement($selector)
     {
         return new InlineElement($selector, $this->mink->getSession(), $this);
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return PageObject
+     */
+    public function instantiate($class)
+    {
+        if (is_subclass_of($class, 'SensioLabs\Behat\PageObjectExtension\PageObject\Page')) {
+            return $this->instantiatePage($class);
+        } else if (is_subclass_of($class, 'SensioLabs\Behat\PageObjectExtension\PageObject\Element')) {
+           return $this->instantiateElement($class);
+        }
+
+        throw new \InvalidArgumentException(sprintf('Not a page object class: %s', $class));
+    }
+
+    /**
+     * @param string $pageClass
+     *
+     * @return Page
+     */
+    private function instantiatePage($pageClass)
+    {
+        return new $pageClass($this->mink->getSession(), $this, $this->pageParameters);
+    }
+
+    /**
+     * @param string $elementClass
+     *
+     * @return Element
+     */
+    private function instantiateElement($elementClass)
+    {
+        return new $elementClass($this->mink->getSession(), $this);
     }
 }

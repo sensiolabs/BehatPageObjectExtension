@@ -6,7 +6,7 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 
-abstract class Element extends NodeElement
+abstract class Element extends NodeElement implements PageObject
 {
     /**
      * @var array|string

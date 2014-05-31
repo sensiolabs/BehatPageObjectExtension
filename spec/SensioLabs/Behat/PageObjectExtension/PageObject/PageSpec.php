@@ -89,6 +89,11 @@ class PageSpec extends ObjectBehavior
 
     }
 
+    function it_should_be_a_page_object()
+    {
+        $this->shouldHaveType('SensioLabs\Behat\PageObjectExtension\PageObject\PageObject');
+    }
+
     function it_should_be_a_document_element()
     {
         $this->shouldHaveType('Behat\Mink\Element\DocumentElement');

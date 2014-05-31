@@ -5,7 +5,6 @@ namespace SensioLabs\Behat\PageObjectExtension\PageObject;
 interface Factory
 {
     /**
-     * @param string
      * @param string $name
      *
      * @return Page
@@ -13,7 +12,6 @@ interface Factory
     public function createPage($name);
 
     /**
-     * @param string
      * @param string $name
      *
      * @return Element
@@ -26,4 +24,11 @@ interface Factory
      * @return InlineElement
      */
     public function createInlineElement($selector);
+
+    /**
+     * @param string $class
+     *
+     * @return PageObject
+     */
+    public function instantiate($class);
 }
