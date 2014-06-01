@@ -64,10 +64,6 @@ class PageObjectExtension implements TestworkExtension
      */
     private function updateNamespaceParameters(ContainerBuilder $container, array $config)
     {
-        if (!isset($config['namespaces'])) {
-            return;
-        }
-
         $namespaces = $config['namespaces'];
 
         if (!empty($namespaces['page'])) {
