@@ -87,10 +87,10 @@ class PageObjectExtension implements TestworkExtension
                 'sensio_labs.page_object_extension.namespaces.page',
                 $config['namespaces']['page']
             );
-            if (empty($config['namespaces']['element']) && 1 === count($config['namespaces']['page'])) {
+            if (empty($config['namespaces']['element'])) {
                 $container->setParameter(
                     'sensio_labs.page_object_extension.namespaces.element',
-                    array($config['namespaces']['page'][0].'\Element')
+                    array_map(function ($v) { return $v.'\Element'; }, $config['namespaces']['page'])
                 );
             }
         }
