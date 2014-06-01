@@ -68,24 +68,15 @@ class PageObjectExtension implements TestworkExtension
             return;
         }
 
-        if (!empty($config['namespaces']['page'])) {
-            $container->setParameter(
-                'sensio_labs.page_object_extension.namespaces.page',
-                $config['namespaces']['page']
-            );
-            if (empty($config['namespaces']['element'])) {
-                $container->setParameter(
-                    'sensio_labs.page_object_extension.namespaces.element',
-                    array_map(function ($v) { return $v.'\Element'; }, $config['namespaces']['page'])
-                );
-            }
+        $namespaces = $config['namespaces'];
+
+        if (!empty($namespaces['page'])) {
+            $container->setParameter('sensio_labs.page_object_extension.namespaces.page', $namespaces['page']);
+            $namespaces['element'] = $namespaces['element'] ?: array_map(function ($v) { return $v.'\Element'; }, $namespaces['page']);
         }
 
-        if (!empty($config['namespaces']['element'])) {
-            $container->setParameter(
-                'sensio_labs.page_object_extension.namespaces.element',
-                $config['namespaces']['element']
-            );
+        if (!empty($namespaces['element'])) {
+            $container->setParameter('sensio_labs.page_object_extension.namespaces.element', $namespaces['element']);
         }
     }
 }
