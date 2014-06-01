@@ -17,7 +17,21 @@ $phar = new \Phar($filename, 0, 'extension.phar');
 $phar->setSignatureAlgorithm(\Phar::SHA1);
 $phar->startBuffering();
 
-foreach (findFiles('src') as $path) {
+$findFiles = function ($dir) {
+    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir),
+        RecursiveIteratorIterator::CHILD_FIRST);
+
+    $files = array();
+    foreach ($iterator as $path) {
+        if ($path->isFile()) {
+            $files[] = $path->getPath().DIRECTORY_SEPARATOR.$path->getFilename();
+        }
+    }
+
+    return $files;
+};
+
+foreach ($findFiles('src') as $path) {
     $phar->addFromString($path, file_get_contents(__DIR__.'/'.$path));
 }
 
@@ -39,17 +53,3 @@ __HALT_COMPILER();
 STUB
 );
 $phar->stopBuffering();
-
-function findFiles($dir) {
-    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir),
-        RecursiveIteratorIterator::CHILD_FIRST);
-
-    $files = array();
-    foreach ($iterator as $path) {
-        if ($path->isFile()) {
-            $files[] = $path->getPath().DIRECTORY_SEPARATOR.$path->getFilename();
-        }
-    }
-
-    return $files;
-}
