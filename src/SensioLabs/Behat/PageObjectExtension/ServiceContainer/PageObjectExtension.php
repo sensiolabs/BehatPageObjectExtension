@@ -31,27 +31,13 @@ class PageObjectExtension implements TestworkExtension
      */
     public function configure(ArrayNodeDefinition $builder)
     {
-        $builder
-            ->children()
-                ->arrayNode('namespaces')
-                    ->children()
-                        ->arrayNode('page')
-                            ->beforeNormalization()
-                                ->ifString()
-                                ->then(function ($v) { return array($v); } )
-                            ->end()
-                            ->prototype('scalar')->end()
-                        ->end()
-                        ->arrayNode('element')
-                            ->beforeNormalization()
-                                ->ifString()
-                                ->then(function ($v) { return array($v); } )
-                            ->end()
-                            ->prototype('scalar')->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
+        $namespaces = $builder->children()->arrayNode('namespaces')->children();
+
+        foreach (array('page', 'element') as $namespaceType) {
+            $namespace = $namespaces->arrayNode($namespaceType);
+            $namespace->beforeNormalization()->ifString()->then(function ($v) { return array($v); } );
+            $namespace->prototype('scalar');
+        }
     }
 
     /**
