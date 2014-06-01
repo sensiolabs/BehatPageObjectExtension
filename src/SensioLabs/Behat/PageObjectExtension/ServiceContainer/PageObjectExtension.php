@@ -48,7 +48,9 @@ class PageObjectExtension implements TestworkExtension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/config'));
         $loader->load('services.xml');
 
-        $this->updateNamespaceParameters($container, $config);
+        if (isset($config['namespaces'])) {
+            $this->updateNamespaceParameters($container, $config['namespaces']);
+        }
     }
 
     /**
@@ -60,12 +62,10 @@ class PageObjectExtension implements TestworkExtension
 
     /**
      * @param ContainerBuilder $container
-     * @param array            $config
+     * @param array            $namespaces
      */
-    private function updateNamespaceParameters(ContainerBuilder $container, array $config)
+    private function updateNamespaceParameters(ContainerBuilder $container, array $namespaces)
     {
-        $namespaces = $config['namespaces'];
-
         if (!empty($namespaces['page'])) {
             $container->setParameter('sensio_labs.page_object_extension.namespaces.page', $namespaces['page']);
             $namespaces['element'] = $namespaces['element'] ?: array_map(function ($v) { return $v.'\Element'; }, $namespaces['page']);
