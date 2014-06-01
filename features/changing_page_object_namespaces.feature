@@ -194,7 +194,6 @@ Feature: Changing page object namespaces
     When I run behat
     Then it should pass
 
-  @wip
   Scenario: Configuring multiple namespaces
     Given a behat configuration:
     """

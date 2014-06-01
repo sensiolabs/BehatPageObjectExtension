@@ -35,8 +35,20 @@ class PageObjectExtension implements TestworkExtension
             ->children()
                 ->arrayNode('namespaces')
                     ->children()
-                        ->scalarNode('page')->end()
-                        ->scalarNode('element')->end()
+                        ->arrayNode('page')
+                            ->beforeNormalization()
+                                ->ifString()
+                                ->then(function ($v) { return array($v); } )
+                            ->end()
+                            ->prototype('scalar')->end()
+                        ->end()
+                        ->arrayNode('element')
+                            ->beforeNormalization()
+                                ->ifString()
+                                ->then(function ($v) { return array($v); } )
+                            ->end()
+                            ->prototype('scalar')->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end();
@@ -70,14 +82,20 @@ class PageObjectExtension implements TestworkExtension
             return;
         }
 
-        if (isset($config['namespaces']['page'])) {
+        if (!empty($config['namespaces']['page'])) {
             $container->setParameter(
                 'sensio_labs.page_object_extension.namespaces.page',
                 $config['namespaces']['page']
             );
+            if (empty($config['namespaces']['element']) && 1 === count($config['namespaces']['page'])) {
+                $container->setParameter(
+                    'sensio_labs.page_object_extension.namespaces.element',
+                    array($config['namespaces']['page'][0].'\Element')
+                );
+            }
         }
 
-        if (isset($config['namespaces']['element'])) {
+        if (!empty($config['namespaces']['element'])) {
             $container->setParameter(
                 'sensio_labs.page_object_extension.namespaces.element',
                 $config['namespaces']['element']
