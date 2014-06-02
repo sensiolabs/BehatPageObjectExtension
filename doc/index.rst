@@ -521,6 +521,6 @@ Defaults can be simply changed in the ``behat.yml`` file:
           extensions:
             SensioLabs\Behat\PageObjectExtension:
               namespaces:
-                page: Acme\Features\Context\Page
-                element: Acme\Features\Context\Page\Element
+                page: [Acme\Features\Context\Page, Acme\Page]
+                element: [Acme\Features\Context\Page\Element, Acme\Page\Element]
 

@@ -31,15 +31,13 @@ class PageObjectExtension implements TestworkExtension
      */
     public function configure(ArrayNodeDefinition $builder)
     {
-        $builder
-            ->children()
-                ->arrayNode('namespaces')
-                    ->children()
-                        ->scalarNode('page')->end()
-                        ->scalarNode('element')->end()
-                    ->end()
-                ->end()
-            ->end();
+        $namespaces = $builder->children()->arrayNode('namespaces')->children();
+
+        foreach (array('page', 'element') as $namespaceType) {
+            $namespace = $namespaces->arrayNode($namespaceType);
+            $namespace->beforeNormalization()->ifString()->then(function ($v) { return array($v); } );
+            $namespace->prototype('scalar');
+        }
     }
 
     /**
@@ -50,7 +48,9 @@ class PageObjectExtension implements TestworkExtension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/config'));
         $loader->load('services.xml');
 
-        $this->updateNamespaceParameters($container, $config);
+        if (isset($config['namespaces'])) {
+            $this->updateNamespaceParameters($container, $config['namespaces']);
+        }
     }
 
     /**
@@ -62,26 +62,17 @@ class PageObjectExtension implements TestworkExtension
 
     /**
      * @param ContainerBuilder $container
-     * @param array            $config
+     * @param array            $namespaces
      */
-    private function updateNamespaceParameters(ContainerBuilder $container, array $config)
+    private function updateNamespaceParameters(ContainerBuilder $container, array $namespaces)
     {
-        if (!isset($config['namespaces'])) {
-            return;
+        if (!empty($namespaces['page'])) {
+            $container->setParameter('sensio_labs.page_object_extension.namespaces.page', $namespaces['page']);
+            $namespaces['element'] = $namespaces['element'] ?: array_map(function ($v) { return $v.'\Element'; }, $namespaces['page']);
         }
 
-        if (isset($config['namespaces']['page'])) {
-            $container->setParameter(
-                'sensio_labs.page_object_extension.namespaces.page',
-                $config['namespaces']['page']
-            );
-        }
-
-        if (isset($config['namespaces']['element'])) {
-            $container->setParameter(
-                'sensio_labs.page_object_extension.namespaces.element',
-                $config['namespaces']['element']
-            );
+        if (!empty($namespaces['element'])) {
+            $container->setParameter('sensio_labs.page_object_extension.namespaces.element', $namespaces['element']);
         }
     }
 }
