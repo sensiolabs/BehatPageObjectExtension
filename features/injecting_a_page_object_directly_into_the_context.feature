@@ -1,4 +1,3 @@
-@wip
 Feature: Injecting a page object directly into the context
   In order to make page object dependencies visible
   As a Developer

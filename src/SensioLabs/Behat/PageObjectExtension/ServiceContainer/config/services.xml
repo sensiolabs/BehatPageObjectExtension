@@ -24,6 +24,13 @@
 
         <service id="sensio_labs.page_object_extension.class_name_resolver" alias="sensio_labs.page_object_extension.class_name_resolver.camelcased" />
 
+        <service id="sensio_labs.page_object_extension.page_factory.lazy" class="SensioLabs\Behat\PageObjectExtension\PageObject\Factory\LazyFactory" public="false">
+            <argument type="service" id="sensio_labs.page_object_extension.page_factory" />
+            <argument type="service">
+                <service class="ProxyManager\Factory\LazyLoadingValueHolderFactory" />
+            </argument>
+        </service>
+
         <service id="sensio_labs.page_object_extension.page_factory.default" class="%sensio_labs.page_object_extension.page_factory.default.class%" public="false">
             <argument type="service" id="mink" />
             <argument type="service" id="sensio_labs.page_object_extension.class_name_resolver" />
@@ -38,7 +45,7 @@
         </service>
 
         <service id="sensio_labs.page_object_extension.context.argument_resolver.page_object" class="%sensio_labs.page_object_extension.context.argument_resolver.page_object.class%">
-            <argument type="service" id="sensio_labs.page_object_extension.page_factory" />
+            <argument type="service" id="sensio_labs.page_object_extension.page_factory.lazy" />
             <tag name="context.argument_resolver"/>
         </service>
     </services>

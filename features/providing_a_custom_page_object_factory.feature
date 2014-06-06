@@ -79,6 +79,16 @@ Feature: Providing a custom page object factory
         {
             return new InlineElement($selector, $this->mink->getSession(), $this);
         }
+
+        /**
+         * @param string $class
+         *
+         * @return PageObject
+         */
+        public function instantiate($class)
+        {
+            return new $class($this->mink->getSession(), $this, $this->pageParameters);
+        }
     }
 
     use Behat\Testwork\ServiceContainer\Extension as TestworkExtension;

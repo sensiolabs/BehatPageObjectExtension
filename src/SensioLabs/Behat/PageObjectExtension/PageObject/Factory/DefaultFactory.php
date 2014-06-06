@@ -80,7 +80,7 @@ class DefaultFactory implements Factory
     {
         if (is_subclass_of($class, 'SensioLabs\Behat\PageObjectExtension\PageObject\Page')) {
             return $this->instantiatePage($class);
-        } else if (is_subclass_of($class, 'SensioLabs\Behat\PageObjectExtension\PageObject\Element')) {
+        } elseif (is_subclass_of($class, 'SensioLabs\Behat\PageObjectExtension\PageObject\Element')) {
            return $this->instantiateElement($class);
         }
 
