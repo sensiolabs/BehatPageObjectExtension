@@ -38,6 +38,8 @@ class PageObjectExtension implements TestworkExtension
             $namespace->beforeNormalization()->ifString()->then(function ($v) { return array($v); } );
             $namespace->prototype('scalar');
         }
+
+        $builder->children()->scalarNode('factory');
     }
 
     /**
@@ -50,6 +52,10 @@ class PageObjectExtension implements TestworkExtension
 
         if (isset($config['namespaces'])) {
             $this->updateNamespaceParameters($container, $config['namespaces']);
+        }
+
+        if (isset($config['factory'])) {
+            $container->setAlias('sensio_labs.page_object_extension.page_factory', $config['factory']);
         }
     }
 
