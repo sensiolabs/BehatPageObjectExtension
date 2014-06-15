@@ -129,7 +129,7 @@ Feature: Providing a custom page object factory
         public function load(ContainerBuilder $container, array $config)
         {
             $definition = new Definition('AcmeFactory');
-            $definition->setArguments([new Reference('mink'), '%mink.parameters%']);
+            $definition->setArguments(array(new Reference('mink'), '%mink.parameters%'));
             $container->setDefinition('acme.page_object.factory', $definition);
         }
 
