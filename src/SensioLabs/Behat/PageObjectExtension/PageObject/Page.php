@@ -9,7 +9,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\PathNotProvidedException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
-abstract class Page extends DocumentElement
+abstract class Page extends DocumentElement implements PageObject
 {
     /**
      * @var string|null

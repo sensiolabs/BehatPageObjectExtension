@@ -48,4 +48,20 @@ class DefaultFactorySpec extends ObjectBehavior
         $element->shouldBeAnInstanceOf('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement');
         $element->getXPath()->shouldReturn('//div[@id="search"]');
     }
+
+    function it_instantiates_a_page()
+    {
+        $this->instantiate('ArticleList')->shouldBeAnInstanceOf('ArticleList');
+    }
+
+    function it_instantiates_an_element()
+    {
+        $this->instantiate('SearchBox')->shouldBeAnInstanceOf('SearchBox');
+    }
+
+    function it_throws_exception_for_a_non_element_and_non_page_class()
+    {
+        $this->shouldThrow(new \InvalidArgumentException(sprintf('Not a page object class: stdClass')))
+            ->duringInstantiate('stdClass');
+    }
 }

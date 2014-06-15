@@ -47,12 +47,12 @@ class PageObjectExtension implements TestworkExtension
             $this->updateNamespaceParameters($container, $config['namespaces']);
         }
 
-        if (isset($config['factory']['id'])) {
-            $container->setAlias('sensio_labs.page_object_extension.page_factory', $config['factory']['id']);
+        if (isset($config['factory'])) {
+            $this->updatePageObjectFactoryDefinition($container, $config['factory']);
         }
 
-        if (isset($config['factory']['class_name_resolver'])) {
-            $container->setAlias('sensio_labs.page_object_extension.class_name_resolver', $config['factory']['class_name_resolver']);
+        if (!interface_exists('ProxyManager\Proxy\LazyLoadingInterface')) {
+            $container->removeDefinition('sensio_labs.page_object_extension.context.argument_resolver.page_object');
         }
     }
 
@@ -111,6 +111,21 @@ class PageObjectExtension implements TestworkExtension
 
         if (!empty($namespaces['element'])) {
             $container->setParameter('sensio_labs.page_object_extension.namespaces.element', $namespaces['element']);
+        }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param array            $factory
+     */
+    private function updatePageObjectFactoryDefinition(ContainerBuilder $container, array $factory)
+    {
+        if (isset($factory['id'])) {
+            $container->setAlias('sensio_labs.page_object_extension.page_factory', $factory['id']);
+        }
+
+        if (isset($factory['class_name_resolver'])) {
+            $container->setAlias('sensio_labs.page_object_extension.class_name_resolver', $factory['class_name_resolver']);
         }
     }
 }

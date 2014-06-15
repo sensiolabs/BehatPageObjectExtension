@@ -46,7 +46,7 @@ The easiest way to keep your suite updated is to use
     .. code-block:: js
 
         {
-            "require": {
+            "require-dev": {
                 ...
 
                 "sensiolabs/behat-page-object-extension": "~2.0"
@@ -157,7 +157,7 @@ Page factory finds a corresponding class by the passed name:
 
     .. note::
 
-        It is possible to implment your own way of mapping a page name to
+        It is possible to implement your own way of mapping a page name to
         an appropriate page object with a :doc:`custom factory </custom_factory>`.
 
 Opening a page
@@ -503,6 +503,53 @@ we need to install it first. Best way to do this is by adding it to the
 
         "require-dev": {
             "bossa/phpspec2-expect": "~1.0"
+        }
+
+Injecting page objects into a context file
+------------------------------------------
+
+It is possible to avoid using page object factory explicitly, and inject
+page objects directly into a context file.
+
+    .. code-block:: php
+
+        <?php
+
+        use Behat\Behat\Context\Context;
+        use Page\Homepage;
+        use Page\Element\Navigation;
+
+        class SearchContext implements Context
+        {
+            private $homepage;
+            private $navigation;
+
+            public function __construct(Homepage $homepage, Navigation $navigation)
+            {
+                $this->homepage = $homepage;
+                $this->navigation = $navigation;
+            }
+
+            /**
+             * @Given /^(?:|I )visited homepage$/
+             */
+            public function iVisitedThePage()
+            {
+                $this->homepage->open();
+            }
+        }
+
+To enable this feature the ``ocramius/proxy-manager`` package is required, so it
+needs to be added to the ``composer.json``:
+
+    .. code-block:: js
+
+        {
+            "require-dev": {
+                ...
+
+                "ocramius/proxy-manager": "~0.5"
+            }
         }
 
 Configuration options

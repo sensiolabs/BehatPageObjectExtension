@@ -13,6 +13,7 @@
         <parameter key="sensio_labs.page_object_extension.page_factory.default.class">SensioLabs\Behat\PageObjectExtension\PageObject\Factory\DefaultFactory</parameter>
         <parameter key="sensio_labs.page_object_extension.class_name_resolver.camelcased.class">SensioLabs\Behat\PageObjectExtension\PageObject\Factory\CamelcasedClassNameResolver</parameter>
         <parameter key="sensio_labs.page_object_extension.context.initializer.class">SensioLabs\Behat\PageObjectExtension\Context\Initializer\PageObjectAwareInitializer</parameter>
+        <parameter key="sensio_labs.page_object_extension.context.argument_resolver.page_object.class">SensioLabs\Behat\PageObjectExtension\Context\Argument\PageObjectArgumentResolver</parameter>
     </parameters>
 
     <services>
@@ -22,6 +23,13 @@
         </service>
 
         <service id="sensio_labs.page_object_extension.class_name_resolver" alias="sensio_labs.page_object_extension.class_name_resolver.camelcased" />
+
+        <service id="sensio_labs.page_object_extension.page_factory.lazy" class="SensioLabs\Behat\PageObjectExtension\PageObject\Factory\LazyFactory" public="false">
+            <argument type="service" id="sensio_labs.page_object_extension.page_factory" />
+            <argument type="service">
+                <service class="ProxyManager\Factory\LazyLoadingValueHolderFactory" />
+            </argument>
+        </service>
 
         <service id="sensio_labs.page_object_extension.page_factory.default" class="%sensio_labs.page_object_extension.page_factory.default.class%" public="false">
             <argument type="service" id="mink" />
@@ -34,6 +42,11 @@
         <service id="sensio_labs.page_object_extension.context.initializer" class="%sensio_labs.page_object_extension.context.initializer.class%">
             <argument type="service" id="sensio_labs.page_object_extension.page_factory" />
             <tag name="context.initializer" />
+        </service>
+
+        <service id="sensio_labs.page_object_extension.context.argument_resolver.page_object" class="%sensio_labs.page_object_extension.context.argument_resolver.page_object.class%">
+            <argument type="service" id="sensio_labs.page_object_extension.page_factory.lazy" />
+            <tag name="context.argument_resolver"/>
         </service>
     </services>
 </container>
