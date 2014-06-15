@@ -68,10 +68,12 @@ class LazyFactory implements Factory
      */
     public function instantiate($class)
     {
-        $initializer = function (&$wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, &$initializer) use ($class) {
+        $decoratedFactory = $this->decoratedFactory;
+
+        $initializer = function (&$wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, &$initializer) use ($class, $decoratedFactory) {
             $initializer = null;
 
-            $wrappedObject = $this->decoratedFactory->instantiate($class);
+            $wrappedObject = $decoratedFactory->instantiate($class);
 
             return true;
         };
