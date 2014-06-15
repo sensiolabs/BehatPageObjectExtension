@@ -64,7 +64,7 @@ class LazyFactory implements Factory
     /**
      * @param string $class
      *
-     * @return PageObject
+     * @return LazyLoadingInterface|PageObject
      */
     public function instantiate($class)
     {
