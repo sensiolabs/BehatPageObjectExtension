@@ -54,6 +54,10 @@ class PageObjectExtension implements TestworkExtension
         if (isset($config['factory']['class_name_resolver'])) {
             $container->setAlias('sensio_labs.page_object_extension.class_name_resolver', $config['factory']['class_name_resolver']);
         }
+
+        if (!interface_exists('ProxyManager\Proxy\LazyLoadingInterface')) {
+            $container->removeDefinition('sensio_labs.page_object_extension.context.argument_resolver.page_object');
+        }
     }
 
     /**
