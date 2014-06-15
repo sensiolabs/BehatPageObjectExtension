@@ -3,7 +3,7 @@ Feature: Providing a custom page object factory
   As an Experienced Developer
   I need to provide my own implementation of the page object factory
 
-  Scenario:
+  Scenario: Custom page object factory
     Given a behat configuration:
     """
     default:

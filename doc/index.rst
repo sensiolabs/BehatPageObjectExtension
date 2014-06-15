@@ -157,8 +157,8 @@ Page factory finds a corresponding class by the passed name:
 
     .. note::
 
-        In future you'll be able to overload a factory to provide your own way
-        of mapping page names to page object classes.
+        It is possible to implment your own way of mapping a page name to
+        an appropriate page object with a :doc:`custom factory </custom_factory>`.
 
 Opening a page
 ~~~~~~~~~~~~~~
@@ -523,4 +523,5 @@ Defaults can be simply changed in the ``behat.yml`` file:
               namespaces:
                 page: [Acme\Features\Context\Page, Acme\Page]
                 element: [Acme\Features\Context\Page\Element, Acme\Page\Element]
+              factory: acme.page_object.factory
 
