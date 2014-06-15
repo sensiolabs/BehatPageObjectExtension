@@ -25,12 +25,12 @@ class PageObjectArgumentResolver implements ArgumentResolver
      */
     public function resolveArguments(\ReflectionClass $classReflection, array $arguments)
     {
-        $parameters = $classReflection->getConstructor() ? $classReflection->getConstructor()->getParameters() : array();
+        $parameters = $this->getConstructorParameters($classReflection);
 
         foreach ($parameters as $i => $parameter) {
-            $parameterClassName = $parameter->getClass() ? $parameter->getClass()->getName() : null;
+            $parameterClassName = $this->getClassName($parameter);
 
-            if ($this->isPageOrElement($parameterClassName)) {
+            if (null !== $parameterClassName && $this->isPageOrElement($parameterClassName)) {
                 $arguments[$i] = $this->factory->instantiate($parameterClassName);
             }
         }
@@ -39,7 +39,7 @@ class PageObjectArgumentResolver implements ArgumentResolver
     }
 
     /**
-     * @param string|null $className
+     * @param string $className
      *
      * @return boolean
      */
@@ -49,22 +49,42 @@ class PageObjectArgumentResolver implements ArgumentResolver
     }
 
     /**
-     * @param string|null $className
+     * @param string $className
      *
      * @return boolean
      */
     private function isPage($className)
     {
-        return null !== $className && is_subclass_of($className, 'SensioLabs\Behat\PageObjectExtension\PageObject\Page');
+        return is_subclass_of($className, 'SensioLabs\Behat\PageObjectExtension\PageObject\Page');
     }
 
     /**
-     * @param string|null $className
+     * @param string $className
      *
      * @return boolean
      */
     private function isElement($className)
     {
-        return null !== $className && is_subclass_of($className, 'SensioLabs\Behat\PageObjectExtension\PageObject\Element');
+        return is_subclass_of($className, 'SensioLabs\Behat\PageObjectExtension\PageObject\Element');
+    }
+
+    /**
+     * @param \ReflectionClass $classReflection
+     *
+     * @return \ReflectionParameter[]
+     */
+    private function getConstructorParameters(\ReflectionClass $classReflection)
+    {
+        return $classReflection->getConstructor() ? $classReflection->getConstructor()->getParameters() : array();
+    }
+
+    /**
+     * @param \ReflectionParameter $parameter
+     *
+     * @return string|null
+     */
+    private function getClassName(\ReflectionParameter $parameter)
+    {
+        return $parameter->getClass() ? $parameter->getClass()->getName() : null;
     }
 }
