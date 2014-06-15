@@ -3,7 +3,7 @@ Feature: Injecting a page object directly into the context
   As a Developer
   I need to inject a page object directly into the context's constructor
 
-  Scenario: Injecting a page objects via a constructor
+  Scenario: Injecting a page object via a constructor
     Given I configured the page object extension
     And a context file "features/bootstrap/SearchContext.php" contains:
     """
