@@ -31,15 +31,8 @@ class PageObjectExtension implements TestworkExtension
      */
     public function configure(ArrayNodeDefinition $builder)
     {
-        $namespaces = $builder->children()->arrayNode('namespaces')->children();
-
-        foreach (array('page', 'element') as $namespaceType) {
-            $namespace = $namespaces->arrayNode($namespaceType);
-            $namespace->beforeNormalization()->ifString()->then(function ($v) { return array($v); } );
-            $namespace->prototype('scalar');
-        }
-
-        $builder->children()->scalarNode('factory');
+        $this->configureNamespaces($builder);
+        $this->configurePageObjectFactory($builder);
     }
 
     /**
@@ -54,8 +47,12 @@ class PageObjectExtension implements TestworkExtension
             $this->updateNamespaceParameters($container, $config['namespaces']);
         }
 
-        if (isset($config['factory'])) {
-            $container->setAlias('sensio_labs.page_object_extension.page_factory', $config['factory']);
+        if (isset($config['factory']['id'])) {
+            $container->setAlias('sensio_labs.page_object_extension.page_factory', $config['factory']['id']);
+        }
+
+        if (isset($config['factory']['class_name_resolver'])) {
+            $container->setAlias('sensio_labs.page_object_extension.class_name_resolver', $config['factory']['class_name_resolver']);
         }
     }
 
@@ -64,6 +61,41 @@ class PageObjectExtension implements TestworkExtension
      */
     public function process(ContainerBuilder $container)
     {
+    }
+
+    /**
+     * @param ArrayNodeDefinition $builder
+     */
+    private function configureNamespaces(ArrayNodeDefinition $builder)
+    {
+        $namespaces = $builder->children()->arrayNode('namespaces')->children();
+
+        foreach (array('page', 'element') as $namespaceType) {
+            $namespace = $namespaces->arrayNode($namespaceType);
+            $namespace->beforeNormalization()->ifString()->then(function ($v) { return array($v); } );
+            $namespace->prototype('scalar');
+        }
+    }
+
+    /**
+     * @param ArrayNodeDefinition $builder
+     */
+    private function configurePageObjectFactory(ArrayNodeDefinition $builder)
+    {
+        $factory = $builder->children()->arrayNode('factory');
+        $factory
+            ->beforeNormalization()
+                ->ifString()
+                ->then(function ($v) { return array('id' => $v); })
+            ->end()
+            ->children()
+                ->scalarNode('id')
+                    ->info('id of a page object factory service')
+                ->end()
+                ->scalarNode('class_name_resolver')
+                    ->info('id of a class name resolver service for the default factory')
+                ->end()
+            ->end();
     }
 
     /**
