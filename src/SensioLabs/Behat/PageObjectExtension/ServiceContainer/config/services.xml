@@ -10,21 +10,26 @@
         <parameter key="sensio_labs.page_object_extension.namespaces.element" type="collection">
             <parameter>Page\Element</parameter>
         </parameter>
-        <parameter key="sensio_labs.page_object_extension.page_factory.class">SensioLabs\Behat\PageObjectExtension\PageObject\Factory\DefaultFactory</parameter>
-        <parameter key="sensio_labs.page_object_extension.class_name_resolver.class">SensioLabs\Behat\PageObjectExtension\PageObject\Factory\CamelcasedClassNameResolver</parameter>
+        <parameter key="sensio_labs.page_object_extension.page_factory.default.class">SensioLabs\Behat\PageObjectExtension\PageObject\Factory\DefaultFactory</parameter>
+        <parameter key="sensio_labs.page_object_extension.class_name_resolver.camelcased.class">SensioLabs\Behat\PageObjectExtension\PageObject\Factory\CamelcasedClassNameResolver</parameter>
         <parameter key="sensio_labs.page_object_extension.context.initializer.class">SensioLabs\Behat\PageObjectExtension\Context\Initializer\PageObjectAwareInitializer</parameter>
     </parameters>
 
     <services>
-        <service id="sensio_labs.page_object_extension.class_name_resolver" class="%sensio_labs.page_object_extension.class_name_resolver.class%">
+        <service id="sensio_labs.page_object_extension.class_name_resolver.camelcased" class="%sensio_labs.page_object_extension.class_name_resolver.camelcased.class%">
             <argument>%sensio_labs.page_object_extension.namespaces.page%</argument>
             <argument>%sensio_labs.page_object_extension.namespaces.element%</argument>
         </service>
-        <service id="sensio_labs.page_object_extension.page_factory" class="%sensio_labs.page_object_extension.page_factory.class%" public="false">
+
+        <service id="sensio_labs.page_object_extension.class_name_resolver" alias="sensio_labs.page_object_extension.class_name_resolver.camelcased" />
+
+        <service id="sensio_labs.page_object_extension.page_factory.default" class="%sensio_labs.page_object_extension.page_factory.default.class%" public="false">
             <argument type="service" id="mink" />
             <argument type="service" id="sensio_labs.page_object_extension.class_name_resolver" />
             <argument>%mink.parameters%</argument>
         </service>
+
+        <service id="sensio_labs.page_object_extension.page_factory" alias="sensio_labs.page_object_extension.page_factory.default" />
 
         <service id="sensio_labs.page_object_extension.context.initializer" class="%sensio_labs.page_object_extension.context.initializer.class%">
             <argument type="service" id="sensio_labs.page_object_extension.page_factory" />

@@ -16,6 +16,7 @@ class PageObjectExtensionSpec extends ObjectBehavior
         $container->getParameterBag()->willReturn($parameterBag);
         $container->setDefinition(Argument::cetera())->willReturn(null);
         $container->addCompilerPass(Argument::cetera())->willReturn(null);
+        $container->setAlias(Argument::cetera())->willReturn(null);
     }
 
     function it_provides_a_config_key()
@@ -30,7 +31,7 @@ class PageObjectExtensionSpec extends ObjectBehavior
 
     function it_should_load_services(ContainerBuilder $container)
     {
-        $container->setDefinition('sensio_labs.page_object_extension.page_factory', Argument::any())->shouldBeCalled();
+        $container->setDefinition('sensio_labs.page_object_extension.page_factory.default', Argument::any())->shouldBeCalled();
         $container->setDefinition('sensio_labs.page_object_extension.context.initializer', Argument::any())->shouldBeCalled();
 
         $this->load($container, array())->shouldReturn(null);

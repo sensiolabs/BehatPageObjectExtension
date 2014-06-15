@@ -60,7 +60,6 @@ default:
       base_url: http://localhost:8000
 CONFIG;
 
-
         $this->givenBehatConfiguration(new PyStringNode(explode("\n", $config), 0));
     }
 
@@ -73,7 +72,7 @@ CONFIG;
     }
 
     /**
-     * @Given /^a (?:|context |page object |feature )file "(?P<fileName>[^"]*)" contains:$/
+     * @Given /^an? (?:|context |page object |feature |.*)file "(?P<fileName>[^"]*)" contains:$/
      */
     public function aContextFileNamedWith($fileName, PyStringNode $content)
     {
