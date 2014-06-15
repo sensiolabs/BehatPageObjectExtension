@@ -6,3 +6,9 @@ default:
       contexts:
         - PhpServerContext
         - BehatRunnerContext
+
+ci:
+  suites:
+    default:
+      contexts:
+        - BehatRunnerContext

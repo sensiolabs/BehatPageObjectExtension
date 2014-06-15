@@ -1,12 +1,23 @@
 language: php
 
 php:
+  - 5.3
   - 5.4
   - 5.5
+
+install:
+  - sudo apt-get install nginx
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+  - sudo cp -f .travis_nginx.conf /etc/nginx/sites-enabled/default.conf
+  - sudo sed -e "s?%APP_DIR%?$(pwd)/features/application?g" --in-place /etc/nginx/sites-enabled/default.conf
+  - sudo service nginx restart
 
 before_script:
   - composer self-update && composer --dev install
 
 script:
   - ./bin/phpspec run -f pretty
-  - ./bin/behat
+  - ./bin/behat --profile=ci --format=progress
+
