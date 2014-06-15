@@ -570,5 +570,8 @@ Defaults can be simply changed in the ``behat.yml`` file:
               namespaces:
                 page: [Acme\Features\Context\Page, Acme\Page]
                 element: [Acme\Features\Context\Page\Element, Acme\Page\Element]
-              factory: acme.page_object.factory
+              factory:
+                id: acme.page_object.factory
+                page_parameters:
+                  base_url: http://localhost
 
