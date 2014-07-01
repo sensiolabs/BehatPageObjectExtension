@@ -449,11 +449,11 @@ instead of retrieving them ourselves in the context file:
 
         class ConferenceContext extends PageObjectContext
         {
-            /**
-             * @Then /^(?:|I )should not be able to enrol to (?:|the )"(?P<conferenceName>[^"]*)" conference$/
-             */
-            public function iShouldNotBeAbleToEnrolToTheConference($conferenceName)
-            {
+            /**
+             * @Then /^(?:|I )should not be able to enrol to (?:|the )"(?P<conferenceName>[^"]*)" conference$/
+             */
+            public function iShouldNotBeAbleToEnrolToTheConference($conferenceName)
+            {
                 $page = $this->getPage('Conference list');
 
                 if ($page->hasEnrolmentButtonFor($conferenceName)) {
@@ -461,8 +461,8 @@ instead of retrieving them ourselves in the context file:
 
                     throw new \LogicException($message);
                 }
-            }
-         }
+            }
+        }
 
 Our page object could look like the following:
 
@@ -472,14 +472,14 @@ Our page object could look like the following:
 
         class ConferenceList extends Page
         {
-            public function hasEnrolmentButtonFor($conferenceName)
-            {
+            public function hasEnrolmentButtonFor($conferenceName)
+            {
                 $conferenceSlug = str_replace(' ', '-', strtolower($conferenceName));
-                $button = $this->find('css', sprintf('#enrol-%s', $conferenceSlug));
+                $button = $this->find('css', sprintf('#enrol-%s', $conferenceSlug));
 
-                return !is_null($button);
-            }
-         }
+                return !is_null($button);
+            }
+        }
 
 We could go one step fruther in making our life easier by using phpspec
 matchers available through the
@@ -487,13 +487,13 @@ matchers available through the
 
     .. code-block:: php
 
-        /**
-         * @Then /^(?:|I )should not be able to enrol to (?:|the )"(?P<conferenceName>[^"]*)" conference$/
-         */
-        public function iShouldNotBeAbleToEnrolToTheConference($conferenceName)
-        {
-            expect($this->getPage('Conference list'))->notToHaveEnrolmentButtonFor($conference);
-        }
+        /**
+         * @Then /^(?:|I )should not be able to enrol to (?:|the )"(?P<conferenceName>[^"]*)" conference$/
+         */
+        public function iShouldNotBeAbleToEnrolToTheConference($conferenceName)
+        {
+            expect($this->getPage('Conference list'))->notToHaveEnrolmentButtonFor($conference);
+        }
 
 To use the `expect() helper <https://github.com/BossaConsulting/phpspec2-expect>`_,
 we need to install it first. Best way to do this is by adding it to the
