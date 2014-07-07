@@ -27,8 +27,9 @@ class DefaultFactory implements Factory
     private $pageParameters = array();
 
     /**
-     * @var Mink  $mink
-     * @var array $pageParameters
+     * @param Mink              $mink
+     * @param ClassNameResolver $classNameResolver
+     * @param array             $pageParameters
      */
     public function __construct(Mink $mink, ClassNameResolver $classNameResolver, array $pageParameters)
     {
@@ -81,7 +82,7 @@ class DefaultFactory implements Factory
         if (is_subclass_of($class, 'SensioLabs\Behat\PageObjectExtension\PageObject\Page')) {
             return $this->instantiatePage($class);
         } elseif (is_subclass_of($class, 'SensioLabs\Behat\PageObjectExtension\PageObject\Element')) {
-           return $this->instantiateElement($class);
+            return $this->instantiateElement($class);
         }
 
         throw new \InvalidArgumentException(sprintf('Not a page object class: %s', $class));
