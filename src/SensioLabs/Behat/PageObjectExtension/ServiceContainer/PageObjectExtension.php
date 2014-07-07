@@ -95,6 +95,10 @@ class PageObjectExtension implements TestworkExtension
                 ->scalarNode('class_name_resolver')
                     ->info('id of a class name resolver service for the default factory')
                 ->end()
+                ->arrayNode('page_parameters')
+                    ->info('parameters passed from the factory when creating a page')
+                    ->prototype('scalar')->end()
+                ->end()
             ->end();
     }
 
@@ -126,6 +130,10 @@ class PageObjectExtension implements TestworkExtension
 
         if (isset($factory['class_name_resolver'])) {
             $container->setAlias('sensio_labs.page_object_extension.class_name_resolver', $factory['class_name_resolver']);
+        }
+
+        if (!empty($factory['page_parameters'])) {
+            $container->setParameter('sensio_labs.page_object_extension.page_factory.page_parameters', $factory['page_parameters']);
         }
     }
 }

@@ -10,6 +10,7 @@
         <parameter key="sensio_labs.page_object_extension.namespaces.element" type="collection">
             <parameter>Page\Element</parameter>
         </parameter>
+        <parameter key="sensio_labs.page_object_extension.page_factory.page_parameters">%mink.parameters%</parameter>
         <parameter key="sensio_labs.page_object_extension.page_factory.default.class">SensioLabs\Behat\PageObjectExtension\PageObject\Factory\DefaultFactory</parameter>
         <parameter key="sensio_labs.page_object_extension.class_name_resolver.camelcased.class">SensioLabs\Behat\PageObjectExtension\PageObject\Factory\CamelcasedClassNameResolver</parameter>
         <parameter key="sensio_labs.page_object_extension.context.initializer.class">SensioLabs\Behat\PageObjectExtension\Context\Initializer\PageObjectAwareInitializer</parameter>
@@ -34,7 +35,7 @@
         <service id="sensio_labs.page_object_extension.page_factory.default" class="%sensio_labs.page_object_extension.page_factory.default.class%" public="false">
             <argument type="service" id="mink" />
             <argument type="service" id="sensio_labs.page_object_extension.class_name_resolver" />
-            <argument>%mink.parameters%</argument>
+            <argument>%sensio_labs.page_object_extension.page_factory.page_parameters%</argument>
         </service>
 
         <service id="sensio_labs.page_object_extension.page_factory" alias="sensio_labs.page_object_extension.page_factory.default" />

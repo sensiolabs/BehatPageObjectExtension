@@ -396,3 +396,92 @@ Feature: Using page objects with a factory
     """
     When I run behat
     Then it should pass
+
+  Scenario: Configuring the page object factory
+    Given a behat configuration:
+    """
+    default:
+      suites:
+        default:
+          contexts: [SearchContext]
+      extensions:
+        SensioLabs\Behat\PageObjectExtension:
+          factory:
+            page_parameters:
+              base_url: http://localhost:8000
+        Behat\MinkExtension:
+          goutte: ~
+          base_url: http://some.other.host
+    """
+    And a context file "features/bootstrap/SearchContext.php" contains:
+    """
+    <?php
+
+    use Behat\Behat\Context\Context;
+    use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
+
+    class SearchContext extends PageObjectContext
+    {
+        /**
+         * @Given /^I visited the homepage$/
+         */
+        public function iVisitedTheHomepage()
+        {
+            $this->getPage('Homepage')->open();
+        }
+
+        /**
+         * @Then /^I should be able to search$/
+         */
+        public function iShouldBeAbleToSearch()
+        {
+            if (!$this->getPage('Homepage')->hasSearchForm()) {
+                throw new \LogicException('Could not find the search form');
+            }
+        }
+    }
+    """
+    And a page object file "features/bootstrap/Page/Homepage.php" contains:
+    """
+    <?php
+
+    namespace Page;
+
+    use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+
+    class Homepage extends Page
+    {
+        /**
+         * @var string $path
+         */
+        protected $path = '/';
+
+        /**
+         * @var array $elements
+         */
+        protected $elements = array(
+            'Search form' => array('css' => 'form[name="search"]')
+        );
+
+        /**
+         * @return boolean
+         */
+        public function hasSearchForm()
+        {
+            return $this->hasElement('Search form');
+        }
+    }
+    """
+    And a feature file "features/search.feature" contains:
+    """
+    Feature: Search
+      In order to find lolcats
+      As a Cat Lover
+      I want to search the internetz
+
+      Scenario: Searching for lolcats
+        Given I visited the homepage
+         Then I should be able to search
+    """
+    When I run behat
+    Then it should pass
