@@ -202,7 +202,7 @@ However, to be able to do this we have to provide a ``$path`` property:
 
     .. note::
 
-        ``$path`` represents an URL of your page. You can ommit the ``$path``
+        ``$path`` represents an URL of your page. You can omit the ``$path``
         if your page object is only returned from other pages and you're not
         planning on opening it directly. ``$path`` is only used if you call
         ``open()`` on the page.
@@ -282,7 +282,7 @@ page. Our method reflects this intent and returns another page by creating it wi
 a ``getPage()`` helper method first.
 Pages are created with the same factory which is used in the context files.
 
-Refrence the official `Mink API documentation <http://mink.behat.org/api/>`_ for
+Reference the official `Mink API documentation <http://mink.behat.org/api/>`_ for
 a full list of available methods:
 
 * `DocumentElement <http://mink.behat.org/api/behat/mink/element/documentelement.html>`_
@@ -387,7 +387,7 @@ Here's a previous search example modeled as an element:
             }
         }
 
-Definining the ``$selector`` property is optional but recommended. When defined,
+Defining the ``$selector`` property is optional but recommended. When defined,
 it will limit all the operations on the page to the area within the selector.
 Any selector supported by Mink can be used here.
 
@@ -428,7 +428,7 @@ Element is an instance of a
 `NodeElement <http://mink.behat.org/api/behat/mink/element/nodeelement.html>`_,
 so similarly to pages, we can take advantage of existing `Mink <http://mink.behat.org/>`_
 Element methods. Main difference is we have more methods relating to the single
-``NodeElement``. Refrence the official `Mink API documentation <http://mink.behat.org/api/>`_ for
+``NodeElement``. Reference the official `Mink API documentation <http://mink.behat.org/api/>`_ for
 a full list of available methods:
 
 * `NodeElement <http://mink.behat.org/api/behat/mink/element/nodeelement.html>`_
