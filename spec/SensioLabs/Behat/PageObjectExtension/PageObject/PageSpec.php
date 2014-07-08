@@ -8,6 +8,7 @@ use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -86,7 +87,7 @@ class PageSpec extends ObjectBehavior
 
         $session->getSelectorsHandler()->willReturn($selectorsHandler);
         $session->getDriver()->willReturn($driver);
-
+        $session->getCurrentUrl()->willReturn('http://localhost/employees/13');
     }
 
     function it_should_be_a_page_object()
@@ -112,6 +113,7 @@ class PageSpec extends ObjectBehavior
         $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev'));
 
         $session->visit('http://behat.dev/employees/13')->shouldBeCalled();
+        $session->getCurrentUrl()->willReturn('http://behat.dev/employees/13');
         $session->getStatusCode()->willReturn(200);
 
         $this->open(array('employee' => 13))->shouldReturn($this);
@@ -122,6 +124,7 @@ class PageSpec extends ObjectBehavior
         $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
 
         $session->visit('http://behat.dev/employees/13')->shouldBeCalled();
+        $session->getCurrentUrl()->willReturn('http://behat.dev/employees/13');
         $session->getStatusCode()->willReturn(200);
 
         $this->open(array('employee' => 13))->shouldReturn($this);
@@ -130,6 +133,7 @@ class PageSpec extends ObjectBehavior
     function it_leaves_placeholders_if_not_provided($session)
     {
         $session->visit('/employees/{employee}')->shouldBeCalled();
+        $session->getCurrentUrl()->willReturn('http://localhost/employees/{employee}');
         $session->getStatusCode()->willReturn(200);
 
         $this->open()->shouldReturn($this);
@@ -190,15 +194,14 @@ class PageSpec extends ObjectBehavior
         $this->shouldThrow(new UnexpectedPageException('Expected to be on "MyPage" but found "Homepage" instead'))->duringOpen(array('employee' => 13));
     }
 
-    function it_optionally_verifies_the_url($session, $factory)
+    function it_verifies_the_url($session)
     {
-        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithUrlValidation');
-        $this->beConstructedWith($session, $factory);
-
-        $session->visit('/employees/13')->willReturn();
+        $session->getCurrentUrl()->willReturn('http://localhost/employees/14');
+        $session->visit(Argument::any())->willReturn();
         $session->getStatusCode()->willReturn(200);
 
-        $this->shouldThrow(new UnexpectedPageException('Expected to be on "/employee/13" but found "/other-page" instead'))->duringOpen(array('employee' => 13));
+        $this->shouldThrow(new UnexpectedPageException('Expected to be on "/employees/13" but found "http://localhost/employees/14" instead'))
+            ->duringOpen(array('employee' => 13));
     }
 
     function it_gives_clear_feedback_if_method_is_invalid($session, $factory)
@@ -285,15 +288,17 @@ class PageSpec extends ObjectBehavior
     function it_confirms_the_open_page_is_open($session)
     {
         $session->getStatusCode()->willReturn(200);
+        $session->getCurrentUrl()->willReturn('http://localhost/employees/13');
 
-        $this->isOpen()->shouldReturn(true);
+        $this->isOpen(array('employee' => 13))->shouldReturn(true);
     }
 
     function it_confirms_the_page_is_not_open_on_error($session)
     {
         $session->getStatusCode()->willReturn(404);
+        $session->getCurrentUrl()->willReturn('http://localhost/employees/13');
 
-        $this->isOpen()->shouldReturn(false);
+        $this->isOpen(array('employee' => 13))->shouldReturn(false);
     }
 
     function it_confirms_the_page_is_not_open_if_another_page_is_open_instead($session, $factory)

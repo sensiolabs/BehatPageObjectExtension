@@ -213,6 +213,9 @@ abstract class Page extends DocumentElement implements PageObject
      */
     protected function verifyUrl(array $urlParameters = array())
     {
+        if (false === strpos($this->getSession()->getCurrentUrl(), $this->getUrl($urlParameters))) {
+            throw new UnexpectedPageException(sprintf('Expected to be on "%s" but found "%s" instead', $this->getUrl($urlParameters), $this->getSession()->getCurrentUrl()));
+        }
     }
 
     /**
