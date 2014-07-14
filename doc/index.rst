@@ -230,9 +230,9 @@ Both ``open()`` and ``isOpen()`` run the same verifications, which can be overri
 * ``verifyResponse()`` - verifies if the response was successful.
   It only works for drivers which support getting a response status code.
 * ``verifyUrl()`` - verifies if the current URL matches the expected one.
-  The default implementation only checks if a page url is contained in
-  the current url. Override the method to implement the logic here.
-  The method should throw an exception in case URLs don't match.
+  The default implementation only checks if a page url is exactly the same
+  as the current url. Override this method to implement your custom matching
+  logic. The method should throw an exception in case URLs don't match.
 * ``verifyPage()`` - verifies if the page content matches the expected content.
   It is up to you to implement the logic here. The method should throw an exception
   in case the content expected to be present on the page is not there.
