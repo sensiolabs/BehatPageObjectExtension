@@ -88,6 +88,7 @@ class PageSpec extends ObjectBehavior
         $session->getSelectorsHandler()->willReturn($selectorsHandler);
         $session->getDriver()->willReturn($driver);
         $session->getCurrentUrl()->willReturn('http://localhost/employees/13');
+        $session->getStatusCode()->willReturn(200);
     }
 
     function it_should_be_a_page_object()
@@ -103,7 +104,6 @@ class PageSpec extends ObjectBehavior
     function it_opens_a_relative_path($session)
     {
         $session->visit('/employees/13')->shouldBeCalled();
-        $session->getStatusCode()->willReturn(200);
 
         $this->open(array('employee' => 13))->shouldReturn($this);
     }
@@ -113,8 +113,6 @@ class PageSpec extends ObjectBehavior
         $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev'));
 
         $session->visit('http://behat.dev/employees/13')->shouldBeCalled();
-        $session->getCurrentUrl()->willReturn('http://behat.dev/employees/13');
-        $session->getStatusCode()->willReturn(200);
 
         $this->open(array('employee' => 13))->shouldReturn($this);
     }
@@ -124,17 +122,15 @@ class PageSpec extends ObjectBehavior
         $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
 
         $session->visit('http://behat.dev/employees/13')->shouldBeCalled();
-        $session->getCurrentUrl()->willReturn('http://behat.dev/employees/13');
-        $session->getStatusCode()->willReturn(200);
 
         $this->open(array('employee' => 13))->shouldReturn($this);
     }
 
     function it_leaves_placeholders_if_not_provided($session)
     {
-        $session->visit('/employees/{employee}')->shouldBeCalled();
         $session->getCurrentUrl()->willReturn('http://localhost/employees/{employee}');
-        $session->getStatusCode()->willReturn(200);
+
+        $session->visit('/employees/{employee}')->shouldBeCalled();
 
         $this->open()->shouldReturn($this);
     }
