@@ -8,6 +8,7 @@ use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -19,6 +20,11 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page as BasePage;
 class MyPage extends BasePage
 {
     protected $path = '/employees/{employee}';
+
+    protected $elements = array(
+        'Primary Navigation' => array('xpath' => '//div/span[@class="navigation"]'),
+        'Search form' => array('css' => 'div.content form#search')
+    );
 
     public function callGetPage($name)
     {
@@ -39,13 +45,17 @@ class MyPage extends BasePage
     {
         return $this->getUrl($urlParameters);
     }
+
+    protected function verifyUrl(array $urlParameters = array())
+    {
+    }
 }
 
 class MyPageWithoutPath extends BasePage
 {
 }
 
-class MyPageWithValidation extends MyPage
+class MyPageWithPageValidation extends MyPage
 {
     protected function verifyPage()
     {
@@ -53,27 +63,9 @@ class MyPageWithValidation extends MyPage
     }
 }
 
-class MyPageWithUrlValidation extends MyPage
+class MyPageWithDefaultUrlValidation extends BasePage
 {
-    protected function verifyUrl(array $urlParameters = array())
-    {
-        if (isset($urlParameters['employee'])) {
-            throw new UnexpectedPageException(sprintf('Expected to be on "/employee/%s" but found "/other-page" instead', $urlParameters['employee']));
-        }
-    }
-}
-
-class MyPageWithInlineElements extends BasePage
-{
-    protected $elements = array(
-        'Navigation' => array('xpath' => '//div/span[@class="navigation"]'),
-        'Search form' => array('css' => 'div.content form#search')
-    );
-
-    public function callHasElement($name)
-    {
-        return $this->hasElement($name);
-    }
+    protected $path = '/employees/{employee}';
 }
 
 class PageSpec extends ObjectBehavior
@@ -86,7 +78,8 @@ class PageSpec extends ObjectBehavior
 
         $session->getSelectorsHandler()->willReturn($selectorsHandler);
         $session->getDriver()->willReturn($driver);
-
+        $session->getCurrentUrl()->willReturn('http://localhost/employees/13');
+        $session->getStatusCode()->willReturn(200);
     }
 
     function it_should_be_a_page_object()
@@ -102,7 +95,6 @@ class PageSpec extends ObjectBehavior
     function it_opens_a_relative_path($session)
     {
         $session->visit('/employees/13')->shouldBeCalled();
-        $session->getStatusCode()->willReturn(200);
 
         $this->open(array('employee' => 13))->shouldReturn($this);
     }
@@ -112,7 +104,6 @@ class PageSpec extends ObjectBehavior
         $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev'));
 
         $session->visit('http://behat.dev/employees/13')->shouldBeCalled();
-        $session->getStatusCode()->willReturn(200);
 
         $this->open(array('employee' => 13))->shouldReturn($this);
     }
@@ -122,15 +113,15 @@ class PageSpec extends ObjectBehavior
         $this->beConstructedWith($session, $factory, array('base_url' => 'http://behat.dev/'));
 
         $session->visit('http://behat.dev/employees/13')->shouldBeCalled();
-        $session->getStatusCode()->willReturn(200);
 
         $this->open(array('employee' => 13))->shouldReturn($this);
     }
 
     function it_leaves_placeholders_if_not_provided($session)
     {
+        $session->getCurrentUrl()->willReturn('http://localhost/employees/{employee}');
+
         $session->visit('/employees/{employee}')->shouldBeCalled();
-        $session->getStatusCode()->willReturn(200);
 
         $this->open()->shouldReturn($this);
     }
@@ -181,7 +172,7 @@ class PageSpec extends ObjectBehavior
 
     function it_optionally_verifies_the_page($session, $factory)
     {
-        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithValidation');
+        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithPageValidation');
         $this->beConstructedWith($session, $factory);
 
         $session->visit('/employees/13')->shouldBeCalled();
@@ -190,15 +181,16 @@ class PageSpec extends ObjectBehavior
         $this->shouldThrow(new UnexpectedPageException('Expected to be on "MyPage" but found "Homepage" instead'))->duringOpen(array('employee' => 13));
     }
 
-    function it_optionally_verifies_the_url($session, $factory)
+    function it_verifies_the_url($session, $factory)
     {
-        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithUrlValidation');
-        $this->beConstructedWith($session, $factory);
+        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithDefaultUrlValidation');
+        $this->beConstructedWith($session, $factory, array('base_url' => 'http://localhost/'));
 
-        $session->visit('/employees/13')->willReturn();
-        $session->getStatusCode()->willReturn(200);
+        $session->getCurrentUrl()->willReturn('http://localhost/employees/14');
+        $session->visit(Argument::any())->willReturn();
 
-        $this->shouldThrow(new UnexpectedPageException('Expected to be on "/employee/13" but found "/other-page" instead'))->duringOpen(array('employee' => 13));
+        $this->shouldThrow(new UnexpectedPageException('Expected to be on "http://localhost/employees/13" but found "http://localhost/employees/14" instead'))
+            ->duringOpen(array('employee' => 13));
     }
 
     function it_gives_clear_feedback_if_method_is_invalid($session, $factory)
@@ -243,11 +235,8 @@ class PageSpec extends ObjectBehavior
         $this->callHasElement('Navigation')->shouldReturn(false);
     }
 
-    function it_creates_an_inline_element_if_present($session, $factory, $selectorsHandler, $driver, InlineElement $element, NodeElement $node)
+    function it_creates_an_inline_element_if_present($factory, $selectorsHandler, $driver, InlineElement $element, NodeElement $node)
     {
-        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithInlineElements');
-        $this->beConstructedWith($session, $factory);
-
         $elementLocator = '//div/span[@class="navigation"]';
 
         $element->getXpath()->willReturn($elementLocator);
@@ -256,15 +245,12 @@ class PageSpec extends ObjectBehavior
 
         $factory->createInlineElement(array('xpath' => $elementLocator))->willReturn($element);
 
-        $this->getElement('Navigation')->shouldReturn($element);
-        $this->callHasElement('Navigation')->shouldReturn(true);
+        $this->getElement('Primary Navigation')->shouldReturn($element);
+        $this->callHasElement('Primary Navigation')->shouldReturn(true);
     }
 
-    function it_throws_an_exception_if_locator_does_not_evaluate_to_a_node_with_an_inline_element($session, $factory, $selectorsHandler, $driver, InlineElement $element, NodeElement $node)
+    function it_throws_an_exception_if_locator_does_not_evaluate_to_a_node_with_an_inline_element($factory, $selectorsHandler, $driver, InlineElement $element, NodeElement $node)
     {
-        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithInlineElements');
-        $this->beConstructedWith($session, $factory);
-
         $elementLocator = '//div/span[@class="navigation"]';
 
         $element->getXpath()->willReturn($elementLocator);
@@ -273,8 +259,8 @@ class PageSpec extends ObjectBehavior
 
         $factory->createInlineElement(array('xpath' => $elementLocator))->willReturn($element);
 
-        $this->shouldThrow(new ElementNotFoundException('"Navigation" element is not present on the page'))->duringGetElement('Navigation');
-        $this->callHasElement('Navigation')->shouldReturn(false);
+        $this->shouldThrow(new ElementNotFoundException('"Primary Navigation" element is not present on the page'))->duringGetElement('Primary Navigation');
+        $this->callHasElement('Primary Navigation')->shouldReturn(false);
     }
 
     function it_returns_the_page_name()
@@ -285,23 +271,15 @@ class PageSpec extends ObjectBehavior
     function it_confirms_the_open_page_is_open($session)
     {
         $session->getStatusCode()->willReturn(200);
+        $session->getCurrentUrl()->willReturn('http://localhost/employees/13');
 
-        $this->isOpen()->shouldReturn(true);
+        $this->isOpen(array('employee' => 13))->shouldReturn(true);
     }
 
     function it_confirms_the_page_is_not_open_on_error($session)
     {
         $session->getStatusCode()->willReturn(404);
-
-        $this->isOpen()->shouldReturn(false);
-    }
-
-    function it_confirms_the_page_is_not_open_if_another_page_is_open_instead($session, $factory)
-    {
-        $this->beAnInstanceOf('spec\SensioLabs\Behat\PageObjectExtension\PageObject\MyPageWithUrlValidation');
-        $this->beConstructedWith($session, $factory);
-
-        $session->getStatusCode()->willReturn(200);
+        $session->getCurrentUrl()->willReturn('http://localhost/employees/13');
 
         $this->isOpen(array('employee' => 13))->shouldReturn(false);
     }
