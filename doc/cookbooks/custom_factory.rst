@@ -1,5 +1,5 @@
-Custom factory
-==============
+Creating a custom factory
+=========================
 
 To implement a custom page object factory the
 ``SensioLabs\Behat\PageObjectExtension\PageObject\Factory``
