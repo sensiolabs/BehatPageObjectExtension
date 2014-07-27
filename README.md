@@ -8,4 +8,4 @@ Behat extension providing tools to implement page object pattern.
 
 ## Documentation
 
-[Official documentation](http://extensions.behat.org/page-object/)
+[Official documentation](http://behat-page-object-extension.readthedocs.org/)
