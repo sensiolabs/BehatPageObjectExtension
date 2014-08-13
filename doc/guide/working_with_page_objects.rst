@@ -42,7 +42,7 @@ context is to call the ``getPage`` method provided by the
              */
             public function iSearchFor($keywords)
             {
-                $this->getPage('Homepage')->search($keywords):
+                $this->getPage('Homepage')->search($keywords);
             }
         }
 
