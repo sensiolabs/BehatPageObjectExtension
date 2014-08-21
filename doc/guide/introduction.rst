@@ -1,7 +1,7 @@
 Introduction to page objects
 ============================
 
-**Page object** encapsulates all the dirty details of an user interface.
+**Page object** encapsulates all the dirty details of a user interface.
 Instead of messing with the page internals in our context files, we'd
 rather ask a page object to do this for us:
 
