@@ -12,3 +12,4 @@ ci:
     default:
       contexts:
         - BehatRunnerContext
+
