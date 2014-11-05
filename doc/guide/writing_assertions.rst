@@ -55,7 +55,7 @@ matchers available through the
          */
         public function iShouldNotBeAbleToEnrolToTheConference($conferenceName)
         {
-            expect($this->getPage('Conference list'))->notToHaveEnrolmentButtonFor($conference);
+            expect($this->getPage('Conference list'))->notToHaveEnrolmentButtonFor($conferenceName);
         }
 
 To use the `expect() helper <https://github.com/BossaConsulting/phpspec2-expect>`_,
