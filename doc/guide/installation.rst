@@ -18,7 +18,6 @@ The easiest way to keep your suite updated is to use
 
         {
             "require": {
-                "php": ">=5.4.0",
                 "behat/behat": "~3.0",
                 "behat/mink-extension": "~2.0@dev",
                 "behat/mink-goutte-driver": "*"
