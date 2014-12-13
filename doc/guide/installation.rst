@@ -4,6 +4,7 @@ Installation
 This extension requires:
 
 * Behat 3.0+
+* Behat/MinkExtension 2.0@dev+
 
 Through Composer
 ----------------
