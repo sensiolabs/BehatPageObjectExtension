@@ -2,6 +2,7 @@
 
 namespace spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 
+use Behat\Mink\Driver\DriverInterface;
 use Behat\Mink\Mink;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
@@ -13,13 +14,14 @@ require_once __DIR__.'/Fixtures/Element/SearchBox.php';
 
 class DefaultFactorySpec extends ObjectBehavior
 {
-    function let(Mink $mink, Session $session, SelectorsHandler $selectorsHandler, ClassNameResolver $classNameResolver)
+    function let(Mink $mink, Session $session, SelectorsHandler $selectorsHandler, ClassNameResolver $classNameResolver, DriverInterface $driver)
     {
         $this->beConstructedWith($mink, $classNameResolver, array('base_url' => 'http://behat.dev'));
 
         $mink->getSession()->willReturn($session);
         $mink->__destruct()->willReturn();
         $session->getSelectorsHandler()->willReturn($selectorsHandler);
+        $session->getDriver()->willReturn($driver);
         $selectorsHandler->selectorToXpath('xpath', '//div[@id="search"]')->willReturn('//div[@id="search"]');
     }
 
