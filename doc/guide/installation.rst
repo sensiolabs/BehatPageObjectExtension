@@ -4,6 +4,7 @@ Installation
 This extension requires:
 
 * Behat 3.0+
+* Behat/MinkExtension 2.0@dev+
 
 Through Composer
 ----------------
@@ -16,6 +17,11 @@ The easiest way to keep your suite updated is to use
     .. code-block:: js
 
         {
+            "require": {
+                "behat/behat": "~3.0",
+                "behat/mink-extension": "~2.0@dev",
+                "behat/mink-goutte-driver": "*"
+            },
             "require-dev": {
                 ...
 
@@ -38,6 +44,11 @@ The easiest way to keep your suite updated is to use
           # ...
           extensions:
             SensioLabs\Behat\PageObjectExtension: ~
+            Behat\MinkExtension:
+              base_url: http://environment-url.local/
+              sessions:
+                default:
+                  goutte: ~
 
 Through PHAR
 ------------
