@@ -19,7 +19,7 @@ The easiest way to keep your suite updated is to use
             "require-dev": {
                 ...
 
-                "sensiolabs/behat-page-object-extension": "~2.0"
+                "sensiolabs/behat-page-object-extension": "~1.0"
             }
         }
 
