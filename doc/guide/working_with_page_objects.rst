@@ -224,7 +224,7 @@ advantage of existing `Mink <http://mink.behat.org/>`_ Element methods:
                 $searchForm = $this->find('css', 'form#search');
 
                 if (!$searchForm) {
-                    throw new ElementNotFoundException($this->getSession(), 'form', 'css', 'form#search');
+                    throw new ElementNotFoundException($this->getDriver(), 'form', 'css', 'form#search');
                 }
 
                 $searchForm->fillField('q', $keywords);

@@ -53,7 +53,7 @@ abstract class Page extends DocumentElement implements PageObject
     {
         $url = $this->getUrl($urlParameters);
 
-        $this->getSession()->visit($url);
+        $this->getDriver()->visit($url);
 
         $this->verify($urlParameters);
 
@@ -193,10 +193,10 @@ abstract class Page extends DocumentElement implements PageObject
     protected function verifyResponse()
     {
         try {
-            $statusCode = $this->getSession()->getStatusCode();
+            $statusCode = $this->getDriver()->getStatusCode();
 
             if ($this->isErrorResponse($statusCode)) {
-                $currentUrl = $this->getSession()->getCurrentUrl();
+                $currentUrl = $this->getDriver()->getCurrentUrl();
                 $message = sprintf('Could not open the page: "%s". Received an error status code: %s', $currentUrl, $statusCode);
 
                 throw new UnexpectedPageException($message);
@@ -213,8 +213,8 @@ abstract class Page extends DocumentElement implements PageObject
      */
     protected function verifyUrl(array $urlParameters = array())
     {
-        if ($this->getSession()->getCurrentUrl() !== $this->getUrl($urlParameters)) {
-            throw new UnexpectedPageException(sprintf('Expected to be on "%s" but found "%s" instead', $this->getUrl($urlParameters), $this->getSession()->getCurrentUrl()));
+        if ($this->getDriver()->getCurrentUrl() !== $this->getUrl($urlParameters)) {
+            throw new UnexpectedPageException(sprintf('Expected to be on "%s" but found "%s" instead', $this->getUrl($urlParameters), $this->getDriver()->getCurrentUrl()));
         }
     }
 

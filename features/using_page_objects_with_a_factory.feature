@@ -202,7 +202,7 @@ Feature: Using page objects with a factory
             $tab = $this->find('xpath', sprintf('//a[contains(., "%s")]', $name));
 
             if (!$tab) {
-                throw new ElementNotFoundException($this->getSession(), 'tab', 'name', $name);
+                throw new ElementNotFoundException($this->getDriver(), 'tab', 'name', $name);
             }
 
             $tab->click();

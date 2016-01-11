@@ -134,8 +134,8 @@ Feature: Verifying if a page is open
 
         protected function verifyUrl(array $urlParameters = array())
         {
-            if ($this->getUrl($urlParameters) !== $this->getSession()->getCurrentUrl()) {
-                throw new \LogicException(sprintf('The current url "%s" does not match the expected "%s"', $this->getSession()->getCurrentUrl(), $this->getUrl($urlParameters)));
+            if ($this->getUrl($urlParameters) !== $this->getDriver()->getCurrentUrl()) {
+                throw new \LogicException(sprintf('The current url "%s" does not match the expected "%s"', $this->getDriver()->getCurrentUrl(), $this->getUrl($urlParameters)));
             }
         }
     }
