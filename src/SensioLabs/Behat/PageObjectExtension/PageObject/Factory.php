@@ -26,9 +26,9 @@ interface Factory
     public function createInlineElement($selector);
 
     /**
-     * @param string $class
+     * @param string $pageObjectClass
      *
      * @return PageObject
      */
-    public function instantiate($class);
+    public function create($pageObjectClass);
 }

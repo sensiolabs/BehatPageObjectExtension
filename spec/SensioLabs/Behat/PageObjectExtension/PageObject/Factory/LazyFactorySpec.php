@@ -49,12 +49,12 @@ class LazyFactorySpec extends ObjectBehavior
     {
         $proxyFactory->createProxy('Acme\Page', Argument::type('Closure'))->willReturn($proxy);
 
-        $this->instantiate('Acme\Page')->shouldReturn($proxy);
+        $this->create('Acme\Page')->shouldReturn($proxy);
     }
 
     function it_delegates_instantiation_to_the_decorated_factory(AbstractLazyFactory $proxyFactory, LazyLoadingInterface $proxy, PageObject $pageObject, Factory $decoratedFactory)
     {
-        $decoratedFactory->instantiate('Acme\Page')->willReturn($pageObject);
+        $decoratedFactory->create('Acme\Page')->willReturn($pageObject);
 
         $proxyFactory->createProxy(
             Argument::any(),
@@ -76,6 +76,6 @@ class LazyFactorySpec extends ObjectBehavior
             })
         )->shouldBeCalled();
 
-        $this->instantiate('Acme\Page');
+        $this->create('Acme\Page');
     }
 }
