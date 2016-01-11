@@ -1,3 +1,4 @@
+@deprecated
 Feature: Changing page object namespaces
   In order to organise my code better
   As a Developer

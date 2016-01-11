@@ -2,11 +2,16 @@
 
 namespace SensioLabs\Behat\PageObjectExtension\Context;
 
+@trigger_error('The '.__NAMESPACE__.'\PageObjectContext class is deprecated since version 2.0 and will be removed in 3.0. Use the argument injection instead.', E_USER_DEPRECATED);
+
 use Behat\Behat\Context\Context;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
+/**
+ * @deprecated in 2.0, to be removed in 3.0. Use the argument resolver instead.
+ */
 class PageObjectContext implements Context, PageObjectAware
 {
     /**

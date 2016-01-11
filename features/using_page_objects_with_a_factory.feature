@@ -1,3 +1,4 @@
+@deprecated
 Feature: Using page objects with a factory
   In order to keep my context files maintainable
   As a Developer

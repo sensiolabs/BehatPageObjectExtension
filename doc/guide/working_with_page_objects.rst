@@ -22,8 +22,48 @@ To create a new page object extend the
 Instantiating a page object
 ---------------------------
 
+Injecting page objects into a context file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Page objects will be injected directly into a context file if they're defined as constructor arguments
+with a type hint:
+
+    .. code-block:: php
+
+        <?php
+
+        use Behat\Behat\Context\Context;
+        use Page\Homepage;
+        use Page\Element\Navigation;
+
+        class SearchContext implements Context
+        {
+            private $homepage;
+            private $navigation;
+
+            public function __construct(Homepage $homepage, Navigation $navigation)
+            {
+                $this->homepage = $homepage;
+                $this->navigation = $navigation;
+            }
+
+            /**
+             * @Given /^(?:|I )visited homepage$/
+             */
+            public function iVisitedThePage()
+            {
+                $this->homepage->open();
+            }
+        }
+
 Using the page object factory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    .. note::
+
+        ``PageObjectContext`` described here is deprecated in favour of
+        injecting page objects directly into context's constructor (described in the previous section).
+        ``PageObjectContext`` will be removed in future versions of this extension.
 
 Pages are created with a built in factory. One of the ways to use them in your
 context is to call the ``getPage`` method provided by the
@@ -62,19 +102,17 @@ Page factory finds a corresponding class by the passed name:
         It is possible to implement your own way of mapping a page name to
         an appropriate page object with a :doc:`custom factory </cookbooks/custom_factory>`.
 
-Injecting page objects into a context file
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Opening a page
+--------------
 
-It is possible to avoid using page object factory explicitly, and inject
-page objects directly into a context file.
+Page can be opened by calling the ``open()`` method:
 
     .. code-block:: php
 
         <?php
 
         use Behat\Behat\Context\Context;
-        use Page\Homepage;
-        use Page\Element\Navigation;
+        use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 
         class SearchContext implements Context
         {
@@ -88,46 +126,15 @@ page objects directly into a context file.
             }
 
             /**
-             * @Given /^(?:|I )visited homepage$/
-             */
-            public function iVisitedThePage()
-            {
-                $this->homepage->open();
-            }
-        }
-
-To enable this feature the ``ocramius/proxy-manager`` package is required, so it
-needs to be added to the ``composer.json``:
-
-    .. code-block:: js
-
-        {
-            "require-dev": {
-                ...
-
-                "ocramius/proxy-manager": "~0.5"
-            }
-        }
-
-Opening a page
---------------
-
-Page can be opened by calling the ``open()`` method:
-
-    .. code-block:: php
-
-        <?php
-
-        use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
-
-        class SearchContext extends PageObjectContext
-        {
-            /**
              * @Given /^(?:|I )visited (?:|the )(?P<pageName>.*?)$/
              */
             public function iVisitedThePage($pageName)
             {
-                $this->getPage($pageName)->open();
+                if (!isset($this->$pageName)) {
+                    throw new \RuntimeException(sprintf('Unrecognised page: "%s".', $pageName));
+                }
+
+                $this->$pageName->open();
             }
         }
 
