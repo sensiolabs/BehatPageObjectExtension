@@ -43,7 +43,7 @@ class PageObjectArgumentResolverSpec extends ObjectBehavior
         $pageParameter->getClass()->willReturn($pageParameterClass);
         $pageParameterClass->getName()->willReturn('spec\SensioLabs\Behat\PageObjectExtension\Context\Argument\MyPage');
 
-        $factory->instantiate('spec\SensioLabs\Behat\PageObjectExtension\Context\Argument\MyPage')->willReturn($page);
+        $factory->create('spec\SensioLabs\Behat\PageObjectExtension\Context\Argument\MyPage')->willReturn($page);
 
         $this->resolveArguments($class, array())->shouldReturn(array(1 => $page));
     }
@@ -54,7 +54,7 @@ class PageObjectArgumentResolverSpec extends ObjectBehavior
         $elementParameter->getClass()->willReturn($elementParameterClass);
         $elementParameterClass->getName()->willReturn('spec\SensioLabs\Behat\PageObjectExtension\Context\Argument\MyElement');
 
-        $factory->instantiate('spec\SensioLabs\Behat\PageObjectExtension\Context\Argument\MyElement')->willReturn($element);
+        $factory->create('spec\SensioLabs\Behat\PageObjectExtension\Context\Argument\MyElement')->willReturn($element);
 
         $this->resolveArguments($class, array())->shouldReturn(array(1 => $element));
     }

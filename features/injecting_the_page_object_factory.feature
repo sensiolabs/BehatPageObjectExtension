@@ -1,3 +1,4 @@
+@deprecated
 Feature: Injecting a page object factory
   In order to avoid extending third-party contexts
   As a Developer

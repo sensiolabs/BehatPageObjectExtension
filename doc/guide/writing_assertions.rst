@@ -10,16 +10,23 @@ instead of retrieving them ourselves in the context file:
 
     .. code-block:: php
 
-        class ConferenceContext extends PageObjectContext
+        use Behat\Behat\Context\Context;
+
+        class ConferenceContext implements Context
         {
+            private $conferenceList;
+
+            public function __construct(ConferenceList $conferenceList)
+            {
+                $this->conferenceList = $conferenceList;
+            }
+
             /**
              * @Then /^(?:|I )should not be able to enrol to (?:|the )"(?P<conferenceName>[^"]*)" conference$/
              */
             public function iShouldNotBeAbleToEnrolToTheConference($conferenceName)
             {
-                $page = $this->getPage('Conference list');
-
-                if ($page->hasEnrolmentButtonFor($conferenceName)) {
+                if ($this->conferenceList->hasEnrolmentButtonFor($conferenceName)) {
                     $message = sprintf('Did not expect to find an enrollment button for the "%s" conference.', $conferenceName);
 
                     throw new \LogicException($message);

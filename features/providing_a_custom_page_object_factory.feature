@@ -81,11 +81,11 @@ Feature: Providing a custom page object factory
         }
 
         /**
-         * @param string $class
+         * @param string $pageObjectClass
          *
          * @return PageObject
          */
-        public function instantiate($class)
+        public function create($pageObjectClass)
         {
             return new $class($this->mink->getSession(), $this, $this->pageParameters);
         }

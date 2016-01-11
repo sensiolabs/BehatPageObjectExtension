@@ -62,22 +62,22 @@ class LazyFactory implements Factory
         return $this->decoratedFactory->createInlineElement($selector);
     }
     /**
-     * @param string $class
+     * @param string $pageObjectClass
      *
      * @return LazyLoadingInterface|PageObject
      */
-    public function instantiate($class)
+    public function create($pageObjectClass)
     {
         $decoratedFactory = $this->decoratedFactory;
 
-        $initializer = function (&$wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, &$initializer) use ($class, $decoratedFactory) {
+        $initializer = function (&$wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, &$initializer) use ($pageObjectClass, $decoratedFactory) {
             $initializer = null;
 
-            $wrappedObject = $decoratedFactory->instantiate($class);
+            $wrappedObject = $decoratedFactory->create($pageObjectClass);
 
             return true;
         };
 
-        return $this->proxyFactory->createProxy($class, $initializer);
+        return $this->proxyFactory->createProxy($pageObjectClass, $initializer);
     }
 }

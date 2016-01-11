@@ -9,28 +9,15 @@ Through Composer
 ----------------
 
 The easiest way to keep your suite updated is to use
-`Composer <http://getcomposer.org>`_:
+`Composer <http://getcomposer.org>`_.
 
-1. Define the dependencies in your `composer.json`:
-
-    .. code-block:: js
-
-        {
-            "require-dev": {
-                ...
-
-                "sensiolabs/behat-page-object-extension": "~2.0"
-            }
-        }
-
-2. Install/update your vendors:
+1. Require the extension in your ``composer.json``:
 
     .. code-block:: bash
 
-        $ curl http://getcomposer.org/installer | php
-        $ php composer.phar install
+        $ composer require --dev sensiolabs/behat-page-object-extension:^2.0
 
-3. Activate the extension in your ``behat.yml``:
+2. Activate the extension in your ``behat.yml``:
 
     .. code-block:: yaml
 
@@ -39,22 +26,4 @@ The easiest way to keep your suite updated is to use
           extensions:
             SensioLabs\Behat\PageObjectExtension: ~
 
-Through PHAR
-------------
-
-First, download phar archives:
-
-* `behat.phar <http://behat.org/downloads/behat.phar>`_ - Behat itself
-* `page_object_extension.phar <http://behat.org/downloads/page_object_extension.phar>`_
-  - page object extension
-
-After downloading and placing ``*.phar`` into project directory, you need to
-activate ``BehatPageObjectExtension`` in your ``behat.yml``:
-
-    .. code-block:: yaml
-
-        default:
-          # ...
-          extensions:
-            page_object_extension.phar: ~
 

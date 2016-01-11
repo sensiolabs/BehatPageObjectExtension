@@ -1,3 +1,4 @@
+@deprecated
 Feature: Providing a custom class name resolver for the default page object factory
   In order to customise the way page object class names are resolved
   As an Experienced Developer

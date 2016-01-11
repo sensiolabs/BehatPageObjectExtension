@@ -31,7 +31,7 @@ class PageObjectArgumentResolver implements ArgumentResolver
             $parameterClassName = $this->getClassName($parameter);
 
             if (null !== $parameterClassName && $this->isPageOrElement($parameterClassName)) {
-                $arguments[$i] = $this->factory->instantiate($parameterClassName);
+                $arguments[$i] = $this->factory->create($parameterClassName);
             }
         }
 

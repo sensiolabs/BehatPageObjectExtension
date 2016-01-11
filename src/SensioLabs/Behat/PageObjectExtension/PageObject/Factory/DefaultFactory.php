@@ -73,19 +73,19 @@ class DefaultFactory implements Factory
     }
 
     /**
-     * @param string $class
+     * @param string $pageObjectClass
      *
      * @return PageObject
      */
-    public function instantiate($class)
+    public function create($pageObjectClass)
     {
-        if (is_subclass_of($class, 'SensioLabs\Behat\PageObjectExtension\PageObject\Page')) {
-            return $this->instantiatePage($class);
-        } elseif (is_subclass_of($class, 'SensioLabs\Behat\PageObjectExtension\PageObject\Element')) {
-            return $this->instantiateElement($class);
+        if (is_subclass_of($pageObjectClass, 'SensioLabs\Behat\PageObjectExtension\PageObject\Page')) {
+            return $this->instantiatePage($pageObjectClass);
+        } elseif (is_subclass_of($pageObjectClass, 'SensioLabs\Behat\PageObjectExtension\PageObject\Element')) {
+            return $this->instantiateElement($pageObjectClass);
         }
 
-        throw new \InvalidArgumentException(sprintf('Not a page object class: %s', $class));
+        throw new \InvalidArgumentException(sprintf('Not a page object class: %s', $pageObjectClass));
     }
 
     /**
