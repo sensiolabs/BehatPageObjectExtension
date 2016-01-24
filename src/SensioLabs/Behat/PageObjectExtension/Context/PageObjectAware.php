@@ -7,7 +7,7 @@ namespace SensioLabs\Behat\PageObjectExtension\Context;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 
 /**
- * @deprecated in 2.0, to be removed in 3.0. Use the argument resolver instead.
+ * @deprecated in 2.0, to be removed in 3.0. Use the argument resolver instead. See http://behat-page-object-extension.readthedocs.org/en/latest/guide/working_with_page_objects.html#instantiating-a-page-object
  */
 interface PageObjectAware
 {
