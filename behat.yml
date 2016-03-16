@@ -1,11 +1,14 @@
 default:
+  calls:
+    error_reporting: -1
   suites:
     default:
       filters:
-        tags: "~@wip"
+        tags: "~@wip&&~@fixtures"
       contexts:
         - PhpServerContext
         - BehatRunnerContext
+        - InjectingPageObjectsContext
 
 ci:
   suites:

@@ -3,6 +3,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -105,11 +106,31 @@ CONFIG;
     {
         try {
             expect($this->process->getExitCode())->toBe(0);
+            expect($this->process->getErrorOutput())->notToMatch('/PHP Warning: /');
+            expect($this->process->getErrorOutput())->notToMatch('/PHP Notice: /');
         } catch (\Exception $e) {
             echo $this->getOutput();
 
             throw $e;
         }
+    }
+
+    public function givenBehatProject($path)
+    {
+        $this->getFilesystem()->mirror($path, $this->workingDir);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return Finder
+     */
+    public function listWorkingDir($path)
+    {
+        return Finder::create()
+            ->files()
+            ->name('*.php')
+            ->in($this->workingDir.$path);
     }
 
     /**
