@@ -20,4 +20,5 @@ Defaults can be simply changed in the ``behat.yml`` file:
                 id: acme.page_object.factory
                 page_parameters:
                   base_url: http://localhost
+                proxies_target_dir: /path/to/tmp/
 
