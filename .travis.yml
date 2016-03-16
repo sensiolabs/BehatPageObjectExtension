@@ -7,13 +7,12 @@ matrix:
         - php: 5.5
         - php: 5.6
         - php: 7.0
-    allow_failures:
-        - php: 7.0
     fast_finish: true
     
 install:
   - sudo apt-get install nginx
-  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - if [[ -f ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf; fi
+  - if [[ -f ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
   - sudo cp -f .travis_nginx.conf /etc/nginx/sites-enabled/default.conf
