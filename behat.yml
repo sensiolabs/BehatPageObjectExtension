@@ -15,4 +15,5 @@ ci:
     default:
       contexts:
         - BehatRunnerContext
+        - InjectingPageObjectsContext
 
