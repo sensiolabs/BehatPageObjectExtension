@@ -76,9 +76,7 @@ Feature: Injecting a page object directly into the context
 
     namespace Page\Element;
 
-    use Behat\Mink\Exception\ElementNotFoundException;
     use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
-    use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
     class SearchResultsNavigation extends Element
     {
@@ -110,3 +108,22 @@ Feature: Injecting a page object directly into the context
     When I run behat
     Then it should pass
 
+  Scenario: Configuring the generated proxy location
+    Given a behat configuration:
+    """
+    default:
+      suites:
+        default:
+          contexts: [SearchContext]
+      extensions:
+        SensioLabs\Behat\PageObjectExtension:
+          factory:
+            proxies_target_dir: %paths.base%/tmp/
+        Behat\MinkExtension:
+          goutte: ~
+          base_url: http://localhost:8000
+    """
+    And a feature with a context file that uses page objects
+    When I run behat
+    Then it should pass
+    And the proxies should be generated in the "tmp" directory

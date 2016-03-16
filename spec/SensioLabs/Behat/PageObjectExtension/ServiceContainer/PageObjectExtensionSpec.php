@@ -15,6 +15,7 @@ class PageObjectExtensionSpec extends ObjectBehavior
         $container->addResource(Argument::any())->willReturn($container);
         $container->getParameterBag()->willReturn($parameterBag);
         $container->setDefinition(Argument::cetera())->willReturn(null);
+        $container->setParameter(Argument::cetera())->willReturn(null);
         $container->addCompilerPass(Argument::cetera())->willReturn(null);
         $container->setAlias(Argument::cetera())->willReturn(null);
     }

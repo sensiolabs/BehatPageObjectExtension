@@ -43,17 +43,8 @@ class PageObjectExtension implements TestworkExtension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/config'));
         $loader->load('services.xml');
 
-        if (isset($config['namespaces'])) {
-            $this->updateNamespaceParameters($container, $config['namespaces']);
-        }
-
-        if (isset($config['factory'])) {
-            $this->updatePageObjectFactoryDefinition($container, $config['factory']);
-        }
-
-        if (!interface_exists('ProxyManager\Proxy\LazyLoadingInterface')) {
-            $container->removeDefinition('sensio_labs.page_object_extension.context.argument_resolver.page_object');
-        }
+        $this->updateNamespaceParameters($container, isset($config['namespaces']) ? $config['namespaces'] : array());
+        $this->updatePageObjectFactoryDefinition($container, isset($config['factory']) ? $config['factory'] : array());
     }
 
     /**
@@ -99,6 +90,10 @@ class PageObjectExtension implements TestworkExtension
                     ->info('parameters passed from the factory when creating a page')
                     ->prototype('scalar')->end()
                 ->end()
+                ->scalarNode('proxies_target_dir')
+                    ->info('Target directory for proxies generated for the lazy factory')
+                    ->defaultValue(sys_get_temp_dir())
+                ->end()
             ->end();
     }
 
@@ -134,6 +129,22 @@ class PageObjectExtension implements TestworkExtension
 
         if (!empty($factory['page_parameters'])) {
             $container->setParameter('sensio_labs.page_object_extension.page_factory.page_parameters', $factory['page_parameters']);
+        }
+
+        $this->configureFactoryProxies($container, $factory);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param array            $factory
+     */
+    private function configureFactoryProxies(ContainerBuilder $container, array $factory)
+    {
+        $proxiesTargetDir = !empty($factory['proxies_target_dir']) ? $factory['proxies_target_dir'] : sys_get_temp_dir();
+        $container->setParameter('sensio_labs.page_object_extension.proxies_target_dir', $proxiesTargetDir);
+
+        if (!interface_exists('ProxyManager\Proxy\LazyLoadingInterface')) {
+            $container->removeDefinition('sensio_labs.page_object_extension.context.argument_resolver.page_object');
         }
     }
 }
