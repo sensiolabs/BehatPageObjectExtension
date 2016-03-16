@@ -105,6 +105,8 @@ CONFIG;
     {
         try {
             expect($this->process->getExitCode())->toBe(0);
+            expect($this->process->getErrorOutput())->notToMatch('/PHP Warning: /');
+            expect($this->process->getErrorOutput())->notToMatch('/PHP Notice: /');
         } catch (\Exception $e) {
             echo $this->getOutput();
 
