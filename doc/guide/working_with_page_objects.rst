@@ -59,12 +59,6 @@ with a type hint:
 Using the page object factory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    .. note::
-
-        ``PageObjectContext`` described here is deprecated in favour of
-        injecting page objects directly into context's constructor (described in the previous section).
-        ``PageObjectContext`` will be removed in future versions of this extension.
-
 Pages are created with a built in factory. One of the ways to use them in your
 context is to call the ``getPage`` method provided by the
 ``SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext``:
