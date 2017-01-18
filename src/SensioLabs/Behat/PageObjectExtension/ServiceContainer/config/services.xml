@@ -32,6 +32,17 @@
                     <argument type="service">
                         <service class="ProxyManager\Configuration">
                             <call method="setProxiesTargetDir"><argument>%sensio_labs.page_object_extension.proxies_target_dir%</argument></call>
+                            <call method="setGeneratorStrategy">
+                                <argument type="service">
+                                    <service class="ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy">
+                                        <argument type="service">
+                                            <service class="ProxyManager\FileLocator\FileLocator">
+                                                <argument>%sensio_labs.page_object_extension.proxies_target_dir%</argument>
+                                            </service>
+                                        </argument>
+                                    </service>
+                                </argument>
+                            </call>
                         </service>
                     </argument>
                 </service>
