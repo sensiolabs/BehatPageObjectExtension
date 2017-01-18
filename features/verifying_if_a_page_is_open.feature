@@ -155,14 +155,6 @@ Feature: Verifying if a page is open
     Then it should fail with:
     """
     .F
-
-    --- Failed steps:
-
-        Then I should see the news article # features/news.feature:8
-          Expected the news page to be open (LogicException)
-
-    1 scenario (1 failed)
-    2 steps (1 passed, 1 failed)
     """
 
   Scenario: Verifying if a page is open (with its contents)
@@ -240,14 +232,6 @@ Feature: Verifying if a page is open
     Then it should fail with:
     """
     .F
-
-    --- Failed steps:
-
-        Then I should see a list of recent news articles # features/news.feature:8
-          Expected the news list page to be open (LogicException)
-
-    1 scenario (1 failed)
-    2 steps (1 passed, 1 failed)
     """
 
   Scenario: Verifying if a page is open (with the response)
@@ -325,12 +309,4 @@ Feature: Verifying if a page is open
     Then it should fail with:
     """
     .F
-
-    --- Failed steps:
-
-        Then I should see a list of recent news articles # features/news.feature:8
-          Expected the news list page to be open (LogicException)
-
-    1 scenario (1 failed)
-    2 steps (1 passed, 1 failed)
     """
