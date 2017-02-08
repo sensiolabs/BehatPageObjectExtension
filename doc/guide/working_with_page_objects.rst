@@ -91,6 +91,36 @@ Page factory finds a corresponding class by the passed name:
 * *"Article list"* becomes an *"ArticleList"* class
 * *"My awesome page"* becomes a *"MyAwesomePage"* class
 
+From version 2.1 it is possibile to use ``getPage()`` method with page FQCN as follows
+
+    .. code-block:: php
+
+        <?php
+
+        use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
+        use Page\Homepage;
+
+        class SearchContext extends PageObjectContext
+        {
+            /**
+             * @Given /^(?:|I )search for (?P<keywords>.*?)$/
+             */
+            public function iSearchFor($keywords)
+            {
+                // For PHP >= 5.5.0
+                $this->getPage(Homepage::class)->search($keywords);
+                // For PHP < 5.5.0
+                $this->getPage('Page\\Homepage')->search($keywords);
+            }
+        }
+
+If you choose FQCN strategy, you can organize your page directories freely as you are not bounded to page namespace
+(see `configuration <http://behat-page-object-extension.readthedocs.io/en/latest/guide/configuration.html>`_)
+
+    .. note::
+        You can choose between "CamelCase" strategy and "FQCN" strategy. We recommend to keep a consistent strategy for
+        the factory but there is not any constraint: both strategies can work togheter with their own rules.
+
     .. note::
 
         It is possible to implement your own way of mapping a page name to
