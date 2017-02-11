@@ -11,6 +11,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Factory\ClassNameResolver;
 
 require_once __DIR__.'/Fixtures/ArticleList.php';
 require_once __DIR__.'/Fixtures/Element/SearchBox.php';
+require_once __DIR__.'/Fixtures/Element/InlineSearchBox.php';
 
 class DefaultFactorySpec extends ObjectBehavior
 {
@@ -23,6 +24,7 @@ class DefaultFactorySpec extends ObjectBehavior
         $session->getSelectorsHandler()->willReturn($selectorsHandler);
         $session->getDriver()->willReturn($driver);
         $selectorsHandler->selectorToXpath('xpath', '//div[@id="search"]')->willReturn('//div[@id="search"]');
+        $selectorsHandler->selectorToXpath('xpath', '//div[@id="inline-search"]')->willReturn('//div[@id="inline-search"]');
     }
 
     function it_is_a_page_object_factory()
@@ -49,6 +51,15 @@ class DefaultFactorySpec extends ObjectBehavior
         $element = $this->createInlineElement(array('xpath' => '//div[@id="search"]'));
         $element->shouldBeAnInstanceOf('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement');
         $element->getXPath()->shouldReturn('//div[@id="search"]');
+    }
+
+    function it_should_create_a_named_inline_element(ClassNameResolver $classNameResolver)
+    {
+        $classNameResolver->resolveElement('Inline Search Box')->willReturn('InlineSearchBox');
+
+        $element = $this->createInlineElement(array('xpath' => '//div[@id="inline-search"]'), 'Inline Search Box');
+        $element->shouldBeAnInstanceOf('InlineSearchBox');
+        $element->getXPath()->shouldReturn('//div[@id="inline-search"]');
     }
 
     function it_creates_a_page()
