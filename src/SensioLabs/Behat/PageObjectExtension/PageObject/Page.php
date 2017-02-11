@@ -129,7 +129,7 @@ abstract class Page extends DocumentElement implements PageObject
     protected function createElement($name)
     {
         if (isset($this->elements[$name])) {
-            return $this->factory->createInlineElement($this->elements[$name]);
+            return $this->factory->createInlineElement($this->elements[$name],$name);
         }
 
         return $this->factory->createElement($name);
