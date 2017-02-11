@@ -249,6 +249,20 @@ class PageSpec extends ObjectBehavior
         $this->callHasElement('Primary Navigation')->shouldReturn(true);
     }
 
+    function it_creates_a_named_inline_element_if_present($factory, $selectorsHandler, $driver, InlineSearchBox $element, NodeElement $node)
+    {
+        $elementLocator = '//div[@id="inline-search"]';
+
+        $element->getXpath()->willReturn($elementLocator);
+        $selectorsHandler->selectorToXpath('xpath', $elementLocator)->willReturn($elementLocator);
+        $driver->find('//html'.$elementLocator)->willReturn($node);
+
+        $factory->createInlineElement(array('xpath' => $elementLocator))->willReturn($element);
+
+        $this->getElement('Inline Search Box')->shouldReturn($element);
+        $this->callHasElement('Inline Search Box')->shouldReturn(true);
+    }
+
     function it_throws_an_exception_if_locator_does_not_evaluate_to_a_node_with_an_inline_element($factory, $selectorsHandler, $driver, InlineElement $element, NodeElement $node)
     {
         $elementLocator = '//div/span[@class="navigation"]';
