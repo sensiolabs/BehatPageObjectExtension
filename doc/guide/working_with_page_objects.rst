@@ -115,7 +115,7 @@ From version 2.1 it is possibile to use ``getPage()`` method with page FQCN as f
         }
 
 If you choose FQCN strategy, you can organize your page directories freely as you are not bounded to page namespace
-(see `configuration <http://behat-page-object-extension.readthedocs.io/en/latest/guide/configuration.html>`_)
+(see :doc:`../guide/configuration`)
 
     .. note::
         You can choose between "CamelCase" strategy and "FQCN" strategy. We recommend to keep a consistent strategy for
