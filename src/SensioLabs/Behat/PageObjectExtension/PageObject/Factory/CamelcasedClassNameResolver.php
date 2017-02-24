@@ -55,18 +55,21 @@ class CamelcasedClassNameResolver implements ClassNameResolver
      */
     private function resolve($pageObjectName, array $namespaces, $pageObjectType)
     {
+        if ($this->isPageObjectNameFQCN($pageObjectName)) {
+            return $pageObjectName;
+        }
+
         $classNameCandidates = $this->getClassNameCandidates($namespaces, $pageObjectName);
         $className = $this->findExistingClassName($classNameCandidates);
 
-        if (null === $className) {
-            $message = sprintf('Could not find a class for the "%s" %s. ', $pageObjectName, $pageObjectType);
-            $message.= sprintf('None of the configured namespaces worked: "%s"', implode($classNameCandidates, ', '));
-
-            throw new \InvalidArgumentException($message);
+        if (null !== $className) {
+            return $className;
         }
 
-        return $className;
+        $message = sprintf('Could not find a class for the "%s" %s. ', $pageObjectName, $pageObjectType);
+        $message.= sprintf('None of the configured namespaces worked: "%s"', implode($classNameCandidates, ', '));
 
+        throw new \InvalidArgumentException($message);
     }
 
     /**
@@ -96,6 +99,16 @@ class CamelcasedClassNameResolver implements ClassNameResolver
         }
 
         return null;
+    }
+
+    /**
+     * @param string $pageObjectName
+     *
+     * @return bool
+     */
+    private function isPageObjectNameFQCN($pageObjectName)
+    {
+        return class_exists($pageObjectName);
     }
 
     /**

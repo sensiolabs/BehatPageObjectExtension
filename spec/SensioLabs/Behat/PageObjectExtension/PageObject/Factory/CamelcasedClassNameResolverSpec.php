@@ -2,7 +2,6 @@
 
 namespace spec\SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 
-use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
 
 require_once __DIR__.'/Fixtures/ArticleList.php';
@@ -36,7 +35,15 @@ class CamelcasedClassNameResolverSpec extends ObjectBehavior
         $this->resolvePage('Namespaced article list')->shouldReturn('\\spec\\SensioLabs\\Behat\\PageObjectExtension\\PageObject\\Factory\\Fixtures\\NamespacedArticleList');
     }
 
-    function it_tries_all_the_namespaces_before_throwing_an_exception(Session $session)
+    function it_resolves_a_page_class_given_as_fqcn()
+    {
+        $this->beConstructedWith(array('\\Foo', '\\Page'));
+
+        $pageFQCN = '\\spec\\SensioLabs\\Behat\\PageObjectExtension\\PageObject\\Factory\\Fixtures\\NamespacedArticleList';
+        $this->resolvePage($pageFQCN)->shouldReturn($pageFQCN);
+    }
+
+    function it_tries_all_the_namespaces_before_throwing_an_exception()
     {
         $this->beConstructedWith(array(
             'spec\\SensioLabs\\Behat\\PageObjectExtension\\PageObject\\Factory',
@@ -76,5 +83,13 @@ class CamelcasedClassNameResolverSpec extends ObjectBehavior
 
         $this->shouldThrow(new \InvalidArgumentException($expectedMessage))
             ->duringResolveElement('Recent searches');
+    }
+
+    function it_resolves_an_element_class_given_as_fqcn()
+    {
+        $this->beConstructedWith(array('\\Foo', '\\Element'));
+
+        $elementFQCN = '\\spec\\SensioLabs\\Behat\\PageObjectExtension\\PageObject\\Factory\\Fixtures\\Element\\NamespacedSearchBox';
+        $this->resolvePage($elementFQCN)->shouldReturn($elementFQCN);
     }
 }
