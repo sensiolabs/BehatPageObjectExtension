@@ -65,4 +65,16 @@ class PageObjectContext implements Context, PageObjectAware
 
         return $this->pageObjectFactory;
     }
+
+    /**
+     * @param string $name
+     *
+     * @return boolean
+     */
+    public function isPageOpen($name)
+    {
+        $page = $this->getPage($name);
+
+        return $page->getSession()->getCurrentUrl() === rtrim($page->getParameter('base_url'), '/') . $page->getPath();
+    }
 }
