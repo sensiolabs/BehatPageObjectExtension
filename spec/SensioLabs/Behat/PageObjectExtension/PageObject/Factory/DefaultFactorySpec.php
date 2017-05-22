@@ -7,10 +7,12 @@ use Behat\Mink\Mink;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory\ClassNameResolver;
 
 require_once __DIR__.'/Fixtures/ArticleList.php';
 require_once __DIR__.'/Fixtures/Element/SearchBox.php';
+require_once __DIR__.'/Fixtures/Element/InlineSearchBox.php';
 
 class DefaultFactorySpec extends ObjectBehavior
 {
@@ -23,6 +25,7 @@ class DefaultFactorySpec extends ObjectBehavior
         $session->getSelectorsHandler()->willReturn($selectorsHandler);
         $session->getDriver()->willReturn($driver);
         $selectorsHandler->selectorToXpath('xpath', '//div[@id="search"]')->willReturn('//div[@id="search"]');
+        $selectorsHandler->selectorToXpath('xpath', '//div[@id="inline-search"]')->willReturn('//div[@id="inline-search"]');
     }
 
     function it_is_a_page_object_factory()
@@ -44,11 +47,30 @@ class DefaultFactorySpec extends ObjectBehavior
         $this->createElement('Search box')->shouldBeAnInstanceOf('SearchBox');
     }
 
-    function it_should_create_an_inline_element()
+    function it_should_create_an_inline_element(ClassNameResolver $classNameResolver)
     {
+        $classNameResolver->resolveElement('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement')
+            ->willReturn('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement');
+
         $element = $this->createInlineElement(array('xpath' => '//div[@id="search"]'));
         $element->shouldBeAnInstanceOf('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement');
         $element->getXPath()->shouldReturn('//div[@id="search"]');
+    }
+
+    function it_create_inline_element_should_throw_an_exception_with_non_inline_element_class(ClassNameResolver $classNameResolver)
+    {
+        $classNameResolver->resolveElement(Argument::any())->willReturn('ArticleList');
+
+        $this->shouldThrow('InvalidArgumentException')->duringCreateInlineElement(array('xpath' => '//div[@id="search"]'), 'ArticleList');
+    }
+
+    function it_should_create_a_named_inline_element(ClassNameResolver $classNameResolver)
+    {
+        $classNameResolver->resolveElement('Inline Search Box')->willReturn('InlineSearchBox');
+
+        $element = $this->createInlineElement(array('xpath' => '//div[@id="inline-search"]'), 'Inline Search Box');
+        $element->shouldBeAnInstanceOf('InlineSearchBox');
+        $element->getXPath()->shouldReturn('//div[@id="inline-search"]');
     }
 
     function it_creates_a_page()

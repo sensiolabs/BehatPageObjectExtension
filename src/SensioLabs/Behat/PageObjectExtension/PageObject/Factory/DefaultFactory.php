@@ -64,12 +64,19 @@ class DefaultFactory implements Factory
 
     /**
      * @param array|string $selector
+     * @param null|string  $name
      *
      * @return InlineElement
      */
-    public function createInlineElement($selector)
+    public function createInlineElement($selector, $name = null)
     {
-        return new InlineElement($selector, $this->mink->getSession(), $this);
+        $elementClass = $this->classNameResolver->resolveElement($name ? $name : 'SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement');
+
+        if ('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement' !== $elementClass && !is_subclass_of($elementClass, 'SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement')) {
+            throw new \InvalidArgumentException(sprintf('Not a page object class: %s', ''));
+        }
+
+        return new $elementClass($selector, $this->mink->getSession(), $this);
     }
 
     /**

@@ -72,10 +72,11 @@ Feature: Providing a custom page object factory
 
         /**
          * @param array|string $selector
+         * @param null|string  $name
          *
          * @return InlineElement
          */
-        public function createInlineElement($selector)
+        public function createInlineElement($selector, $name = null)
         {
             return new InlineElement($selector, $this->mink->getSession(), $this);
         }
