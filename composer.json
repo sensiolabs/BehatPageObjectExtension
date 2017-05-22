@@ -10,7 +10,7 @@
         "behat/behat": "^3.3",
         "behat/mink": "^1.7",
         "behat/mink-extension": "^2.2",
-        "ocramius/proxy-manager": "^2.1"
+        "ocramius/proxy-manager": "^2.0.4"
     },
     "require-dev": {
         "phpspec/phpspec": "^3.3",
