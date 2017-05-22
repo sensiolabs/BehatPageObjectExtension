@@ -7,6 +7,7 @@ use Behat\Mink\Mink;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory\ClassNameResolver;
 
 require_once __DIR__.'/Fixtures/ArticleList.php';
@@ -54,6 +55,13 @@ class DefaultFactorySpec extends ObjectBehavior
         $element = $this->createInlineElement(array('xpath' => '//div[@id="search"]'));
         $element->shouldBeAnInstanceOf('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement');
         $element->getXPath()->shouldReturn('//div[@id="search"]');
+    }
+
+    function it_create_inline_element_should_throw_an_exception_with_non_inline_element_class(ClassNameResolver $classNameResolver)
+    {
+        $classNameResolver->resolveElement(Argument::any())->willReturn('ArticleList');
+
+        $this->shouldThrow('InvalidArgumentException')->duringCreateInlineElement(array('xpath' => '//div[@id="search"]'), 'ArticleList');
     }
 
     function it_should_create_a_named_inline_element(ClassNameResolver $classNameResolver)

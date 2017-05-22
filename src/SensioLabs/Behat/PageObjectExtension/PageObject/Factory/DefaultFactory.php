@@ -72,6 +72,10 @@ class DefaultFactory implements Factory
     {
         $elementClass = $this->classNameResolver->resolveElement($name ? $name : 'SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement');
 
+        if ('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement' !== $elementClass && !is_subclass_of($elementClass, 'SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement')) {
+            throw new \InvalidArgumentException(sprintf('Not a page object class: %s', ''));
+        }
+
         return new $elementClass($selector, $this->mink->getSession(), $this);
     }
 
