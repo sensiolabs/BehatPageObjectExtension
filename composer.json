@@ -29,9 +29,6 @@
             "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
         }
     },
-    "config": {
-        "bin-dir": "bin"
-    },
     "authors": [
         {
             "name": "Marcello Duarte",

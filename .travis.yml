@@ -26,6 +26,6 @@ before_script:
   - if [[ $deps = low ]]; then composer update --prefer-lowest --prefer-stable; else composer install; fi
 
 script:
-  - ./bin/phpspec run -f pretty
-  - ./bin/behat --profile=ci --format=progress
+  - ./vendor/bin/phpspec run -f pretty
+  - ./vendor/bin/behat --profile=ci --format=progress
 
