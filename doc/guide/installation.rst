@@ -4,6 +4,7 @@ Installation
 This extension requires:
 
 * Behat 3.0+
+* Behat/MinkExtension 2.0+
 
 Through Composer
 ----------------
@@ -25,5 +26,5 @@ The easiest way to keep your suite updated is to use
           # ...
           extensions:
             SensioLabs\Behat\PageObjectExtension: ~
-
-
+            Behat\MinkExtension: ~
+            # You'll need to configure the MinkExtension. Refer to their docs.
