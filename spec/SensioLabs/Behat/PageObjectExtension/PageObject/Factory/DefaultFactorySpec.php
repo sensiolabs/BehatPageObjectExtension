@@ -46,8 +46,11 @@ class DefaultFactorySpec extends ObjectBehavior
         $this->createElement('Search box')->shouldBeAnInstanceOf('SearchBox');
     }
 
-    function it_should_create_an_inline_element()
+    function it_should_create_an_inline_element(ClassNameResolver $classNameResolver)
     {
+        $classNameResolver->resolveElement('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement')
+            ->willReturn('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement');
+
         $element = $this->createInlineElement(array('xpath' => '//div[@id="search"]'));
         $element->shouldBeAnInstanceOf('SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement');
         $element->getXPath()->shouldReturn('//div[@id="search"]');

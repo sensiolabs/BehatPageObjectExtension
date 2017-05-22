@@ -53,11 +53,12 @@ class LazyFactory implements Factory
     }
 
     /**
-     * @param string|array
+     * @param string|array $selector
+     * @param null|string  $name
      *
      * @return InlineElement
      */
-    public function createInlineElement($selector)
+    public function createInlineElement($selector, $name = null)
     {
         return $this->decoratedFactory->createInlineElement($selector);
     }
