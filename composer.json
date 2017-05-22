@@ -25,7 +25,7 @@
         "bossa/phpspec2-expect": "Allows to use PHPSpec2 matchers in Behat context files"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
         }
     },

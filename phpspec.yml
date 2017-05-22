@@ -1,0 +1,4 @@
+suites:
+  default:
+    namespace: SensioLabs\Behat\PageObjectExtension
+    psr4_prefix: SensioLabs\Behat\PageObjectExtension
