@@ -6,31 +6,28 @@
     "homepage": "https://github.com/sensiolabs/BehatPageObjectExtension",
     "license": "MIT",
     "require": {
-        "php": ">=5.3.0",
-        "behat/behat": "^3.0.6",
-        "behat/mink": "^1.6",
-        "behat/mink-extension": "^2.0",
-        "ocramius/proxy-manager": "^1.0||^2.0"
+        "php": ">=7.0",
+        "behat/behat": "^3.3",
+        "behat/mink": "^1.7",
+        "behat/mink-extension": "^2.2",
+        "ocramius/proxy-manager": "^2.0.4"
     },
     "require-dev": {
-        "phpspec/phpspec": "^2.5||^3.0",
-        "bossa/phpspec2-expect": "^1.0.3||^2.0",
-        "behat/mink-goutte-driver": "^1.0",
-        "symfony/filesystem": "^2.8||^3.0||^4.0",
-        "symfony/process": "^2.8||^3.0||^4.0",
-        "symfony/yaml": "^2.8||^3.0||^4.0",
-        "fabpot/goutte": "^1.0.4||^2.0||^3.0"
+        "phpspec/phpspec": "^3.3",
+        "bossa/phpspec2-expect": "^2.2",
+        "behat/mink-goutte-driver": "^1.2",
+        "symfony/filesystem": "^3.2||^4.0",
+        "symfony/process": "^3.2||^4.0",
+        "symfony/yaml": "^3.2||^4.0",
+        "fabpot/goutte": "^3.2"
     },
     "suggest": {
         "bossa/phpspec2-expect": "Allows to use PHPSpec2 matchers in Behat context files"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
         }
-    },
-    "config": {
-        "bin-dir": "bin"
     },
     "authors": [
         {

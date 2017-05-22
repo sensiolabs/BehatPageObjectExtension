@@ -1,5 +1,3 @@
-bin/
 composer.lock
-composer.phar
 doc/_build
 vendor/
