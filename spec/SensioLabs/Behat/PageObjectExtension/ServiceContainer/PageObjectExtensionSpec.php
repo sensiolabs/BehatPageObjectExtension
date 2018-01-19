@@ -18,6 +18,9 @@ class PageObjectExtensionSpec extends ObjectBehavior
         $container->setParameter(Argument::cetera())->willReturn(null);
         $container->addCompilerPass(Argument::cetera())->willReturn(null);
         $container->setAlias(Argument::cetera())->willReturn(null);
+        if (method_exists('Symfony\Component\DependencyInjection\ContainerBuilder', 'fileExists')) {
+            $container->fileExists(Argument::cetera())->willReturn(true);
+        }
     }
 
     function it_provides_a_config_key()
