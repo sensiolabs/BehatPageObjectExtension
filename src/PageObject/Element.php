@@ -3,6 +3,7 @@
 namespace SensioLabs\Behat\PageObjectExtension\PageObject;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Selector\SelectorsHandler;
 use Behat\Mink\Session;
 
@@ -12,6 +13,11 @@ abstract class Element extends NodeElement implements PageObject
      * @var array|string
      */
     protected $selector = array('xpath' => '//');
+
+    /**
+     * @var array
+     */
+    protected $elements = array();
 
     /**
      * @var Factory
@@ -43,11 +49,51 @@ abstract class Element extends NodeElement implements PageObject
     /**
      * @param string $name
      *
+     * @return Element
+     */
+    public function getElement($name)
+    {
+        $element = $this->createElement($name);
+
+        if (!$this->has('xpath', $element->getXpath())) {
+            throw new ElementNotFoundException(sprintf('"%s" element is not present on the page', $name));
+        }
+
+        return $element;
+    }
+
+    /**
+     * @param string $name
+     *
      * @return Page
      */
     protected function getPage($name)
     {
         return $this->factory->createPage($name);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return boolean
+     */
+    protected function hasElement($name)
+    {
+        return $this->has('xpath', $this->createElement($name)->getXpath());
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Element
+     */
+    protected function createElement($name)
+    {
+        if (isset($this->elements[$name])) {
+            return $this->factory->createInlineElement($this->elements[$name]);
+        }
+
+        return $this->factory->createElement($name);
     }
 
     /**

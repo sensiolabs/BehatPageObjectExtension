@@ -13,9 +13,18 @@ class MyElement extends BaseElement
 {
     public $selector = array('xpath' => '//div[@id="my-box"]');
 
+    protected $elements = [
+        'Logo' => 'img#logo',
+    ];
+
     public function callGetPage($name)
     {
         return $this->getPage($name);
+    }
+
+    public function callGetElement($name)
+    {
+        return $this->getElement($name);
     }
 
     public function callGetName()
@@ -76,6 +85,20 @@ class ElementSpec extends ObjectBehavior
         $factory->createPage('Home')->willReturn($page);
 
         $this->callGetPage('Home')->shouldReturn($page);
+    }
+
+    function it_creates_an_element(Factory $factory, BaseElement $element)
+    {
+        $factory->createElement('Button')->willReturn($element);
+
+        $this->callGetElement('Button')->shouldReturn($element);
+    }
+
+    function it_creates_an_inline_element(Factory $factory, BaseElement $element)
+    {
+        $factory->createElement('img#logo')->willReturn($element);
+
+        $this->callGetElement('Logo')->shouldReturn($element);
     }
 
     function it_returns_the_element_name()
