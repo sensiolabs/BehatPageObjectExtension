@@ -13,13 +13,13 @@
         "ocramius/proxy-manager": "^2.0.4"
     },
     "require-dev": {
-        "phpspec/phpspec": "^3.3",
-        "bossa/phpspec2-expect": "^2.2",
         "behat/mink-goutte-driver": "^1.2",
+        "bossa/phpspec2-expect": "^2.2",
+        "fabpot/goutte": "^3.2",
+        "phpspec/phpspec": "^3.3",
         "symfony/filesystem": "^3.2||^4.0",
         "symfony/process": "^3.2||^4.0",
-        "symfony/yaml": "^3.2||^4.0",
-        "fabpot/goutte": "^3.2"
+        "symfony/yaml": "^3.2||^4.0"
     },
     "suggest": {
         "bossa/phpspec2-expect": "Allows to use PHPSpec2 matchers in Behat context files"
@@ -43,5 +43,8 @@
         "branch-alias": {
             "dev-master": "3.0-dev"
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
