@@ -126,7 +126,7 @@ Accessing custom elements is much like accessing inline ones:
             {
                 return $this->getElement('Search form')->search($keywords);
                 // or (for PHP >= 5.5.0) return $this->getElement(SearchForm::class)->search($keywords);
-                // or (for PHP < 5.5.0) return $this->getElement('Page\\Homepage')->search($keywords);
+                // or (for PHP < 5.5.0) return $this->getElement('Page\\SearchForm')->search($keywords);
             }
         }
 
