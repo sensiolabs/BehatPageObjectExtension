@@ -1,10 +1,24 @@
 {
     "name": "sensiolabs/behat-page-object-extension",
-    "description": "Page object extension for Behat",
     "type": "library",
-    "keywords": ["behat","bdd","page"],
+    "description": "Page object extension for Behat",
+    "keywords": [
+        "behat",
+        "bdd",
+        "page"
+    ],
     "homepage": "https://github.com/sensiolabs/BehatPageObjectExtension",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Marcello Duarte",
+            "email": "mduarte@inviqa.com"
+        },
+        {
+            "name": "Jakub Zalas",
+            "email": "jakub@zalas.pl"
+        }
+    ],
     "require": {
         "php": ">=7.0",
         "behat/behat": "^3.3",
@@ -17,34 +31,24 @@
         "bossa/phpspec2-expect": "^2.2",
         "fabpot/goutte": "^3.2",
         "phpspec/phpspec": "^3.3",
-        "symfony/filesystem": "^3.2||^4.0",
-        "symfony/process": "^3.2||^4.0",
-        "symfony/yaml": "^3.2||^4.0"
+        "symfony/filesystem": "^3.2 || ^4.0",
+        "symfony/process": "^3.2 || ^4.0",
+        "symfony/yaml": "^3.2 || ^4.0"
     },
     "suggest": {
         "bossa/phpspec2-expect": "Allows to use PHPSpec2 matchers in Behat context files"
     },
-    "autoload": {
-        "psr-4": {
-            "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
-        }
+    "config": {
+        "sort-packages": true
     },
-    "authors": [
-        {
-            "name": "Marcello Duarte",
-            "email": "mduarte@inviqa.com"
-        },
-        {
-            "name": "Jakub Zalas",
-            "email": "jakub@zalas.pl"
-        }
-    ],
     "extra": {
         "branch-alias": {
             "dev-master": "3.0-dev"
         }
     },
-    "config": {
-        "sort-packages": true
+    "autoload": {
+        "psr-4": {
+            "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
+        }
     }
 }
