@@ -6,10 +6,11 @@ matrix:
           env: deps=low
         - php: 7.1
         - php: 7.2
+        - php: 7.3
     fast_finish: true
     
 before_script:
-  - phpenv config-rm xdebug.ini
+  - phpenv config-rm xdebug.ini || echo "XDebug is not enabled"
   - if [[ $deps = low ]]; then composer update --prefer-lowest --prefer-stable; else composer install; fi
 
 script:
