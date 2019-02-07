@@ -255,7 +255,7 @@ abstract class Page extends DocumentElement implements PageObject
      *
      * @return string
      */
-    private function unmaskUrl(array $urlParameters)
+    protected function unmaskUrl(array $urlParameters)
     {
         $url = $this->getPath();
 
