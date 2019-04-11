@@ -8,8 +8,6 @@ interface PageObjectAware
 {
     /**
      * @param PageObjectFactory $pageObjectFactory
-     *
-     * @return null
      */
     public function setPageObjectFactory(PageObjectFactory $pageObjectFactory);
 }
