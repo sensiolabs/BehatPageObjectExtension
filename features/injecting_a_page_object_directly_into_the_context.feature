@@ -118,7 +118,7 @@ Feature: Injecting a page object directly into the context
       extensions:
         SensioLabs\Behat\PageObjectExtension:
           factory:
-            proxies_target_dir: %paths.base%/tmp/
+            proxies_target_dir: '%paths.base%/tmp/'
         Behat\MinkExtension:
           goutte: ~
           base_url: http://localhost:8000
