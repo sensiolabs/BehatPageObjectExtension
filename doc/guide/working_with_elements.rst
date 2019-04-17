@@ -134,6 +134,48 @@ Accessing custom elements is much like accessing inline ones:
         Page factory takes care of creating custom elements and their class names
         follow the same rules as Page class names.
 
+Elements can be nested, so similar to how elements can be retrieved from a `Page`, elements can also be
+retrieved from an element:
+
+
+    .. code-block:: php
+
+        <?php
+
+        namespace Page\Element;
+
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+        use SensioLabs\Behat\PageObjectExtension\PageObject\InlineElement;
+        use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+
+        class Header extends Element
+        {
+            /**
+             * @var array|string $selector
+             */
+            protected $selector = '.header';
+
+            protected $elements = [
+                'Logo' => '#logo',
+            ];
+
+            /**
+             * @return SearchForm
+             */
+            public function searchForm()
+            {
+                return $this->getElement(SearchForm::class);
+            }
+
+            /**
+             * @return InlineElement
+             */
+            public function logo()
+            {
+                return $this->getElement('Logo')'
+            }
+        }
+
 Element is an instance of a
 `NodeElement <http://mink.behat.org/api/behat/mink/element/nodeelement.html>`_,
 so similarly to pages, we can take advantage of existing `Mink <http://mink.behat.org/>`_
@@ -144,4 +186,3 @@ a full list of available methods:
 * `NodeElement <http://mink.behat.org/api/behat/mink/element/nodeelement.html>`_
 * `TraversableElement <http://mink.behat.org/api/behat/mink/element/traversableelement.html>`_
 * `Element <http://mink.behat.org/api/behat/mink/element/element.html>`_
-
