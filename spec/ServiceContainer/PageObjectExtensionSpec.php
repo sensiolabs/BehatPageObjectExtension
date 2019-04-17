@@ -21,6 +21,9 @@ class PageObjectExtensionSpec extends ObjectBehavior
         if (method_exists(ContainerBuilder::class, 'fileExists')) {
             $container->fileExists(Argument::any())->willReturn(false);
         }
+        if (method_exists(ContainerBuilder::class, 'addRemovedBindingIds')) {
+            $container->addRemovedBindingIds(Argument::any())->willReturn();
+        }
     }
 
     function it_provides_a_config_key()
