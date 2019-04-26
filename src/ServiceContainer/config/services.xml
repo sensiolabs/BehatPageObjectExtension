@@ -55,7 +55,7 @@
             <argument>%sensio_labs.page_object_extension.page_factory.page_parameters%</argument>
         </service>
 
-        <service id="sensio_labs.page_object_extension.page_factory" alias="sensio_labs.page_object_extension.page_factory.default" />
+        <service id="sensio_labs.page_object_extension.page_factory" alias="sensio_labs.page_object_extension.page_factory.default" public="true" />
 
         <service id="sensio_labs.page_object_extension.context.initializer" class="%sensio_labs.page_object_extension.context.initializer.class%">
             <argument type="service" id="sensio_labs.page_object_extension.page_factory" />
