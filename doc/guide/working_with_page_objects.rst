@@ -83,7 +83,7 @@ context is to call the ``getPage`` method provided by the
     .. note::
 
         Alternatively you could implement the
-        ``SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface``.
+        ``SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware`` Interface.
 
 Page factory finds a corresponding class by the passed name:
 
