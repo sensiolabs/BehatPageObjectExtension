@@ -31,9 +31,9 @@
         "bossa/phpspec2-expect": "^3.1",
         "fabpot/goutte": "^3.2",
         "phpspec/phpspec": "^5.1",
-        "symfony/filesystem": "^4.2",
-        "symfony/process": "^4.2",
-        "symfony/yaml": "^4.2"
+        "symfony/filesystem": "^4.2 || ^5.0",
+        "symfony/process": "^4.2 || ^5.0",
+        "symfony/yaml": "^4.2 || ^5.0"
     },
     "suggest": {
         "bossa/phpspec2-expect": "Allows to use PHPSpec2 matchers in Behat context files"
