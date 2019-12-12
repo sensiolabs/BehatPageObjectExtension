@@ -67,7 +67,7 @@ class CamelcasedClassNameResolver implements ClassNameResolver
         }
 
         $message = sprintf('Could not find a class for the "%s" %s. ', $pageObjectName, $pageObjectType);
-        $message.= sprintf('None of the configured namespaces worked: "%s"', implode($classNameCandidates, ', '));
+        $message.= sprintf('None of the configured namespaces worked: "%s"', implode(', ', $classNameCandidates));
 
         throw new \InvalidArgumentException($message);
     }

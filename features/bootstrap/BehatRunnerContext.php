@@ -15,11 +15,6 @@ class BehatRunnerContext implements Context
     private $workingDir;
 
     /**
-     * @var string|null
-     */
-    private $phpBin;
-
-    /**
      * @var Process|null
      */
     private $process;
@@ -32,8 +27,12 @@ class BehatRunnerContext implements Context
         $this->workingDir = sprintf('%s/%s/', sys_get_temp_dir(), uniqid('BehatPageObjectExtension_'));
         $this->getFilesystem()->mkdir($this->workingDir, 0777);
 
-        $this->phpBin = $this->findPhpBinary();
-        $this->process = new Process(null);
+        $this->process = new Process([
+            $this->findPhpBinary(),
+            BEHAT_BIN_PATH,
+            '--format-settings={"timer": false}',
+            '--format=progress'
+        ], $this->workingDir);
     }
 
     /**
@@ -85,16 +84,6 @@ CONFIG;
      */
     public function iRunBehat()
     {
-        $this->process->setWorkingDirectory($this->workingDir);
-        $this->process->setCommandLine(
-            sprintf(
-                '%s %s %s %s',
-                $this->phpBin,
-                escapeshellarg(BEHAT_BIN_PATH),
-                strtr('--format-settings=\'{"timer": false}\'', array('\'' => '"', '"' => '\"')),
-                '--format=progress'
-            )
-        );
         $this->process->start();
         $this->process->wait();
     }

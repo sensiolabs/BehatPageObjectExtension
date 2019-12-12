@@ -15,7 +15,7 @@ class PhpServerContext implements Context
      */
     public static function startPhpServer()
     {
-        self::$phpServer = new Process('php -S localhost:8000 features/application/index.php');
+        self::$phpServer = new Process(['php', '-S', 'localhost:8000', 'features/application/index.php']);
         self::$phpServer->start();
 
         sleep(1);
