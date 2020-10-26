@@ -31,7 +31,7 @@
         "behat/mink-goutte-driver": "^1.2",
         "bossa/phpspec2-expect": "^3.1.1",
         "fabpot/goutte": "^3.2",
-        "phpspec/phpspec": "^6.1",
+        "phpspec/phpspec": "^6.2",
         "symfony/filesystem": "^4.2 || ^5.0",
         "symfony/process": "^4.2 || ^5.0",
         "symfony/yaml": "^4.2 || ^5.0"
