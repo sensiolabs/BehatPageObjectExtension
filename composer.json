@@ -24,7 +24,8 @@
         "behat/behat": "^3.3",
         "behat/mink": "^1.7",
         "friends-of-behat/mink-extension": "^2.2",
-        "ocramius/proxy-manager": "^2.1.1"
+        "ocramius/proxy-manager": "^2.1.1",
+        "composer/package-versions-deprecated": "^1.11.9"
     },
     "require-dev": {
         "behat/mink-goutte-driver": "^1.2",
