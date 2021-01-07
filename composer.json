@@ -20,8 +20,8 @@
         }
     ],
     "require": {
-        "php": "^7.2",
-        "behat/behat": "^3.3",
+        "php": "^7.2 || ~8.0",
+        "behat/behat": "^3.8",
         "behat/mink": "^1.7",
         "friends-of-behat/mink-extension": "^2.2",
         "friendsofphp/proxy-manager-lts": "^1.0.2",
@@ -29,12 +29,14 @@
     },
     "require-dev": {
         "behat/mink-goutte-driver": "^1.2",
-        "bossa/phpspec2-expect": "^3.1.1",
-        "fabpot/goutte": "^3.2",
-        "phpspec/phpspec": "^6.2",
-        "symfony/filesystem": "^4.2 || ^5.0",
-        "symfony/process": "^4.2 || ^5.0",
-        "symfony/yaml": "^4.2 || ^5.0"
+        "fabpot/goutte": "^3.3.1",
+        "phpspec/phpspec": "^6.2 || ^7.0",
+        "symfony/filesystem": "^4.4 || ^5.2",
+        "symfony/dom-crawler": "^4.4.12 || ^5.2",
+        "symfony/dependency-injection": "^4.4.12 || ^5.2",
+        "symfony/config": "^4.4.12 || ^5.2",
+        "symfony/process": "^4.4 || ^5.2",
+        "symfony/yaml": "^4.4 || ^5.2"
     },
     "suggest": {
         "bossa/phpspec2-expect": "Allows to use PHPSpec2 matchers in Behat context files"

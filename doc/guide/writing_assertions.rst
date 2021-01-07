@@ -50,27 +50,3 @@ Our page object could look like the following:
                 return !is_null($button);
             }
         }
-
-We could go one step fruther in making our life easier by using phpspec
-matchers available through the
-`expect() helper <https://github.com/BossaConsulting/phpspec2-expect>`_:
-
-    .. code-block:: php
-
-        /**
-         * @Then /^(?:|I )should not be able to enrol to (?:|the )"(?P<conferenceName>[^"]*)" conference$/
-         */
-        public function iShouldNotBeAbleToEnrolToTheConference($conferenceName)
-        {
-            expect($this->getPage('Conference list'))->notToHaveEnrolmentButtonFor($conferenceName);
-        }
-
-To use the `expect() helper <https://github.com/BossaConsulting/phpspec2-expect>`_,
-we need to install it first. Best way to do this is by adding it to the
-``composer.json``:
-
-    .. code-block:: js
-
-        "require-dev": {
-            "bossa/phpspec2-expect": "~1.0"
-        }
