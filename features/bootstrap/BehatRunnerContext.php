@@ -93,14 +93,18 @@ CONFIG;
      */
     public function itShouldPass()
     {
-        try {
-            expect($this->process->getExitCode())->toBe(0);
-            expect((string) $this->process->getErrorOutput())->notToMatch('/PHP Warning: /');
-            expect((string) $this->process->getErrorOutput())->notToMatch('/PHP Notice: /');
-        } catch (\Exception $e) {
+        if ($this->process->getExitCode() !== 0) {
             echo $this->getOutput();
 
-            throw $e;
+            throw new \RuntimeException(sprintf('Expected a success but got a non-zero exit code: %d.', $this->process->getExitCode()));
+        }
+
+        if (preg_match('/PHP Warning: /', $this->process->getErrorOutput())) {
+            throw new \RuntimeException("Did not expect a PHP Warning in the output: `%s`.", $this->process->getErrorOutput());
+        }
+
+        if (preg_match('/PHP Notice: /', $this->process->getErrorOutput())) {
+            throw new \RuntimeException("Did not expect a PHP Notice in the output: `%s`.", $this->process->getErrorOutput());
         }
     }
 
@@ -127,12 +131,10 @@ CONFIG;
      */
     public function itShouldFail()
     {
-        try {
-            expect($this->process->getExitCode())->notToBe(0);
-        } catch (\Exception $e) {
+        if ($this->process->getExitCode() === 0) {
             echo $this->getOutput();
 
-            throw $e;
+            throw new \RuntimeException('Expected a failure but got a zero exit code.');
         }
     }
 
@@ -143,7 +145,9 @@ CONFIG;
     {
         $this->itShouldPass();
 
-        expect($this->getOutput())->toMatch('/'.preg_quote($expectedOutput, '/').'/sm');
+        if (!preg_match('/'.preg_quote($expectedOutput, '/').'/sm', $this->getOutput())) {
+            throw new \RuntimeException(sprintf("Expected:\n`%s`\nbut found:\n%s.", $expectedOutput, $this->getOutput()));
+        }
     }
 
     /**
@@ -153,7 +157,9 @@ CONFIG;
     {
         $this->itShouldFail();
 
-        expect($this->getOutput())->toMatch('/'.preg_quote($expectedOutput, '/').'/sm');
+        if (!preg_match('/'.preg_quote($expectedOutput, '/').'/sm', $this->getOutput())) {
+            throw new \RuntimeException(sprintf("Expected:\n`%s`\nbut found:\n%s.", $expectedOutput, $this->getOutput()));
+        }
     }
 
     /**

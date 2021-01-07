@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.2 || ~8.0",
         "behat/behat": "^3.3",
         "behat/mink": "^1.7",
         "friends-of-behat/mink-extension": "^2.2",
@@ -29,7 +29,6 @@
     },
     "require-dev": {
         "behat/mink-goutte-driver": "^1.2",
-        "bossa/phpspec2-expect": "^3.1.1",
         "fabpot/goutte": "^3.2",
         "phpspec/phpspec": "^6.2",
         "symfony/filesystem": "^4.2 || ^5.0",
