@@ -24,8 +24,7 @@
         "behat/behat": "^3.8",
         "behat/mink": "^1.7",
         "friends-of-behat/mink-extension": "^2.2",
-        "friendsofphp/proxy-manager-lts": "^1.0.2",
-        "composer/package-versions-deprecated": "^1.11.9"
+        "friendsofphp/proxy-manager-lts": "^1.0.2"
     },
     "require-dev": {
         "behat/mink-goutte-driver": "^1.2",
