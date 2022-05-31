@@ -1,5 +1,5 @@
 {
-    "name": "sergehardy/behat-page-object-extension",
+    "name": "sensiolabs/behat-page-object-extension",
     "type": "library",
     "description": "Page object extension for Behat",
     "keywords": [
