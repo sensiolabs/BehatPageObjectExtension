@@ -87,6 +87,10 @@ class PageObjectArgumentResolver implements ArgumentResolver
      */
     private function getClassName(\ReflectionParameter $parameter)
     {
-        return $parameter->getClass() ? $parameter->getClass()->name : null;
+        if (\PHP_VERSION_ID < 80000) {
+            return $parameter->getClass() ? $parameter->getClass()->getName() : null;
+        }
+
+        return $parameter->getType() ? $parameter->getType()->getName() : null;
     }
 }
