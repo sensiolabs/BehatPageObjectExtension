@@ -5,9 +5,11 @@ namespace SensioLabs\Behat\PageObjectExtension\PageObject;
 interface Factory
 {
     /**
-     * @param string $name
+     * @template T of Page
      *
-     * @return Page
+     * @param class-string<T> $name
+     *
+     * @return T
      */
     public function createPage($name);
 
