@@ -47,9 +47,11 @@ abstract class Element extends NodeElement implements PageObject
     }
 
     /**
-     * @param string $name
+     * @template TElement of Element
      *
-     * @return Element
+     * @param class-string<TElement> $name
+     *
+     * @return TElement
      */
     public function getElement($name)
     {
@@ -63,9 +65,11 @@ abstract class Element extends NodeElement implements PageObject
     }
 
     /**
-     * @param string $name
+     * @template TPage of Page
      *
-     * @return Page
+     * @param class-string<TPage> $name
+     *
+     * @return TPage
      */
     protected function getPage($name)
     {
@@ -83,9 +87,11 @@ abstract class Element extends NodeElement implements PageObject
     }
 
     /**
-     * @param string $name
+     * @template TElement of Element
      *
-     * @return Element
+     * @param class-string<TElement> $name
+     *
+     * @return TElement
      */
     protected function createElement($name)
     {

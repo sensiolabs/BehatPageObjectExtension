@@ -15,11 +15,11 @@ class PageObjectContext implements Context, PageObjectAware
     private $pageObjectFactory = null;
 
     /**
-     * @template T of Page
+     * @template TPage of Page
      *
-     * @param class-string<T> $name
+     * @param class-string<TPage> $name
      *
-     * @return T
+     * @return TPage
      *
      * @throws \RuntimeException
      */
@@ -33,9 +33,11 @@ class PageObjectContext implements Context, PageObjectAware
     }
 
     /**
-     * @param string $name
+     * @template TElement of Element
      *
-     * @return Element
+     * @param class-string<TElement> $name
+     *
+     * @return TElement
      *
      * @throws \RuntimeException
      */
